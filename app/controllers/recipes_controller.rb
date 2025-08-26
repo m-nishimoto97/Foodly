@@ -10,4 +10,9 @@ class RecipesController < ApplicationController
   def show
     @recipe = Recipe.find(params[:id])
   end
+
+  def index
+    @recipes = current_user.recipes
+    @recipes = @recipes.where("name ILIKE ?", "%#{params[:query]}%") if params[:query].present?
+  end
 end

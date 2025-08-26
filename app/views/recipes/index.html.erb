@@ -1,0 +1,16 @@
+<div class="container">
+  <div class="row mt-3">
+    <h4 class="text-cWhite">Hello! <%= current_user.username %></h4>
+    <p class="text-cWhite">What do you want to cook for today?</p>
+    <%= form_with url: recipes_path, method: :get, class: "d-flex", data: { controller: 'search', turbo_stream: true } do %>
+      <%= text_field_tag :query,
+        params[:query],
+        class: "form-control",
+        placeholder: "Type a keyword",
+        data: { action: 'input->search#submit' }
+        %>
+      <%= submit_tag "Search", name: "", class: "btn btn-cYellow" %>
+    <% end %>
+  </div>
+  <%= render "recipes/list", recipes: @recipes %>
+</div>
