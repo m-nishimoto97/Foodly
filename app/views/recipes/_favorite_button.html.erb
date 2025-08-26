@@ -1,0 +1,7 @@
+<%= button_to toggle_favorite_recipe_path(recipe),
+              method: :post,
+              data: { turbo_stream: true },
+              id: "favorite_button_#{recipe.id}",
+              class: "btn position-relative p-0" do %>
+  <i class="fa-solid fa-star  <%= current_user.favorited?(recipe) ? 'text-cYellow' : 'text-cWhite' %>"></i>
+<% end %>

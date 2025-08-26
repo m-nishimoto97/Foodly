@@ -1,8 +1,8 @@
 class User < ApplicationRecord
+  acts_as_favoritor
+  acts_as_voter
   has_many :scans
   has_many :recipes, through: :scans
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 end
