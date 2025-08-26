@@ -1,4 +1,11 @@
 <%= simple_form_for @scan do |f| %>
-  <%= f.input :photo, as: :file, input_html: { accept: "image/*", capture "camera" } %>
+  <%# Input field for the camera %>
+  <%= f.input :photo, as: :file, input_html: { accept: "image/*", capture: "camera", onchange: "previewImage(event)" } %>
+
+  <%# Preview for the photo %>
+  <div id="photo-preview">
+    <img id="preview-image" style="max-width: 300px; display: none;" alt="photo of ingredients taken by user" />
+  </div>
+
   <%= f.button :submit, "Upload Scan" %>
 <% end %>
