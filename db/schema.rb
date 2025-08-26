@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_08_26_013723) do
+ActiveRecord::Schema[7.1].define(version: 2025_08_26_022828) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -20,17 +20,17 @@ ActiveRecord::Schema[7.1].define(version: 2025_08_26_013723) do
     t.integer "duration"
     t.string "cuisine"
     t.string "diet"
-    t.bigint "scans_id", null: false
+    t.bigint "scan_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["scans_id"], name: "index_recipes_on_scans_id"
+    t.index ["scan_id"], name: "index_recipes_on_scan_id"
   end
 
   create_table "scans", force: :cascade do |t|
-    t.bigint "users_id", null: false
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["users_id"], name: "index_scans_on_users_id"
+    t.index ["user_id"], name: "index_scans_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -48,6 +48,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_08_26_013723) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "recipes", "scans", column: "scans_id"
-  add_foreign_key "scans", "users", column: "users_id"
+  add_foreign_key "recipes", "scans"
+  add_foreign_key "scans", "users"
 end
