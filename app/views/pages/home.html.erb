@@ -12,6 +12,8 @@
     <div class="carousel-item">
       <% if Rails.application.assets.find_asset("background_images/background_1.jpg") %>
         <%= image_tag "/assets/background_images/background_2.jpg", class: "background" %>
+      <% else %>
+        <%= image_tag "", class: "background" %>
       <% end %>
       <div class="carousel-caption d-none d-md-block">
         <h5>Second slide label</h5>
@@ -21,6 +23,8 @@
     <div class="carousel-item">
       <% if Rails.application.assets.find_asset("background_images/background_1.jpg") %>
         <%= image_tag "/assets/background_images/background_3.jpg", class: "background" %>
+        <% else %>
+        <%= image_tag "", class: "background" %>
       <% end %>
       <div class="carousel-caption d-none d-md-block">
         <h5>Third slide label</h5>
@@ -34,6 +38,8 @@
 <header class="masthead">
   <% if Rails.application.assets.find_asset("background_images/background_1.jpg") %>
         <%= image_tag "/assets/logo_image/logo.png", class: "logo" %>
+        <% else %>
+        <%= image_tag "", class: "background" %>
   <% end %>
             <div class="container">
                 <div class="masthead-subheading">Welcome To Foodly</div>
