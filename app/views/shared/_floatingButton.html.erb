@@ -1,0 +1,18 @@
+<div data-controller="floating-button" class="fab" >
+  <button class="btn btn-cGray rounded-circle shadow-lg"
+    id="floatingButton"
+    data-action="click->floating-button#toggle">
+    <i class="fa-solid fa-bars"></i>
+  </button>
+  <div class="fab-options" data-floating-button-target="options">
+    <%= link_to "#", class: "btn btn-cGray rounded-circle shadow" do  %>
+      <i class="fa-solid fa-house"></i>
+    <% end %>
+    <%= link_to "#", class: "btn btn-cGray rounded-circle shadow" do  %>
+      <i class="fa-solid fa-camera"></i>
+    <% end %>
+    <%= link_to recipes_path, class: "btn btn-cGray rounded-circle shadow" do  %>
+      <i class="fa-solid fa-book"></i>
+    <% end %>
+  </div>
+</div>
