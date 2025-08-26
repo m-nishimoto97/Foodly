@@ -24,6 +24,7 @@ $cBlack: $Black;
 $cGray: $Gray;
 $cWhite: $White;
 $cDarkYellow: $DarkYellow;
+$cSeaGreen: $SeaGreen;
 
 
 // Buttons & inputs' radius
@@ -44,6 +45,7 @@ $theme-colors: map-merge(
     "cBlack": $cBlack,
     "cGray": $cGray,
     "cWhite": $cWhite,
-    "cDarkYellow": $cDarkYellow
+    "cDarkYellow": $cDarkYellow,
+    "cSeaGreen" : $cSeaGreen
   )
 );
