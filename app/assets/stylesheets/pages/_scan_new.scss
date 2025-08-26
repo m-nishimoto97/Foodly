@@ -1,0 +1,23 @@
+.container {
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+    url("https://img1.wallspic.com/previews/3/5/2/0/7/170253/170253-farda_to_miaei-majid_razavi-faghat_ba_to_eshgham-tableware-food-x750.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.photo-form-header {
+  font-family: $headers-font;
+  color: white;
+}
+
+.photo-submit-button {
+  font-family: $headers-font;
+  padding: 0.5rem 2rem;
+  background-color: $DarkYellow;
+
+  &:hover {
+    background-color: rgba($color: $DarkYellow, $alpha: 0.5);
+  }
+}
