@@ -18,6 +18,14 @@ $info:       $yellow;
 $danger:     $red;
 $warning:    $orange;
 
+// Custom
+$cYellow: $Yellow;
+$cBlack: $Black;
+$cGray: $Gray;
+$cWhite: $White;
+$cDarkYellow: $DarkYellow;
+
+
 // Buttons & inputs' radius
 $border-radius-sm:            .0625rem;
 $border-radius:               .125rem;
@@ -25,4 +33,17 @@ $border-radius-lg:            .25rem;
 $border-radius-xl:            .5rem;
 $border-radius-xxl:           1rem;
 
+@import "bootstrap/functions";
+@import "bootstrap/variables";
+
 // Override other variables below!
+$theme-colors: map-merge(
+  $theme-colors,
+  (
+    "cYellow": $cYellow,
+    "cBlack": $cBlack,
+    "cGray": $cGray,
+    "cWhite": $cWhite,
+    "cDarkYellow": $cDarkYellow
+  )
+);
