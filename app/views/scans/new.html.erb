@@ -1,0 +1,4 @@
+<%= simple_form_for @scan do |f| %>
+  <%= f.input :photo, as: :file, input_html: { accept: "image/*", capture "camera" } %>
+  <%= f.button :submit, "Upload Scan" %>
+<% end %>
