@@ -1,1 +1,91 @@
 // Specific CSS for your home-page
+  .logo {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    filter: brightness(90%);
+  }
+
+  .home-button {
+    margin: 10px;
+    width: 140px;
+    height: 40px;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    background-color: #FBB72C;
+    box-shadow: 0 2px 4px #FBB72C;
+    color: white;
+    text-decoration: none;
+    line-height: 40px;
+    font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-weight: 250;
+  }
+  .home-button:hover {
+    background-color: rgba(251, 182, 44, 0.77);
+    box-shadow: 0 4px 8px rgba(251, 182, 44, 0.77);
+  }
+
+  .fixed-caption {
+  position: absolute;
+  top: 50%;   /* centrado vertical */
+  left: 50%;  /* centrado horizontal */
+  transform: translate(-50%, -50%);
+  color: white;
+  text-align: center;
+  z-index: 10;  /* siempre por encima de las imágenes */
+}
+
+  .background {
+    height: 100vh;
+    width: 100vw;
+    object-fit: cover;
+    filter: brightness(50%);
+  }
+
+
+  header.masthead {
+  padding-bottom: 6rem;
+  text-align: center;
+  color: #FBB72C;
+  background-image: url("../assets/img/header-bg.jpg");
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-position: center center;
+  background-size: cover;
+}
+header.masthead .masthead-subheading {
+  font-size: 1.5rem;
+  font-style: italic;
+  line-height: 1.5rem;
+  margin-bottom: 25px;
+  font-family: "Roboto Slab", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+header.masthead .masthead-heading {
+  font-size: 3.25rem;
+  font-weight: 700;
+  line-height: 3.25rem;
+  margin-bottom: 2rem;
+  font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+@media (min-width: 768px) {
+  header.masthead {
+    padding-top: 17rem;
+    padding-bottom: 12.5rem;
+  }
+  header.masthead .masthead-subheading {
+    font-size: 2.25rem;
+    font-style: italic;
+    line-height: 2.25rem;
+    margin-bottom: 2rem;
+  }
+  header.masthead .masthead-heading {
+    font-size: 4.5rem;
+    font-weight: 700;
+    line-height: 4.5rem;
+    margin-bottom: 4rem;
+  }
+}
