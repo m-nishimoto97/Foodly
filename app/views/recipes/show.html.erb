@@ -3,11 +3,21 @@
 <div class="container">
   <div class="row">
     <div class="col-12">
-      <span class="badge text-bg-cSeaGreen mt-3 p-2 rounded-pill">
-        <i class="fa-regular fa-clock"></i>
-        <%= @recipe.duration %>
-        Minutes
-      </span>
+      <div class="d-flex justify-content-between item-align-center">
+        <span class="badge text-bg-cSeaGreen p-2 rounded-pill">
+          <i class="fa-regular fa-clock"></i>
+          <%= @recipe.duration %>
+          Minutes
+        </span>
+        <div class="d-flex">
+          <div id="like_button_<%= @recipe.id %>">
+            <%= render "like_button", recipe: @recipe %>
+          </div>
+          <div id="favorite_button_<%= @recipe.id %>">
+            <%= render "favorite_button", recipe: @recipe %>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="col-12">
       <h3 class="text-cWhite mt-3"><%= @recipe.name %></h3>
