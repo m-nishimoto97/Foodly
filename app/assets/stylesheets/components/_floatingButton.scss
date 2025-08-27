@@ -31,7 +31,7 @@
 .fab-options-left {
   position: fixed;
   right: 80px;
-  bottom: 24px;
+  bottom: 22px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -54,8 +54,7 @@
 }
 
 
-.fab-options .btn
-.fab-options-left .btn {
+.fab-size {
   width: 45px;
   height: 45px;
   display: flex;
