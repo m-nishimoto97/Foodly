@@ -1,22 +1,22 @@
 <div data-controller="floating-button" class="fab" >
-  <button class="btn btn-cGray rounded-circle shadow-lg"
+  <button class="btn rounded-circle shadow-lg"
     id="floatingButton"
     data-action="click->floating-button#toggle">
     <i class="fa-solid fa-bars"></i>
   </button>
   <div class="fab-options" data-floating-button-target="options">
-    <%= link_to dashboard_path, class: "btn btn-cGray rounded-circle shadow" do  %>
+    <%= link_to dashboard_path, class: "btn fab-nav rounded-circle shadow" do  %>
       <i class="fa-solid fa-house"></i>
     <% end %>
-    <%= link_to "#", class: "btn btn-cGray rounded-circle shadow" do  %>
+    <%= link_to "#", class: "btn fab-nav rounded-circle shadow" do  %>
       <i class="fa-solid fa-camera"></i>
     <% end %>
-    <%= link_to recipes_path, class: "btn btn-cGray rounded-circle shadow" do  %>
+    <%= link_to recipes_path, class: "btn fab-nav rounded-circle shadow" do  %>
       <i class="fa-solid fa-book"></i>
     <% end %>
   </div>
   <div class="fab-options fab-options-left" data-floating-button-target="optionsleft">
-    <%= link_to profiles_show_path, class: "btn btn-cGray rounded-circle shadow" do  %>
+    <%= link_to profiles_show_path, class: "btn fab-nav rounded-circle shadow" do  %>
       <i class="fa-solid fa-user"></i>
     <% end %>
   </div>
