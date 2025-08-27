@@ -2,8 +2,8 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="search"
 export default class extends Controller {
+  static targets = ["searchinput"]
   submit() {
-    console.log('click');
-    this.element.requestSubmit();
+    this.searchinputTarget.requestSubmit();
   }
 }
