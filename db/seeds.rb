@@ -33,14 +33,16 @@ user3scan = Scan.create!(user_id: user3.id)
 puts "Scans created!"
 
 puts "Making recipes..."
-Recipe.create!(
-  name: "Spaghetti Aglio e Olio",
-  directions: "Cook pasta. Fry garlic in olive oil. Toss with parsley and chili flakes.",
-  duration: 20,
-  cuisine: "Italian",
-  diet: "vegetarian",
-  scan_id: user1scan.id
-)
+Scan.all.each do |scan|
+  Recipe.create!(
+    name: "Spaghetti Aglio e Olio",
+    directions: "Cook pasta. Fry garlic in olive oil. Toss with parsley and chili flakes.",
+    duration: 20,
+    cuisine: "Italian",
+    diet: "vegetarian",
+    scan_id: scan.id
+  )
+end
 
 Recipe.create!(
   name: "Chicken Teriyaki Bowl",
