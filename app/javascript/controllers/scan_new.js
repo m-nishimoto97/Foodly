@@ -1,4 +1,4 @@
-function previewImage(event) {
+window.previewImage = function(event) {
   const input = event.target;
   const preview = document.getElementById("preview-image");
   const takePhotoText = document.getElementById("take-photo-text");
@@ -20,5 +20,3 @@ function previewImage(event) {
     reader.readAsDataURL(input.files[0]);
   }
 }
-
-window.previewImage = previewImage;
