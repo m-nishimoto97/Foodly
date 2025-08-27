@@ -54,6 +54,7 @@ gem "cloudinary"
 gem "dotenv-rails"
 gem 'acts_as_favoritor'
 gem 'acts_as_votable'
+gem 'ruby_llm'
 
 group :development, :test do
   gem "dotenv-rails"
