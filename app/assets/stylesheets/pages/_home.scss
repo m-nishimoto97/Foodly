@@ -29,21 +29,24 @@
   }
 
   .fixed-caption {
-  position: absolute;
-  top: 50%;   /* centrado vertical */
-  left: 50%;  /* centrado horizontal */
+  position: fixed;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
   color: white;
   text-align: center;
-  z-index: 10;  /* siempre por encima de las imágenes */
+  z-index: 10;
 }
 
+
   .background {
-    height: 100vh;
-    width: 100vw;
-    object-fit: cover;
-    filter: brightness(50%);
-  }
+  position: absolute;
+  inset: 0;             /* top:0; right:0; bottom:0; left:0 */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(50%);
+}
 
 
   header.masthead {
