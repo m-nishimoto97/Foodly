@@ -1,7 +1,6 @@
 .card-recipe {
   background-size: cover;
   background-position: center;
-  height: 180px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,7 +11,9 @@
   border-radius: 5px;
   box-shadow: 0 0 15px rgba(0,0,0,0.2);
   background-color: #414047;
-  position: relative;
+  padding-top: 45px;
+  padding-bottom: 1rem;
+  min-height: 190px;
 }
 
 .card-image {
@@ -20,6 +21,19 @@
   width: 80px;
   height: 80px;
   object-fit: cover;
-  top: -15px;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
   background-color: black;
+}
+
+.card-buttons {
+  font-size: 1rem;
+  width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.duration-font {
+  font-size: 0.75rem;
 }

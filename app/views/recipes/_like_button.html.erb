@@ -3,5 +3,6 @@
               data: { turbo_stream: true },
               id: "like_button_#{recipe.id}",
               class: "btn position-relative p-0 me-2" do %>
-  <i class="fa-solid fa-thumbs-up <%= current_user.voted_up_on?(recipe) ? 'text-primary' : 'text-cWhite' %>" ></i>
+  <i class="fa-thumbs-up text-cWhite <%= current_user.voted_up_on?(recipe) ? 'fa-solid' : 'fa-regular' %>" ></i>
+  <span class="text-cWhite"><%= recipe.get_likes.size %></span>
 <% end %>
