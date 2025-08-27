@@ -1,109 +1,108 @@
-<header class="topbar">
-  <div class="logo1">Foodly</div>
+<div id="fd-dashboard">
+  <header class="fd-topbar">
+    <div class="fd-logo">Foodly</div>
 
-  <!-- Perfil -->
-  <button class="profile-btn" id="profileBtn" aria-haspopup="true" aria-expanded="false">
-    <%= image_tag "logo.png", class: "avatar", alt: "User avatar" %>
-  </button>
+    <!-- Perfil -->
+    <button class="fd-profile-btn" id="fdProfileBtn" aria-haspopup="true" aria-expanded="false">
+      <%= image_tag "logo.png", class: "fd-avatar", alt: "User avatar" %>
+    </button>
 
-  <nav class="dropdown" id="profileMenu" aria-label="Profile menu">
-    <%= link_to "Config", edit_user_registration_path %>
-    <%= link_to "Edit",   edit_user_registration_path %>
-    <%= link_to "Log out", destroy_user_session_path, method: :delete %>
-  </nav>
-</header>
+    <nav class="fd-dropdown" id="fdProfileMenu" aria-label="Profile menu">
+      <%= link_to "Config", edit_user_registration_path %>
+      <%= link_to "Edit",   edit_user_registration_path %>
+      <%= link_to "Log out", destroy_user_session_path, method: :delete %>
+    </nav>
+  </header>
 
-<main class="container">
-  <% if @top_recipes.present? %>
-    <section class="carousel-section" aria-label="Most liked recipes">
-      <h2 class="section-title">Most liked recipes</h2>
+  <main class="fd-container">
+    <% if @top_recipes.present? %>
+      <section class="fd-carousel-section" aria-label="Most liked recipes">
+        <h2 class="fd-section-title">Most liked recipes</h2>
 
-      <div class="carousel" id="carousel">
-        <button class="car-arrow left" id="carPrev" aria-label="Previous">&#10094;</button>
+        <div class="fd-carousel" id="fdCarousel">
+          <button class="fd-car-arrow fd-left" id="fdCarPrev" aria-label="Previous">&#10094;</button>
 
-        <div class="car-track" id="carTrack">
-          <% @top_recipes.each do |recipe| %>
-            <% title = recipe.respond_to?(:title) ? recipe.title : recipe.name %>
-            <% likes = (recipe.try(:likes_count) || recipe['likes_count'] || 0).to_i %>
-            <% href  = (recipe.scan_id ? scan_recipe_path(recipe.scan_id, recipe) : recipe_path(recipe)) %>
+          <div class="fd-car-track" id="fdCarTrack">
+            <% @top_recipes.each do |recipe| %>
+              <% title = recipe.respond_to?(:title) ? recipe.title : recipe.name %>
+              <% likes = (recipe.try(:likes_count) || recipe['likes_count'] || 0).to_i %>
+              <% href  = (recipe.scan_id ? scan_recipe_path(recipe.scan_id, recipe) : recipe_path(recipe)) %>
 
-            <article class="slide" data-title="<%= title %>">
-              <%= link_to href, class: "slide-link", "aria-label": "Open #{title}" do %>
-                <%= image_tag(recipe.try(:photo_url).presence || "logo.png", alt: title) %>
-                <div class="slide-caption">
-                  <h3 class = "text-light"><%= title %></h3>
-                  <span class="text-danger">♥ <%= likes %></span>
-                </div>
-              <% end %>
-            </article>
-          <% end %>
-        </div>
-
-        <button class="car-arrow right" id="carNext" aria-label="Next">&#10095;</button>
-      </div>
-    </section>
-  <% end %>
-
-  <!-- Search -->
-  <section class="search-section">
-    <%= form_with url: recipes_path, method: :get, local: true, role: "search" do |f| %>
-      <%= f.search_field :query, placeholder: "Search for specifics…", class: "pill", id: "searchInput", value: params[:query] %>
-    <% end %>
-  </section>
-
-  <!-- Grid (Bootstrap-like cols retained) -->
-  <% if @recipes.present? %>
-    <section class="grid" id="recipeGrid" aria-label="Recipes">
-      <div class="row g-2 mt-3">
-        <% @recipes.each_with_index do |recipe, index| %>
-          <div class="col-6 text-cWhite mb-1 mt-2 <%= index.even? ? "pe-2" : "ps-2" %>">
-            <%= link_to (recipe.scan_id ? scan_recipe_path(recipe.scan_id, recipe) : recipe_path(recipe)),
-                        class: "text-decoration-none card-link" do %>
-              <div class="position-relative">
-                <%= image_tag "https://images.unsplash.com/photo-1618666185561-baed3459ff18?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", class: "card-image rounded-circle" %>
-              </div>
-              <div class="card-recipe flex-column p-1">
-                <div class="text-cWhite text-center fs-6">
-                  <p class="my-1 recipe-title">
-                    <%= recipe.respond_to?(:title) ? recipe.title : recipe.name %>
-                  </p>
-                  <div>
-                    <span class="duration-font">
-                      <i class="fa-regular fa-clock"></i>
-                      <%= recipe.try(:duration) || "-" %> Min
-                    </span>
+              <article class="fd-slide" data-title="<%= title %>">
+                <%= link_to href, class: "fd-slide-link", "aria-label": "Open #{title}" do %>
+                  <%= image_tag(recipe.try(:photo_url).presence || "logo.png", alt: title) %>
+                  <div class="fd-slide-caption">
+                    <h3 class="fd-slide-title"><%= title %></h3>
+                    <span class="fd-slide-hearts">♥ <%= likes %></span>
                   </div>
-                </div>
-              </div>
+                <% end %>
+              </article>
             <% end %>
           </div>
-        <% end %>
-      </div>
+
+          <button class="fd-car-arrow fd-right" id="fdCarNext" aria-label="Next">&#10095;</button>
+        </div>
+      </section>
+    <% end %>
+
+    <!-- Search -->
+    <section class="fd-search-section">
+      <%= form_with url: recipes_path, method: :get, local: true, role: "search" do |f| %>
+        <%= f.search_field :query, placeholder: "Search for specifics…", class: "fd-pill", id: "fdSearchInput", value: params[:query] %>
+      <% end %>
     </section>
-  <% else %>
-    <em class="text-cWhite">Sorry, no recipes found.</em>
-  <% end %>
-</main>
 
-<!-- Bottombar -->
-<nav class="bottombar" aria-label="Primary">
-  <%= link_to root_path, class: "btn", id: "homeBtn", "aria-label": "Home" do %>
-    <i class="fa-solid fa-house"></i>
-  <% end %>
+    <!-- Grid -->
+    <% if @recipes.present? %>
+      <section class="fd-grid" id="fdRecipeGrid" aria-label="Recipes">
+        <div class="row g-2 mt-3">
+          <% @recipes.each_with_index do |recipe, index| %>
+            <div class="col-6 fd-text-ink mb-1 mt-2 <%= index.even? ? "pe-2" : "ps-2" %>">
+              <%= link_to (recipe.scan_id ? scan_recipe_path(recipe.scan_id, recipe) : recipe_path(recipe)),
+                          class: "text-decoration-none fd-card-link" do %>
+                <div class="position-relative">
+                  <%= image_tag "https://images.unsplash.com/photo-1618666185561-baed3459ff18?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", class: "card-image rounded-circle" %>
+                </div>
+                <div class="fd-card-recipe flex-column p-1">
+                  <div class="fd-text-ink text-center fs-6">
+                    <p class="my-1 fd-recipe-title">
+                      <%= recipe.respond_to?(:title) ? recipe.title : recipe.name %>
+                    </p>
+                    <div>
+                      <span class="fd-duration">
+                        <i class="fa-regular fa-clock"></i>
+                        <%= recipe.try(:duration) || "-" %> Min
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </section>
+    <% else %>
+      <em class="fd-text-muted">Sorry, no recipes found.</em>
+    <% end %>
+  </main>
 
-  <%= link_to "/scans/new", class: "btn", id: "scanBtn", "aria-label": "Scan / New" do %>
-    <i class="fa-solid fa-camera"></i>
-  <% end %>
+  <!-- Bottombar -->
+  <nav class="fd-bottombar" aria-label="Primary">
+    <%= link_to root_path, class: "fd-btn", id: "fdHomeBtn", "aria-label": "Home" do %>
+      <i class="fa-solid fa-house"></i>
+    <% end %>
 
-  <%= link_to recipes_path, class: "btn", id: "recipesBtn", "aria-label": "Recipes" do %>
-    <i class="fa-solid fa-book"></i>
-  <% end %>
-</nav>
+    <%= link_to "/scans/new", class: "fd-btn fd-btn-accent", id: "fdScanBtn", "aria-label": "Scan / New" do %>
+      <i class="fa-solid fa-camera"></i>
+    <% end %>
+
+    <%= link_to recipes_path, class: "fd-btn", id: "fdRecipesBtn", "aria-label": "Recipes" do %>
+      <i class="fa-solid fa-book"></i>
+    <% end %>
+  </nav>
+</div>
 
 <style>
+  /* Keep this to disable any floating button if present elsewhere */
   #floatingButton{ display: none; }
 </style>
-
-<script>
-
-</script>
