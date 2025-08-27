@@ -4,7 +4,37 @@ class RecipesController < ApplicationController
   end
 
   def create
+    @scan = Scan.find(params[:id])
 
+    ingredients = ["pork", "onions", "tofu", "sesame oil", "gochujang", "gochugaru", "garlic", "eggs"]
+    time = 15
+
+    prompt = <<-PROMPT
+      Generate two recipes using only #{ingredients.join(',')} that take only #{time} minutes.
+      Include the recipe's name, duration, diet (if present such as vegetarian or vegan), cuisine, and directions.
+      Return in an array of recipe hashes in JSON format
+    PROMPT
+    response = RubyLLM.chat.ask(prompt)
+    json_str = response.content.gsub(/```json\n|```/, '')
+
+    # Raises an error if the AI response is weirdd
+    begin
+      recipes = JSON.parse(json_str)
+    rescue JSON::ParserError => e
+      flash[:alert] = "Failed to parse AI Response"
+      redirect_to scan_path(@scan) and return
+    end
+
+    recipes.each do |recipe_data|
+      @scan.recipes.create!(
+        name: recipe_data["name"],
+        duration: recipe_data["duration"],
+        diet: recipe_data["diet"],
+        cuisine: recipe_data["cuisine"],
+        directions: recipe_data["directions"]
+      )
+    end
+    redirect_to scan_path(@scan)
   end
 
   def show

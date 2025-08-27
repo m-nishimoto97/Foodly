@@ -1,11 +1,17 @@
-window.previewImage = function(event) {
+document.addEventListener("turbo:load", () => {
+  const input = document.getElementById("photo-input");
+  if (input) {
+    input.addEventListener("change", previewImage);
+    console.log("it attached");
+  }
+})
+
+function previewImage(event) {
   const input = event.target;
   const preview = document.getElementById("preview-image");
   const takePhotoText = document.getElementById("take-photo-text");
   const checkPhotoText = document.getElementById("check-photo-text");
   const submitButton= document.getElementById("photo-submit-button");
-
-
 
   if (input.files[0]) {
     const reader = new FileReader();
