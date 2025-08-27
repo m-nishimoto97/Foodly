@@ -113,3 +113,30 @@ Recipe.create!(
   diet: "vegetarian",
   scan_id: user3scan.id
 )
+
+Recipe.create!(
+  name: "Tacos",
+  directions: "Cook ground beef with spices. Serve in tortillas with lettuce, cheese, and salsa.",
+  duration: 25,
+  cuisine: "Mexican",
+  diet: "omnivore",
+  scan_id: user3scan.id
+)
+
+Recipe.create!(
+  name: "Vegan Curry",
+  directions: "Simmer lentils with coconut milk, tomatoes, and curry spices.",
+  duration: 40,
+  cuisine: "Indian",
+  diet: "vegan",
+  scan_id: user3scan.id
+)
+
+Recipe.create!(
+  name: "Vegan Curry",
+  directions: "Simmer lentils with coconut milk, tomatoes, and curry spices.",
+  duration: 40,
+  cuisine: "Indian",
+  diet: "vegan",
+  scan_id: user3scan.id
+)
