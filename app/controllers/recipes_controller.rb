@@ -12,7 +12,7 @@ class RecipesController < ApplicationController
     prompt = <<-PROMPT
       Generate two recipes using only #{ingredients.join(',')} that take only #{time} minutes.
       Include the recipe's name, duration, diet (if present such as vegetarian or vegan), cuisine, and directions.
-      Return in JSON format
+      Return in an array of recipe hashes in JSON format
     PROMPT
     response = RubyLLM.chat.ask(prompt)
     json_str = response.content.gsub(/```json\n|```/, '')
