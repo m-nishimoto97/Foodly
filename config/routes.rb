@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'profiles/show'
+  get 'profiles/update'
   devise_for :users
   root to: "pages#home"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -13,6 +15,7 @@ Rails.application.routes.draw do
     post :toggle_favorite, on: :member
     post :like, on: :member
   end
+  resource :profile, only: [:show, :update]
   # Defines the root path route ("/")
   # root "posts#index"
 end

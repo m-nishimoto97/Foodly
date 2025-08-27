@@ -1,7 +1,7 @@
 <div data-controller="floating-button" class="fab" >
   <button class="btn btn-cGray rounded-circle shadow-lg"
     id="floatingButton"
-    data-action="click->floating-button#toggle">
+    data-action="touchend->floating-button#toggle">
     <i class="fa-solid fa-bars"></i>
   </button>
   <div class="fab-options" data-floating-button-target="options">
@@ -13,6 +13,11 @@
     <% end %>
     <%= link_to recipes_path, class: "btn btn-cGray rounded-circle shadow" do  %>
       <i class="fa-solid fa-book"></i>
+    <% end %>
+  </div>
+  <div class="fab-options fab-options-left" data-floating-button-target="optionsleft">
+    <%= link_to profiles_show_path, class: "btn btn-cGray rounded-circle shadow" do  %>
+      <i class="fa-solid fa-user"></i>
     <% end %>
   </div>
 </div>

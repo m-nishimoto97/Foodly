@@ -1,38 +1,59 @@
 #floatingButton {
-    position: fixed;
-    bottom: 20px; /* Adjust as needed */
-    right: 20px;  /* Adjust as needed */
-    z-index: 1000; /* Ensure it's above other content */
-    width: 50px;  /* Set width and height for a circular button */
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-  .fab-options {
-    position: fixed;
-    bottom: 80px;
-    right: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(20px);
-    transition: all 0.3s ease;
-  }
+.fab-options {
+  position: fixed;
+  bottom: 80px;
+  right: 23px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+}
 
-  .fab-options.show {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-  }
+.fab-options-left {
+  position: fixed;
+  right: 80px;
+  bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(20px);
+  transition: all 0.3s ease;
+}
 
-  .fab-options .btn {
-    width: 45px;
-    height: 45px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+.fab-options.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.fab-options-left.show {
+   opacity: 1;
+   visibility: visible;
+   transform: translateX(-1px);
+}
+
+
+.fab-options .btn
+.fab-options-left .btn {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
