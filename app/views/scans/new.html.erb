@@ -6,7 +6,7 @@
       <%= simple_form_for @scan do |f| %>
         <!-- Input field for the camera -->
         <div class="text-center">
-          <%= f.input :photo, as: :file, input_html: { accept: "image/*", capture: "camera", onchange: "previewImage(event)" }, label: false %>
+          <%= f.input :photo, as: :file, input_html: { accept: "image/*", capture: "camera", id: "photo-input" }, label: false %>
         </div>
         <p id="check-photo-text" class="text-center display-6" style="color: white; font-family: $headers-font; display: none;">Does your photo look good?</p>
         <!-- Preview for the photo -->
