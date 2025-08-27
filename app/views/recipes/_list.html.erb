@@ -1,25 +1,27 @@
 <% if recipes.any? %>
-  <% recipes.each_with_index do |recipe, index| %>
-    <div class="col-6 text-cWhite mb-1 mt-2 <%= index.even? ? "pe-2" : "ps-2" %>">
-      <%= link_to  scan_recipe_path(recipe.scan_id, recipe), class: "text-decoration-none" do  %>
-        <div class="position-relative">
-          <%= image_tag "https://images.unsplash.com/photo-1618666185561-baed3459ff18?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", class: "card-image rounded-circle" %>
-        </div>
-        <div class="card-recipe flex-column p-1">
-          <div class="text-cWhite text-center fs-6">
-            <p class="my-1"><%= recipe.name %></p>
-            <div>
-              <span class="duration-font">
-                <i class="fa-regular fa-clock"></i>
-                <%= recipe.duration %>
-                Min
-              </span>
+  <div class="d-flex pt-2" style="overflow-y:auto;">
+    <% recipes.each_with_index do |recipe, index| %>
+      <div class="text-cWhite mb-1 mt-2 p-2">
+        <%= link_to  scan_recipe_path(recipe.scan_id, recipe), class: "text-decoration-none" do  %>
+          <div class="position-relative">
+            <%= image_tag "https://images.unsplash.com/photo-1618666185561-baed3459ff18?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", class: "card-image rounded-circle" %>
+          </div>
+          <div class="card-recipe flex-column p-1">
+            <div class="text-cWhite text-center fs-6">
+              <p class="my-1"><%= recipe.name %></p>
+              <div>
+                <span class="duration-font">
+                  <i class="fa-regular fa-clock"></i>
+                  <%= recipe.duration %>
+                  Min
+                </span>
+              </div>
             </div>
           </div>
-        </div>
-      <% end %>
-    </div>
-  <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
 <% else %>
   <em class="text-cWhite">Sorry, no recipes found.</em>
 <% end %>
