@@ -1,78 +1,96 @@
 <header class="topbar">
-  <div class="logo">Foodly</div>
+  <div class="logo1">Foodly</div>
 
-  <!-- Botón perfil con avatar -->
+  <!-- Perfil -->
   <button class="profile-btn" id="profileBtn" aria-haspopup="true" aria-expanded="false">
-    <%= image_tag "logo.png", class: "avatar" %>
+    <%= image_tag "logo.png", class: "avatar", alt: "User avatar" %>
   </button>
 
-  <!-- Menú desplegable -->
   <nav class="dropdown" id="profileMenu" aria-label="Profile menu">
     <%= link_to "Config", edit_user_registration_path %>
-    <%= link_to "Edit", edit_user_registration_path %>
+    <%= link_to "Edit",   edit_user_registration_path %>
     <%= link_to "Log out", destroy_user_session_path, method: :delete %>
   </nav>
 </header>
 
 <main class="container">
-  <!-- Carrusel de recetas más votadas -->
-  <section class="carousel-section">
-    <h2 class="section-title">Most liked recipes</h2>
-    <div class="carousel" id="carousel">
-      <button class="car-arrow left" id="carPrev" aria-label="Previous">&#10094;</button>
-      <div class="car-track" id="carTrack">
+  <% if @top_recipes.present? %>
+    <section class="carousel-section" aria-label="Most liked recipes">
+      <h2 class="section-title">Most liked recipes</h2>
 
-<!-- Esto no funciona hay que crear todo -->
-        <% (@top_recipes || []).each do |recipe| %>
-          <article class="slide" data-title="<%= recipe.title %>">
-            <%= image_tag(recipe.photo_url.presence || "default.png", alt: recipe.title) %>
-            <div class="slide-caption">
-              <h3><%= recipe.title %></h3>
-              <span>♥ <%= recipe.likes_count || 0 %></span>
-            </div>
-          </article>
-        <% end %>
+      <div class="carousel" id="carousel">
+        <button class="car-arrow left" id="carPrev" aria-label="Previous">&#10094;</button>
+
+        <div class="car-track" id="carTrack">
+          <% @top_recipes.each do |recipe| %>
+            <% title = recipe.respond_to?(:title) ? recipe.title : recipe.name %>
+            <% likes = (recipe.try(:likes_count) || recipe['likes_count'] || 0).to_i %>
+            <% href  = (recipe.scan_id ? scan_recipe_path(recipe.scan_id, recipe) : recipe_path(recipe)) %>
+
+            <article class="slide" data-title="<%= title %>">
+              <%= link_to href, class: "slide-link", "aria-label": "Open #{title}" do %>
+                <%= image_tag(recipe.try(:photo_url).presence || "logo.png", alt: title) %>
+                <div class="slide-caption">
+                  <h3 class = "text-light"><%= title %></h3>
+                  <span class="text-danger">♥ <%= likes %></span>
+                </div>
+              <% end %>
+            </article>
+          <% end %>
+        </div>
+
+        <button class="car-arrow right" id="carNext" aria-label="Next">&#10095;</button>
       </div>
-<!-- Esto no funciona hay que crear todo -->
+    </section>
+  <% end %>
 
-      <button class="car-arrow right" id="carNext" aria-label="Next">&#10095;</button>
-    </div>
-  </section>
-
-  <!-- Buscador -->
+  <!-- Search -->
   <section class="search-section">
     <%= form_with url: recipes_path, method: :get, local: true, role: "search" do |f| %>
-      <%= f.search_field :q, placeholder: "Search for specifics…", class: "pill", id: "searchInput" %>
+      <%= f.search_field :query, placeholder: "Search for specifics…", class: "pill", id: "searchInput", value: params[:query] %>
     <% end %>
   </section>
 
-  <!-- Grid de recetas -->
-<!-- Esto no funciona hay que crear todo -->
-  <section class="grid" id="recipeGrid">
-  <% Array(@recipes).each do |recipe| %>
-    <article class="card"
-             data-title="<%= recipe.title %>"
-             data-tags="<%= recipe.respond_to?(:tags) ? Array(recipe.tags).map{|t| t.respond_to?(:name) ? t.name : t }.join(',') : '' %>">
-      <%= image_tag(recipe.photo_url.presence || "default.png", alt: recipe.title) %>
-      <h3><%= recipe.title %></h3>
-      <p><%= truncate(recipe.description.to_s, length: 60) %></p>
-      <%= link_to "View", recipe_path(recipe), class: "btn-view" %>
-    </article>
+  <!-- Grid (Bootstrap-like cols retained) -->
+  <% if @recipes.present? %>
+    <section class="grid" id="recipeGrid" aria-label="Recipes">
+      <div class="row g-2 mt-3">
+        <% @recipes.each_with_index do |recipe, index| %>
+          <div class="col-6 text-cWhite mb-1 mt-2 <%= index.even? ? "pe-2" : "ps-2" %>">
+            <%= link_to (recipe.scan_id ? scan_recipe_path(recipe.scan_id, recipe) : recipe_path(recipe)),
+                        class: "text-decoration-none card-link" do %>
+              <div class="position-relative">
+                <%= image_tag "https://images.unsplash.com/photo-1618666185561-baed3459ff18?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", class: "card-image rounded-circle" %>
+              </div>
+              <div class="card-recipe flex-column p-1">
+                <div class="text-cWhite text-center fs-6">
+                  <p class="my-1 recipe-title">
+                    <%= recipe.respond_to?(:title) ? recipe.title : recipe.name %>
+                  </p>
+                  <div>
+                    <span class="duration-font">
+                      <i class="fa-regular fa-clock"></i>
+                      <%= recipe.try(:duration) || "-" %> Min
+                    </span>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </section>
+  <% else %>
+    <em class="text-cWhite">Sorry, no recipes found.</em>
   <% end %>
-</section>
-<!-- Esto no funciona hay que crear todo -->
-
-  <p class="empty" id="emptyState" hidden>No results. Try another search.</p>
 </main>
 
-<!-- Barra inferior -->
-<!-- Barra inferior -->
-<nav class="bottombar">
+<!-- Bottombar -->
+<nav class="bottombar" aria-label="Primary">
   <%= link_to root_path, class: "btn", id: "homeBtn", "aria-label": "Home" do %>
     <i class="fa-solid fa-house"></i>
   <% end %>
 
-  <!-- Si Scan link to -->
   <%= link_to "/scans/new", class: "btn", id: "scanBtn", "aria-label": "Scan / New" do %>
     <i class="fa-solid fa-camera"></i>
   <% end %>
@@ -82,155 +100,10 @@
   <% end %>
 </nav>
 
-
 <style>
-  :root{
-  --bg: #0f1115;
-  --card: #171a21;
-  --ink: #e9eef5;
-  --muted: #b9c0cc;
-  --accent: #FBB72C;
-  --radius: 16px;
-  --shadow: 0 10px 30px rgba(0,0,0,.25);
-}
-
-#floatingButton{
-  display: none;
-}
-
-* { box-sizing: border-box; }
-html, body { height: 100%; }
-body {
-  margin: 0;
-  font-family: system-ui, -apple-system, Arial, sans-serif;
-  color: var(--ink);
-  background: radial-gradient(1200px 600px at 50% -20%, #1b2030 0%, #0f1115 60%, #0b0d11 100%);
-}
-
-/* Topbar */
-.topbar{
-  position: sticky; top: 0; z-index: 10;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 12px 16px;
-  backdrop-filter: blur(8px);
-  background: rgba(15,17,21,.5);
-  border-bottom: 1px solid rgba(255,255,255,.06);
-}
-.logo { font-weight: 800; letter-spacing: .5px; }
-.profile-btn{
-  background: transparent; border: 0; padding: 0;
-  width: 40px; height: 40px; border-radius: 50%; overflow: hidden;
-  box-shadow: var(--shadow); cursor: pointer;
-}
-.profile-btn .avatar{ width: 100%; height: 100%; object-fit: cover; display:block; border-radius: 50%; }
-
-/* Dropdown perfil */
-.dropdown{
-  position: absolute; right: 12px; top: 60px; min-width: 160px;
-  background: var(--card); border:1px solid rgba(255,255,255,.06);
-  border-radius: 12px; padding: 8px; box-shadow: var(--shadow);
-  display: none;
-}
-.dropdown.show { display: block; }
-.dropdown a{
-  display: block; padding: 10px 12px; color: var(--ink); text-decoration: none; border-radius: 8px;
-}
-.dropdown a:hover{ background: rgba(255,255,255,.06); }
-
-/* Layout */
-.container{ max-width: 980px; margin: 0 auto; padding: 12px 12px 96px; }
-
-/* Carousel */
-.carousel-section{ margin-top: 8px; }
-.section-title{ font-size: 1.05rem; margin: 6px 4px 10px; color: var(--muted); }
-
-.carousel{
-  position: relative;
-  border-radius: var(--radius);
-  overflow: hidden;
-  box-shadow: var(--shadow);
-  background: #000;
-}
-.car-track{ display: flex; transition: transform .4s ease; }
-.slide{ position: relative; min-width: 100%; }
-.slide img{ width: 100%; height: 200px; object-fit: cover; display: block; }
-.slide-caption{
-  position: absolute; inset: auto 0 0 0; padding: 10px 12px;
-  background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.55));
-  display: flex; align-items: center; justify-content: space-between;
-}
-.slide-caption h3{ margin: 0; font-size: 1rem; }
-
-.car-arrow{
-  position: absolute; top: 50%; transform: translateY(-50%);
-  background: rgba(0,0,0,.45); color: #fff; border: 0; width: 36px; height: 36px; border-radius: 50%;
-  display: grid; place-items: center; cursor: pointer;
-}
-.car-arrow.left{ left: 8px; }
-.car-arrow.right{ right: 8px; }
-
-/* Search */
-.search-section{ margin: 14px 0 10px; }
-.pill{
-  width: 100%; padding: 12px 16px; border-radius: 9999px; border:1px solid rgba(255,255,255,.12);
-  background: #11141a; color: var(--ink); outline: none;
-}
-.pill::placeholder{ color: var(--muted); }
-
-/* Grid */
-.grid{
-  display: grid; gap: 12px;
-  grid-template-columns: repeat(2, 1fr); /* móvil: 2 columnas */
-}
-.card{
-  background: var(--card); border:1px solid rgba(255,255,255,.06);
-  border-radius: 12px; overflow: hidden; box-shadow: var(--shadow);
-}
-.card img{ width: 100%; height: 110px; object-fit: cover; display: block; }
-.card h3{ margin: 8px 10px 4px; font-size: .95rem; }
-.card p{ margin: 0 10px 12px; color: var(--muted); font-size: .85rem; }
-.btn-view{
-  display:inline-block; margin: 0 10px 12px; padding: 8px 12px;
-  background: var(--accent); color: #111; text-decoration: none; border-radius: 10px; font-weight: 700;
-}
-
-/* Estado vacío */
-.empty{ text-align: center; color: var(--muted); margin: 24px 0; }
-
-/* Bottombar */
-.bottombar{
-  position: fixed; bottom: 12px; left: 0; right: 0;
-  display: flex; gap: 16px; justify-content: center; z-index: 9;
-}
-.bottombar .btn{
-  width:56px; height:56px; border-radius:50%; display:grid; place-items:center; border:0; cursor:pointer;
-  background:#1a1f2a; color:#fff; font-size: 20px; box-shadow: var(--shadow);
-}
-#scanBtn{ background: var(--accent); color:#111; font-weight:700; }
-
-/* Modal */
-.modal[aria-hidden="true"]{ display: none; }
-.modal[aria-hidden="false"]{ display: block; }
-.modal{ position: fixed; inset:0; z-index: 20; }
-.backdrop{ position:absolute; inset:0; background: rgba(0,0,0,.6); }
-.modal-card{
-  position: absolute; left: 50%; bottom: 0; transform: translateX(-50%);
-  width: min(640px, 100%); background: var(--card);
-  border-top-left-radius: 16px; border-top-right-radius: 16px;
-  border:1px solid rgba(255,255,255,.06); box-shadow: var(--shadow);
-}
-.modal-card header{ display:flex; align-items:center; justify-content:space-between; padding:12px 14px; border-bottom:1px solid rgba(255,255,255,.06); }
-.modal-body{ padding: 14px; }
-.close{ background: transparent; border: 0; color: var(--ink); font-size: 22px; cursor: pointer; }
-.btn{ display:inline-block; padding:10px 14px; background: var(--accent); border:0; border-radius:10px; color:#111; font-weight:700; cursor:pointer; }
-
-/* Responsivo */
-@media (min-width: 768px){
-  .slide img{ height: 260px; }
-  .grid{ grid-template-columns: repeat(3, 1fr); }
-}
-@media (min-width: 1024px){
-  .grid{ grid-template-columns: repeat(4, 1fr); }
-}
-
+  #floatingButton{ display: none; }
 </style>
+
+<script>
+
+</script>
