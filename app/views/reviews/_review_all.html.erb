@@ -1,6 +1,8 @@
-<%= turbo_frame_tag "reviews_frame" do %>
-  <%= render "reviews/review_list", reviews: @recipe.reviews %>
-<% end %>
+<div style="max-height:260px; overflow-y:auto">
+  <%= turbo_frame_tag "reviews_frame" do %>
+    <%= render "reviews/review_list", reviews:  @reviews  %>
+  <% end %>
+</div>
 <hr>
 <%= turbo_frame_tag "reviews_form" do %>
   <%= render "reviews/review_form", review: @recipe.reviews.build, recipe: @recipe %>

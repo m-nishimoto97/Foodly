@@ -1,10 +1,10 @@
 class ReviewsController < ApplicationController
   def index
     @recipe = Recipe.find(params[:recipe_id])
-    @reviews = @recipe.reviews.includes(:user)
-    @review = Review.build
+    @reviews = @recipe.reviews.includes(:user).order(created_at: :desc)
+    @review = Review.new
 
-    render partial: "reviews/review_all", locals: { reviews: @reviews, review: @review }
+    render partial: "reviews/review_all", locals: { reviews: @reviews, review: @review, recipe: @recipe }
   end
 
   def create
@@ -19,7 +19,10 @@ class ReviewsController < ApplicationController
         format.html { redirect_to @recipe }
       end
     else
-      render partial: "reviews/review_all", status: :unprocessable_content
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("reviews_form",
+          partial: "reviews/review_form", locals: { review: @recipe.reviews.build, recipe: @recipe }) }
+      end
     end
   end
 

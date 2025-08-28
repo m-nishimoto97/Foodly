@@ -1,6 +1,16 @@
 <% reviews.each do |review| %>
-  <div class="review mb-2 p-2 border">
-    <strong><%= review.user.username %></strong>: <%= review.comment %>
-    <p>Rating: <%= review.rating %></p>
+  <div class="review mb-2 p-3 bg-cGray rounded-3 position-relative">
+    <div class="d-flex justify-content-between">
+      <strong class="text-cYellow"><%= review.user.username %></strong>
+      <div>
+        <% review.rating.to_i.times do %>
+          <i class="fa-solid fa-star fs-6 text-cWhite"></i>
+        <% end %>
+      </div>
+    </div>
+    <p>"<%= review.comment %>"</p>
+    <div class="created-style">
+      <p><%= review.created_at.strftime("%Y-%m-%d %H:%M") %></p>
+    </div>
   </div>
 <% end %>

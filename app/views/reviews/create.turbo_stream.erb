@@ -2,5 +2,5 @@
   partial: "reviews/review_list",
   locals: { reviews: [@review] } %>
 <%= turbo_stream.replace "reviews_form" do %>
-  <%= render "reviews/review_form", review: @recipe.reviews.build, recipe: @recipe %>
+  <%= render partial: "reviews/review_form", locals: { review: @recipe.reviews.build, recipe: @recipe } %>
 <% end %>
