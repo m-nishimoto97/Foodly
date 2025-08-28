@@ -8,6 +8,7 @@ document.addEventListener("turbo:load", () => {
 
 function previewImage(event) {
   const input = event.target;
+  const photoButton = document.getElementById("photo-button");
   const preview = document.getElementById("preview-image");
   const takePhotoText = document.getElementById("take-photo-text");
   const checkPhotoText = document.getElementById("check-photo-text");
@@ -19,6 +20,7 @@ function previewImage(event) {
     reader.onload = function(e) {
       preview.src = e.target.result
       preview.style.display = "block";
+      photoButton.style.display = "none";
       takePhotoText.style.display = "none";
       checkPhotoText.style.display = "block";
       submitButton.style.display = "block";
