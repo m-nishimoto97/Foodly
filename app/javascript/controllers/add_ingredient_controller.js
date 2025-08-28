@@ -25,8 +25,8 @@ export default class extends Controller {
     node.className = "d-flex ps-1"
     node.innerHTML = `
       <input type="checkbox" multiple class="input-none" id="${id}" name="recipe[name][]" value="${value}">
-      <label for="${id}" class="d-flex flex-column ingredient-label">
-        <img src="https://cdn.pixabay.com/photo/2020/06/18/18/36/carrot-5314608_1280.jpg" class="ingredient rounded-circle">
+      <label for="${id}" class="ingredient-container d-flex flex-column align-items-center ingredient-label">
+        <img src="https://image.pollinations.ai/prompt/${value}" class="ingredient rounded-circle">
         <p data-add-ingredient-target="list" class="text-center">${value}</p>
       </label>
     `

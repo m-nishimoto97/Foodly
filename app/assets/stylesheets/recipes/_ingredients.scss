@@ -7,11 +7,19 @@
 .ingredient {
   width: 4rem;
   height: 4rem;
+
 }
 
 .input-none {
   position: absolute;
   transform: scale(0) ;
+}
+
+.ingredient-container{
+  width: 6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .ingredient-label{
