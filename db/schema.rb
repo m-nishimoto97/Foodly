@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_08_27_062753) do
+ActiveRecord::Schema[7.1].define(version: 2025_08_28_024329) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -72,6 +72,17 @@ ActiveRecord::Schema[7.1].define(version: 2025_08_27_062753) do
     t.index ["scan_id"], name: "index_recipes_on_scan_id"
   end
 
+  create_table "reviews", force: :cascade do |t|
+    t.text "comment"
+    t.integer "rating"
+    t.bigint "recipes_id", null: false
+    t.bigint "users_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["recipes_id"], name: "index_reviews_on_recipes_id"
+    t.index ["users_id"], name: "index_reviews_on_users_id"
+  end
+
   create_table "scans", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
@@ -114,5 +125,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_08_27_062753) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "recipes", "scans"
+  add_foreign_key "reviews", "recipes", column: "recipes_id"
+  add_foreign_key "reviews", "users", column: "users_id"
   add_foreign_key "scans", "users"
 end
