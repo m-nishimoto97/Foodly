@@ -1,0 +1,18 @@
+<div data-controller="load-reviews"
+     data-load-reviews-url-value="<%= recipe_reviews_path(@recipe) %>">
+  <button class="btn position-relative p-0 text-cYellow ms-2"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvasExample"
+          data-action="click->load-reviews#load">
+    <i class="fa-regular fa-message"></i>
+  </button>
+  <div class="offcanvas offcanvas-start bg-cBlack" id="offcanvasExample">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title text-cWhite" id="offcanvasExampleLabel">Reviews</h5>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body text-cWhite">
+      <div data-load-reviews-target="offcanvasBody"></div>
+    </div>
+  </div>
+</div>
