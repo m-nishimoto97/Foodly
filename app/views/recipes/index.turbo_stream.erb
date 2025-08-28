@@ -1,0 +1,11 @@
+<%= turbo_stream.update "recipes" do %>
+  <% unless params[:query].present? %>
+    <h2 class="text-cWhite mt-5 mb-4">Favorites</h2>
+    <%= render "recipes/list", recipes: current_user.all_favorited %>
+    <h2 class="text-cWhite mt-5 mb-4">Your recipes</h2>
+    <%= render "recipes/list", recipes: current_user.recipes %>
+  <% else %>
+    <h2 class="text-cWhite mt-5 mb-4">Filtered</h2>
+    <%= render "recipes/list", recipes: @recipes %>
+  <% end %>
+<% end %>

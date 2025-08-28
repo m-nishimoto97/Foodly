@@ -1,0 +1,63 @@
+#floatingButton {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #cacaca;
+}
+
+.fab-nav {
+  background-color: #c3c3c3;
+}
+
+.fab-options {
+  position: fixed;
+  bottom: 80px;
+  right: 23px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+}
+
+.fab-options-left {
+  position: fixed;
+  right: 80px;
+  bottom: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(20px);
+  transition: all 0.3s ease;
+}
+
+.fab-options.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.fab-options-left.show {
+   opacity: 1;
+   visibility: visible;
+   transform: translateX(-1px);
+}
+
+
+.fab-size {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

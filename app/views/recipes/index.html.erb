@@ -1,0 +1,23 @@
+<div class="container">
+  <div class="row" data-controller="search">
+    <h4 class="text-cWhite mt-3">Hello! <span class="text-cYellow"><%= current_user.username %></span></h4>
+    <p class="text-cWhite">What do you want to cook for today?</p>
+    <%= form_with url: recipes_path, method: :get, class: "d-flex", data: { search_target: "searchinput" ,turbo_stream: true } do %>
+      <%= text_field_tag :query,
+        params[:query],
+        class: "fd-search-input fd-pill",
+        placeholder: "Type a keyword",
+        data: { action: 'input->search#submit' }
+        %>
+      <%= submit_tag "Search", name: "", class: "btn btn-cYellow button-saved" %>
+    <% end %>
+  </div>
+  <div id="recipes" class="row">
+    <% unless params[:query].present? %>
+      <h2 class="text-cWhite mt-5 mb-4">Favorites</h2>
+      <%= render "recipes/list", recipes: current_user.all_favorited %>
+      <h2 class="text-cWhite mt-5 mb-4">Your recipes</h2>
+      <%= render "recipes/list", recipes: current_user.recipes %>
+    <% end %>
+  </div>
+</div>

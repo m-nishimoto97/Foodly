@@ -1,0 +1,156 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.background {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+  display: block;
+  pointer-events: none;
+}
+
+
+.all-page {
+  min-height: 100vh;
+  position: relative;
+  z-index: 0;
+}
+
+
+.all-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .35);
+  z-index: -1;
+}
+
+
+.box {
+  /* From https://css.glass */
+/* From https://css.glass */
+background: rgba(255, 255, 255, 0.16);
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(8.3px);
+-webkit-backdrop-filter: blur(8.3px);
+  color: #ffffff;
+  text-align: center;
+  font-family: Arial, sans-serif;
+  width: 90%;
+  max-width: 400px;
+  margin: 0 auto;
+  border-radius: 1.5rem;
+}
+
+.yellow-color {
+  background-color: #FBB72C;
+  border-radius: 9999px;
+}
+
+.yellow-color:hover {
+  background-color: rgba(251, 182, 44, 0.77);
+}
+
+.form-inputs {
+  display: grid;
+  gap: 18px;
+}
+
+
+.remember-me {
+  text-align: left;
+  margin: 0 auto;
+}
+
+.pill-input {
+  width: 100%;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 9999px;
+  background: #dadadaff;
+  color: #ffffffae;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.05);
+  font-size: 1rem;
+}
+
+.pill-input::placeholder {
+  color: #8a8a8a;
+  opacity: 1;
+}
+
+.form-text {
+  color: #d1d1d1;
+}
+
+.pill-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0,123,255,.25);
+  background: #ececec;
+}
+
+
+.bg-color {
+  background-color: #34623F;
+  color: #fff;
+  border-radius: 9999px;
+  padding: 12px 24px;
+  width: 100%;
+  font-size: 1rem;
+}
+
+.bg-color:hover {
+  background-color: #2e5136;
+}
+
+
+.login-signup-button {
+  text-decoration: none;
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  user-select: none;
+  border: 1px solid transparent;
+  padding: 12px;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 1rem;
+  color: #fff;
+  background-color: #212529;
+  border-color: #212529;
+  width: 100%;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.login-signup-button:hover {
+  color: #fff;
+  background-color: #585858ff;
+  border-color: #5c5c5cff;
+}
+
+
+.sm-font {
+  font-size: .8rem;
+}
+
+.margin-0 {
+  margin: 0 !important;
+}
+
+
+.btn-style {
+  opacity: 0.3;
+  transition: 300ms;
+}
+
+.btn-style:hover {
+  opacity: 0.8;
+}
