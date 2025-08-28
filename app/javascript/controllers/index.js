@@ -6,3 +6,4 @@ import { eagerLoadControllersFrom } from "@hotwired/stimulus-loading"
 eagerLoadControllersFrom("controllers", application)
 application.register("profile-menu", ProfileMenuController)
 application.register("fd-carousel",  FdCarouselController)
+
