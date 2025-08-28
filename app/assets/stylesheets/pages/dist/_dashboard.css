@@ -1,0 +1,291 @@
+/* ====== Foodly Dashboard Namespace ====== */
+#fd-dashboard {
+  /* Tokens */
+  --fd-bg: #1f2027;
+  --fd-card: #414047;
+  --fd-ink: #e9eef5;
+  --fd-muted: #b9c0cc;
+  --fd-accent: #FBB72C;
+  --fd-radius: 16px;
+  --fd-line: rgba(255, 255, 255, .06);
+  --fd-shadow: 0 10px 30px rgba(0, 0, 0, .25);
+  /* Base */
+  color: var(--fd-ink);
+  /* Topbar */
+  /* Dropdown */
+  /* Layout */
+  /* Carousel */
+  /* Search */
+  /* Grid Cards */
+  /* Empty */
+  /* Bottombar */
+  /* Responsive */
+}
+#fd-dashboard * {
+  box-sizing: border-box;
+}
+#fd-dashboard html,
+#fd-dashboard body {
+  height: 100%;
+}
+#fd-dashboard .fd-text-ink {
+  color: var(--fd-ink);
+}
+#fd-dashboard .fd-text-muted {
+  color: var(--fd-muted);
+}
+#fd-dashboard img {
+  display: block;
+  max-width: 100%;
+}
+#fd-dashboard .fd-topbar {
+  height: 56px;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  backdrop-filter: blur(8px);
+  background: rgba(15, 17, 21, 0.5);
+  border-bottom: 1px solid var(--fd-line);
+}
+#fd-dashboard .fd-logo {
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+#fd-dashboard .fd-profile-btn {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: var(--fd-shadow);
+  cursor: pointer;
+}
+#fd-dashboard .fd-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+#fd-dashboard .fd-dropdown {
+  position: absolute;
+  right: 12px;
+  top: 60px;
+  min-width: 160px;
+  background: var(--fd-card);
+  border: 1px solid var(--fd-line);
+  border-radius: 12px;
+  padding: 8px;
+  box-shadow: var(--fd-shadow);
+  display: none;
+}
+#fd-dashboard .fd-dropdown a {
+  display: block;
+  padding: 10px 12px;
+  color: var(--fd-ink);
+  text-decoration: none;
+  border-radius: 8px;
+}
+#fd-dashboard .fd-dropdown a:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+#fd-dashboard .fd-dropdown.show {
+  display: block;
+}
+#fd-dashboard .fd-container {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 12px 12px 96px;
+  background: radial-gradient(1200px 600px at 50% -20%, #1f2027 0%, #1f2027 60%, #1f2027 100%);
+}
+#fd-dashboard .fd-carousel-section {
+  margin-top: 8px;
+}
+#fd-dashboard .fd-section-title {
+  font-size: 1.05rem;
+  margin: 6px 4px 10px;
+  color: var(--fd-muted);
+}
+#fd-dashboard .fd-carousel {
+  position: relative;
+  border-radius: var(--fd-radius);
+  overflow: hidden;
+  box-shadow: var(--fd-shadow);
+  background: #000;
+}
+#fd-dashboard .fd-car-track {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+}
+#fd-dashboard .fd-car-track::-webkit-scrollbar {
+  display: none;
+}
+#fd-dashboard .fd-slide {
+  position: relative;
+  min-width: 100%;
+  scroll-snap-align: start;
+}
+#fd-dashboard .fd-slide-link {
+  display: block;
+  position: relative;
+  height: 100%;
+}
+#fd-dashboard .fd-slide img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+#fd-dashboard .fd-slide-caption {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 10px 12px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.55));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background 0.2s ease;
+}
+#fd-dashboard .fd-slide-title {
+  margin: 0;
+  font-size: 1rem;
+  color: #f5f5f5;
+}
+#fd-dashboard .fd-slide-hearts {
+  color: #ff6262;
+  font-weight: 700;
+}
+#fd-dashboard .fd-car-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+  border: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  z-index: 3;
+}
+#fd-dashboard .fd-car-arrow.fd-left {
+  left: 8px;
+}
+#fd-dashboard .fd-car-arrow.fd-right {
+  right: 8px;
+}
+#fd-dashboard .fd-search-section {
+  margin: 14px 0 10px;
+  top: 56px;
+  position: sticky;
+}
+#fd-dashboard .fd-search-input {
+  position: sticky;
+  top: 10px;
+  z-index: 1000000;
+}
+#fd-dashboard .fd-pill {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #11141a;
+  color: var(--fd-ink);
+  outline: none;
+}
+#fd-dashboard .fd-pill::placeholder {
+  color: var(--fd-muted);
+}
+#fd-dashboard .fd-grid .fd-card-link {
+  text-decoration: none;
+}
+#fd-dashboard .fd-card-image {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: black;
+}
+#fd-dashboard .fd-card-recipe {
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  background-color: #414047;
+  padding-top: 45px;
+  padding-bottom: 1rem;
+  min-height: 190px;
+  width: 100%;
+  margin-top: 20px;
+}
+#fd-dashboard .fd-recipe-title {
+  font-weight: 700;
+  line-height: 1.2;
+  min-height: 2.4em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+#fd-dashboard .fd-duration {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--fd-muted);
+  font-weight: 600;
+}
+#fd-dashboard .fd-empty {
+  text-align: center;
+  color: var(--fd-muted);
+  margin: 24px 0;
+}
+#fd-dashboard .fd-bottombar {
+  position: fixed;
+  bottom: 12px;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  z-index: 9;
+}
+#fd-dashboard .fd-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 0;
+  cursor: pointer;
+  background: #1a1f2a;
+  color: #fff;
+  font-size: 20px;
+  box-shadow: var(--fd-shadow);
+}
+#fd-dashboard .fd-btn.fd-btn-accent {
+  background: var(--fd-accent);
+  color: #111;
+  font-weight: 700;
+}
+@media (min-width: 768px) {
+  #fd-dashboard .fd-slide img {
+    height: 260px;
+  }
+}
