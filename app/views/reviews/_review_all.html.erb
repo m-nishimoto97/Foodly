@@ -1,0 +1,7 @@
+<%= turbo_frame_tag "reviews_frame" do %>
+  <%= render "reviews/review_list", reviews: @recipe.reviews %>
+<% end %>
+<hr>
+<%= turbo_frame_tag "reviews_form" do %>
+  <%= render "reviews/review_form", review: @recipe.reviews.build, recipe: @recipe %>
+<% end %>

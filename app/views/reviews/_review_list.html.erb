@@ -1,0 +1,6 @@
+<% reviews.each do |review| %>
+  <div class="review mb-2 p-2 border">
+    <strong><%= review.user.username %></strong>: <%= review.comment %>
+    <p>Rating: <%= review.rating %></p>
+  </div>
+<% end %>

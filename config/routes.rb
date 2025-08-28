@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
   resources :recipes, only: [:index]
   resources :recipes do
-    resources :reviews, only: [:create]
+    resources :reviews, only: [:create, :index]
     post :toggle_favorite, on: :member
     post :like, on: :member
   end
