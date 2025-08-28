@@ -1,21 +1,24 @@
-<%# Image Banner %>
-<div id="scan-container" class="container min-vh-100 d-flex align-items-center">
+<div id="scan-container" class="container min-vh-100 d-flex align-items-center" data-controller="scan-new">
   <div class="row w-100 mx-auto">
-    <p id="take-photo-text" class="display-1" style="color: white; font-family: $headers-font;">Snap a photo of your ingredients!</p>
+    <p class="display-1" style="color: white; font-family: $headers-font;" data-scan-new-target="takePhotoText">Snap a photo of your ingredients!</p>
 
       <%= simple_form_for @scan do |f| %>
         <!-- Input field for the camera -->
         <div class="text-center">
-          <%= f.input :photo, as: :file, input_html: { accept: "image/*", capture: "camera", id: "photo-input" }, label: false %>
+          <%= f.input :photo, as: :file, input_html: { accept: "image/*", capture: "camera", id: "photo-input", style: "display: none;", data: { action: "change->scan-new#previewPhoto" }}, label: false %>
+          <label for="photo-input" id="photo-button" data-scan-new-target="photoButton">
+            <i class="fa-solid fa-camera-retro fa-fade fa-2xl"></i>
+          </label>
         </div>
-        <p id="check-photo-text" class="text-center display-6" style="color: white; font-family: $headers-font; display: none;">Does your photo look good?</p>
+        <p id="check-photo-text" class="text-center display-6" style="color: white; font-family: $headers-font; display: none;" data-scan-new-target="checkPhotoText">Does your photo look good?</p>
+
         <!-- Preview for the photo -->
-        <div id="photo-preview" class="d-flex justify-content-center my-3">
-          <img id="preview-image" style="max-width: 300px; display: none;" alt="photo of ingredients taken by user" />
+        <div class="d-flex justify-content-center my-3">
+          <img id="preview-image" style="max-width: 300px; display: none;" alt="photo of ingredients taken by user" data-scan-new-target="previewImage"/>
         </div>
 
         <!-- Submit button -->
-        <div class="text-center" id="photo-submit-button" style="display: none;">
+        <div class="text-center" style="display: none;" data-scan-new-target="photoSubmitButton">
           <%= f.button :submit, "Upload Scan", class: "btn rounded-pill photo-submit-button" %>
         </div>
       <% end %>

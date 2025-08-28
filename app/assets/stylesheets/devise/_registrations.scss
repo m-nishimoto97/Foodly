@@ -1,0 +1,23 @@
+.edit-heading {
+  font-family: $headers-font;
+  color: white;
+}
+
+#edit-user-button {
+  background-color: $DarkYellow;
+  font-family: $body-font;
+  text-align: center;
+}
+
+.cancel-header {
+  margin-top: 3rem;
+  font-family: $body-font;
+  color: white;
+}
+
+.delete-account-button {
+  width: 100%;
+  background-color: rgb(130, 50, 50);
+  text-align: center;
+  padding: 0.5rem 1rem;
+}

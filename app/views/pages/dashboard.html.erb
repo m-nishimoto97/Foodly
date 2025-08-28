@@ -18,7 +18,7 @@
          data-profile-menu-target="menu">
       <%= link_to "Config", edit_user_registration_path %>
       <%= link_to "Edit",   edit_user_registration_path %>
-      <%= link_to "Log out", destroy_user_session_path, method: :delete %>
+      <%= link_to "Log out", destroy_user_session_path, data: {turbo_method: :delete} %>
     </nav>
   </header>
 
@@ -67,45 +67,65 @@
     <% end %>
 
     <!-- Search -->
-    <section class="fd-search-section">
-      <%= form_with url: recipes_path, method: :get, local: true, role: "search" do |f| %>
-        <%= f.search_field :query, placeholder: "Search for specifics…", class: "fd-pill", id: "fdSearchInput", value: params[:query] %>
-      <% end %>
-    </section>
-
-    <!-- Grid -->
-    <% if @recipes.present? %>
-      <section class="fd-grid" id="fdRecipeGrid" aria-label="Recipes">
-        <div class="row g-2 mt-3">
-          <% @recipes.each_with_index do |recipe, index| %>
-            <div class="col-6 fd-text-ink mb-1 mt-2 <%= index.even? ? "pe-2" : "ps-2" %>">
-              <%= link_to (recipe.scan_id ? scan_recipe_path(recipe.scan_id, recipe) : recipe_path(recipe)),
-                          class: "text-decoration-none fd-card-link" do %>
-                <div class="position-relative">
-                  <%= image_tag "https://images.unsplash.com/photo-1618666185561-baed3459ff18?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                                class: "fd-card-image rounded-circle" %>
-                </div>
-                <div class="fd-card-recipe flex-column p-1">
-                  <div class="fd-text-ink text-center fs-6">
-                    <p class="my-1 fd-recipe-title">
-                      <%= recipe.respond_to?(:title) ? recipe.title : recipe.name %>
-                    </p>
-                    <div>
-                      <span class="fd-duration">
-                        <i class="fa-regular fa-clock"></i>
-                        <%= recipe.try(:duration) || "-" %> Min
-                      </span>
-                    </div>
+    <!-- Search + Grid (Stimulus) -->
+<section
+  class="fd-search-section"
+  data-controller="fd-search"
+  data-fd-search-item-selector-value=".fd-grid .col-6"
+  data-fd-search-title-selector-value=".fd-recipe-title"
+  data-fd-search-debounce-value="200">
+<div class="fd-search-input">
+  <%= form_with url: recipes_path,
+                method: :get,
+                local: true,
+                role: "search",
+                data: { action: "submit->fd-search#prevent" } do |f| %>
+    <%= f.search_field :query,
+          placeholder: "Search for specifics…",
+          class: "fd-pill",
+          id: "fdSearchInput",
+          value: params[:query],
+          autocomplete: "off",
+          data: { "fd-search-target": "input" } %>
+  <% end %>
+</div>
+  <% if @recipes.present? %>
+    <section class="fd-grid" id="fdRecipeGrid" aria-label="Recipes">
+      <div class="row g-2 mt-3">
+        <% @recipes.each_with_index do |recipe, index| %>
+          <div class="col-6 fd-text-ink mb-1 mt-2 <%= index.even? ? "pe-2" : "ps-2" %>">
+            <%= link_to (recipe.scan_id ? scan_recipe_path(recipe.scan_id, recipe) : recipe_path(recipe)),
+                        class: "text-decoration-none fd-card-link" do %>
+              <div class="position-relative">
+                <%= image_tag "https://images.unsplash.com/photo-1618666185561-baed3459ff18?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                              class: "fd-card-image rounded-circle" %>
+              </div>
+              <div class="fd-card-recipe flex-column p-1">
+                <div class="fd-text-ink text-center fs-6">
+                  <p class="my-1 fd-recipe-title">
+                    <%= recipe.respond_to?(:title) ? recipe.title : recipe.name %>
+                  </p>
+                  <div>
+                    <span class="fd-duration">
+                      <i class="fa-regular fa-clock"></i>
+                      <%= recipe.try(:duration) || "-" %> Min
+                    </span>
                   </div>
                 </div>
-              <% end %>
-            </div>
-          <% end %>
-        </div>
-      </section>
-    <% else %>
-      <em class="fd-text-muted">Sorry, no recipes found.</em>
-    <% end %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </section>
+
+    <!-- Estado vacío cuando el filtro no encuentra nada -->
+    <div data-fd-search-target="empty" class="d-none my-3 fd-text-muted">No recipes found.</div>
+  <% else %>
+    <em class="fd-text-muted">Sorry, no recipes found.</em>
+  <% end %>
+</section>
+
   </main>
 
   <!-- Bottombar -->

@@ -3,5 +3,5 @@
               data: { turbo_stream: true },
               id: "favorite_button_#{recipe.id}",
               class: "btn position-relative p-0" do %>
-  <i class="fa-heart fa-regular <%= current_user.favorited?(recipe) ? 'text-cYellow' : 'text-cWhite' %>"></i>
+  <i class="fa-solid fa-bookmark fa-lg <%= current_user.favorited?(recipe) ? 'text-cYellow' : 'text-cWhite' %>"></i>
 <% end %>

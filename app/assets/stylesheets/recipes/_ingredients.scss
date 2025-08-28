@@ -1,0 +1,62 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.ingredient {
+  width: 4rem;
+  height: 4rem;
+}
+
+.input-none {
+  position: absolute;
+  transform: scale(0) ;
+}
+
+.ingredient-label{
+  opacity: 0.4;
+}
+
+.input-none:checked + .ingredient-label {
+  opacity: 1;
+}
+
+.duration-none {
+  position: absolute;
+  transform: scale(0) ;
+}
+
+.form-check{
+  cursor: pointer;
+  border-radius: 50rem;
+  background-color: $cGray;
+  flex-grow: 1;
+  text-align: center;
+  padding: 0;
+}
+
+.form-check:has(.duration-none:checked) {
+  background-color: $cYellow !important;
+}
+
+.custom-padding-recipe {
+  margin-bottom: 40px;
+}
+
+.modal-input:focus {
+  outline: none;
+}
+
+.time-input {
+  position: absolute;
+  transform: scale(0) ;
+}
+
+.time-input + label {
+  cursor: pointer;
+}
+
+.wrong {
+  border:2px solid red !important;
+}

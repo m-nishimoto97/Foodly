@@ -1,28 +1,29 @@
-document.addEventListener("turbo:load", () => {
-  const input = document.getElementById("photo-input");
-  if (input) {
-    input.addEventListener("change", previewImage);
-    console.log("it attached");
+import { Controller } from "@hotwired/stimulus"
+
+export default class extends Controller {
+  static targets = ["photoButton", "previewImage", "takePhotoText", "checkPhotoText", "photoSubmitButton"]
+  connect() {
+    console.log("It connected!")
   }
-})
 
-function previewImage(event) {
-  const input = event.target;
-  const preview = document.getElementById("preview-image");
-  const takePhotoText = document.getElementById("take-photo-text");
-  const checkPhotoText = document.getElementById("check-photo-text");
-  const submitButton= document.getElementById("photo-submit-button");
+  previewPhoto(event) {
+    const input = event.currentTarget
 
-  if (input.files[0]) {
-    const reader = new FileReader();
+    if (input.files && input.files[0]) {
+      const reader = new FileReader()
 
-    reader.onload = function(e) {
-      preview.src = e.target.result
-      preview.style.display = "block";
-      takePhotoText.style.display = "none";
-      checkPhotoText.style.display = "block";
-      submitButton.style.display = "block";
+      reader.onload = (e) => {
+        this.previewImageTarget.src = e.target.result
+        this.previewImageTarget.style.display = "block"
+
+        this.photoButtonTarget.style.display = "none"
+        this.takePhotoTextTarget.style.display = "none"
+        this.checkPhotoTextTarget.style.display = "block"
+        this.photoSubmitButtonTarget.style.display = "block"
+      }
+
+      reader.readAsDataURL(input.files[0])
     }
-    reader.readAsDataURL(input.files[0]);
+    console.log("you changed me!")
   }
 }
