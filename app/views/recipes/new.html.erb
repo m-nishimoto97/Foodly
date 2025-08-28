@@ -4,28 +4,31 @@
     <div class="p-0 mx-1 gap-4">
       <div class="d-flex flex-wrap align-items-center">
         <%= simple_form_for([@scan, @recipe]) do |f| %>
+          <style>
+            .ingredient {
+              justify-content: space-between;
+            }
+          </style>
           <!--------------- Each Ingredient  ------------------->
-          <div class="d-flex flex-wrap gap-3 mt-1 ps-4" data-controller="add-ingredient">
+          <div class="d-flex flex-wrap   mt-1 ps-4" data-controller="add-ingredient">
             <div data-add-ingredient-target="container" class="d-flex align-items-center flex-wrap gap-2">
               <% @ingredients.each do |ingredient| %>
-                <div class="d-flex ps-1">
+                <div class="d-flex ps-1 ingredient-container">
                   <%= f.check_box :name, { multiple: true, class: "input-none", id:"ingredient-#{ingredient.parameterize}" }, ingredient, nil %>
                   <label for="ingredient-<%= ingredient.parameterize %>" class="d-flex flex-column ingredient-label">
-                    <%= image_tag "https://cdn.pixabay.com/photo/2020/06/18/18/36/carrot-5314608_1280.jpg", class: "ingredient rounded-circle" %>
+                    <%= image_tag "https://image.pollinations.ai/prompt/#{ingredient}", class: "ingredient rounded-circle" %>
                     <p class="text-center" data-add-ingredient-target="list"><%= ingredient %></p>
                   </label>
                 </div>
               <% end %>
-
               <!-- Move the button INSIDE the own button and select it -->
-              <div data-role="add-button" class="d-flex align-items-center justify-content-center flex-column custom-padding-recipe">
+              <div data-role="add-button" class="ingredient-container d-flex align-items-center justify-content-center flex-column custom-padding-recipe">
                 <div class="btn btn-cGray ingredient rounded-circle d-flex align-items-center justify-content-center flex-column mb-2"
                      data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                   <i class="fa-solid fa-plus"></i>
                 </div>
               </div>
             </div>
-
             <!------------ Modal--------------->
             <div class="modal fade" data-add-ingredient-target="modal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered">
