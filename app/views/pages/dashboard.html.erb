@@ -18,7 +18,7 @@
          data-profile-menu-target="menu">
       <%= link_to "Config", edit_user_registration_path %>
       <%= link_to "Edit",   edit_user_registration_path %>
-      <%= link_to "Log out", destroy_user_session_path, method: :delete %>
+      <%= link_to "Log out", destroy_user_session_path, data: {turbo_method: :delete} %>
     </nav>
   </header>
 
