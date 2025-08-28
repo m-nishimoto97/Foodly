@@ -1,13 +1,21 @@
 <div id="fd-dashboard">
-  <header class="fd-topbar">
+  <header class="fd-topbar"
+          data-controller="profile-menu"
+          data-profile-menu-outside-value=".fd-topbar">
     <div class="fd-logo">Foodly</div>
 
     <!-- Perfil -->
-    <button class="fd-profile-btn" id="fdProfileBtn" aria-haspopup="true" aria-expanded="false">
+    <button class="fd-profile-btn"
+            aria-haspopup="true"
+            aria-expanded="false"
+            data-profile-menu-target="button"
+            data-action="click->profile-menu#toggle">
       <%= image_tag "logo.png", class: "fd-avatar", alt: "User avatar" %>
     </button>
 
-    <nav class="fd-dropdown" id="fdProfileMenu" aria-label="Profile menu">
+    <nav class="fd-dropdown"
+         aria-label="Profile menu"
+         data-profile-menu-target="menu">
       <%= link_to "Config", edit_user_registration_path %>
       <%= link_to "Edit",   edit_user_registration_path %>
       <%= link_to "Log out", destroy_user_session_path, method: :delete %>
@@ -19,10 +27,18 @@
       <section class="fd-carousel-section" aria-label="Most liked recipes">
         <h2 class="fd-section-title">Most liked recipes</h2>
 
-        <div class="fd-carousel" id="fdCarousel">
-          <button class="fd-car-arrow fd-left" id="fdCarPrev" aria-label="Previous">&#10094;</button>
+        <div class="fd-carousel" data-controller="fd-carousel">
+          <button class="fd-car-arrow fd-left"
+                  aria-label="Previous"
+                  data-fd-carousel-target="prev"
+                  data-action="click->fd-carousel#prev">
+            &#10094;
+          </button>
 
-          <div class="fd-car-track" id="fdCarTrack">
+          <div class="fd-car-track"
+               tabindex="0"
+               data-fd-carousel-target="track"
+               data-action="keydown->fd-carousel#keydown">
             <% @top_recipes.each do |recipe| %>
               <% title = recipe.respond_to?(:title) ? recipe.title : recipe.name %>
               <% likes = (recipe.try(:likes_count) || recipe['likes_count'] || 0).to_i %>
@@ -40,7 +56,12 @@
             <% end %>
           </div>
 
-          <button class="fd-car-arrow fd-right" id="fdCarNext" aria-label="Next">&#10095;</button>
+          <button class="fd-car-arrow fd-right"
+                  aria-label="Next"
+                  data-fd-carousel-target="next"
+                  data-action="click->fd-carousel#next">
+            &#10095;
+          </button>
         </div>
       </section>
     <% end %>
@@ -61,7 +82,8 @@
               <%= link_to (recipe.scan_id ? scan_recipe_path(recipe.scan_id, recipe) : recipe_path(recipe)),
                           class: "text-decoration-none fd-card-link" do %>
                 <div class="position-relative">
-                  <%= image_tag "https://images.unsplash.com/photo-1618666185561-baed3459ff18?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", class: "card-image rounded-circle" %>
+                  <%= image_tag "https://images.unsplash.com/photo-1618666185561-baed3459ff18?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                                class: "fd-card-image rounded-circle" %>
                 </div>
                 <div class="fd-card-recipe flex-column p-1">
                   <div class="fd-text-ink text-center fs-6">
@@ -103,6 +125,5 @@
 </div>
 
 <style>
-  /* Keep this to disable any floating button if present elsewhere */
   #floatingButton{ display: none; }
 </style>
