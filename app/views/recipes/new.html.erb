@@ -8,21 +8,24 @@
           <div class="d-flex flex-wrap gap-3 mt-1 ps-4" data-controller="add-ingredient">
             <div data-add-ingredient-target="container" class="d-flex align-items-center flex-wrap gap-2">
               <% @ingredients.each do |ingredient| %>
-                <div  class="d-flex ps-1">
-                  <%= f.check_box :name, { multiple: true, class: "input-none", id:"ingredient-#{ingredient}" }, ingredient, nil %>
-                  <label for="ingredient-<%= ingredient %>" class="d-flex flex-column ingredient-label">
+                <div class="d-flex ps-1">
+                  <%= f.check_box :name, { multiple: true, class: "input-none", id:"ingredient-#{ingredient.parameterize}" }, ingredient, nil %>
+                  <label for="ingredient-<%= ingredient.parameterize %>" class="d-flex flex-column ingredient-label">
                     <%= image_tag "https://cdn.pixabay.com/photo/2020/06/18/18/36/carrot-5314608_1280.jpg", class: "ingredient rounded-circle" %>
                     <p class="text-center" data-add-ingredient-target="list"><%= ingredient %></p>
                   </label>
                 </div>
               <% end %>
-            </div>
-            <!--------------- Add Button  ------------------->
-            <div class="d-flex align-items-center justify-content-center flex-column custom-padding-recipe">
-              <div class="btn btn-cGray ingredient rounded-circle d-flex align-items-center justify-content-center flex-column mb-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                <i class="fa-solid fa-plus"></i>
+
+              <!-- Move the button INSIDE the own button and select it -->
+              <div data-role="add-button" class="d-flex align-items-center justify-content-center flex-column custom-padding-recipe">
+                <div class="btn btn-cGray ingredient rounded-circle d-flex align-items-center justify-content-center flex-column mb-2"
+                     data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                  <i class="fa-solid fa-plus"></i>
+                </div>
               </div>
             </div>
+
             <!------------ Modal--------------->
             <div class="modal fade" data-add-ingredient-target="modal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered">
