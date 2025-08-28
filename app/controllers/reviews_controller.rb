@@ -2,7 +2,7 @@ class ReviewsController < ApplicationController
   def index
     @recipe = Recipe.find(params[:recipe_id])
     @reviews = @recipe.reviews.includes(:user).order(created_at: :desc)
-    @review = Review.new
+    @review = @recipe.reviews.build
 
     render partial: "reviews/review_all", locals: { reviews: @reviews, review: @review, recipe: @recipe }
   end
