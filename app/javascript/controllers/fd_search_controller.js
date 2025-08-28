@@ -1,22 +1,22 @@
-// app/javascript/controllers/fd_search_controller.js
+
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static targets = ["input", "empty"]
   static values = {
-    itemSelector: String,        // e.g., ".fd-grid .col-6"
-    titleSelector: String,       // e.g., ".fd-recipe-title"
+    itemSelector: String,
+    titleSelector: String,
     debounce: { type: Number, default: 200 }
   }
 
   connect() {
-    // Cachea items una vez
+    // selects the items
     const selector = this.itemSelectorValue || ".fd-grid .col-6"
     this.items = Array.from(this.element.querySelectorAll(selector))
 
     // Handlers
     this._keydownHandler = (e) => {
-      if (e.key === "Enter") e.preventDefault() // bloquea submit con Enter
+      if (e.key === "Enter") e.preventDefault() // doesnt let the summit button to be pressed
     }
     this._inputHandler = () => this._debounce(() => this.filterNow(), this.debounceValue)
 
@@ -25,8 +25,6 @@ export default class extends Controller {
       this.inputTarget.addEventListener("keydown", this._keydownHandler)
       this.inputTarget.addEventListener("input", this._inputHandler)
     }
-
-    // Primera pasada (por si viene con params[:query])
     this.filterNow()
   }
 
@@ -38,12 +36,12 @@ export default class extends Controller {
     clearTimeout(this._debounceTimer)
   }
 
-  // Previene submit del form (asignado en data-action del form)
+  // prevents the submission
   prevent(event) {
     event.preventDefault()
   }
 
-  // Por si prefieres action="input->fd-search#filter" en el input
+  // Filter
   filter() {
     this._debounce(() => this.filterNow(), this.debounceValue)
   }
@@ -54,18 +52,18 @@ export default class extends Controller {
     let visible = 0
 
     for (const col of this.items) {
-      // Busca el título dentro del link .fd-card-link o en la columna
+      // searchs for the title in the column
       const scope = col
       const titleNode = scope.querySelector(titleSel)
       const title = (titleNode?.textContent || "").toLowerCase()
       const match = q === "" ? true : title.includes(q)
 
-      // Usa atributo [hidden] para ocultar/mostrar
+      // uses hidden to hide the column
       col.toggleAttribute("hidden", !match)
       if (match) visible++
     }
 
-    // Estado vacío opcional
+    // manages the empty message
     if (this.hasEmptyTarget) {
       if (visible === 0) {
         this.emptyTarget.classList.remove("d-none")
