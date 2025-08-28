@@ -42,7 +42,10 @@ class RecipesController < ApplicationController
   end
 
   def index
-    @recipes = Recipe.all
+    recipes = current_user.recipes
+    favorites = current_user.all_favorited
+    combined_ids = recipes.pluck(:id) + favorites.pluck(:id)
+    @recipes = Recipe.where(id: combined_ids)
     @recipes = @recipes.where("name ILIKE ?", "%#{params[:query]}%") if params[:query].present?
   end
 
