@@ -1,0 +1,64 @@
+<div class="container mt-5 text-light ">
+  <h1 class="text-center">Ingredients</h1>
+  <div class="mt-4">
+    <div class="p-0 mx-1 gap-4">
+      <div class="d-flex flex-wrap align-items-center">
+        <%= simple_form_for([@scan, @recipe]) do |f| %>
+          <!--------------- Each Ingredient  ------------------->
+          <div class="d-flex flex-wrap gap-3 mt-1 ps-4" data-controller="add-ingredient">
+            <div data-add-ingredient-target="container" class="d-flex align-items-center flex-wrap gap-2">
+              <% @ingredients.each do |ingredient| %>
+                <div  class="d-flex ps-1">
+                  <%= f.check_box :name, { multiple: true, class: "input-none", id:"ingredient-#{ingredient}" }, ingredient, nil %>
+                  <label for="ingredient-<%= ingredient %>" class="d-flex flex-column ingredient-label">
+                    <%= image_tag "https://cdn.pixabay.com/photo/2020/06/18/18/36/carrot-5314608_1280.jpg", class: "ingredient rounded-circle" %>
+                    <p class="text-center" data-add-ingredient-target="list"><%= ingredient %></p>
+                  </label>
+                </div>
+              <% end %>
+            </div>
+            <!--------------- Add Button  ------------------->
+            <div class="d-flex align-items-center justify-content-center flex-column custom-padding-recipe">
+              <div class="btn btn-cGray ingredient rounded-circle d-flex align-items-center justify-content-center flex-column mb-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                <i class="fa-solid fa-plus"></i>
+              </div>
+            </div>
+            <!------------ Modal--------------->
+            <div class="modal fade" data-add-ingredient-target="modal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Add your Ingredient</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <input class="modal-input w-100 p-2 border-0 rounded-pill" data-add-ingredient-target="input" type="text" placeholder="Type your ingredient">
+                    <span data-add-ingredient-target="error" class="text-danger ps-2"></span>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal">cancel</button>
+                    <button type="button" class="btn btn-cYellow" data-action="click->add-ingredient#add">Add Ingredient</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-------- Duration Form --------->
+        <div>
+          <%= image_tag "clock.png", class: "w-100"%>
+          <div class="d-flex justify-content-between align-items-center">
+            <%= f.input :duration,
+                as: :radio_buttons,
+                collection: @durations,
+                legend_tag: false,
+                item_wrapper_tag: :div,
+                input_html: { class: "duration-none" },
+                wrapper_html: { class: "d-flex justify-content-between align-items-center w-100 gap-1" }
+              %>
+          </div>
+        </div>
+        <%= f.submit "Search Recipe", class: "btn btn-cYellow w-100 rounded-pill" %>
+      <% end %>
+    </div>
+  </div>
