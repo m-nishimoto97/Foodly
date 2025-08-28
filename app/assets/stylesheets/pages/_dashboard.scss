@@ -37,6 +37,7 @@
 
   /* Topbar */
   .fd-topbar {
+    position: relative;
     height: 56px;
     top: 0;
     z-index: 10;
@@ -215,7 +216,7 @@
   .fd-search-input {
     position: sticky;
     top: 10px;
-    z-index: 1000000;
+    z-index: 1001;
   }
 
   .fd-pill {
