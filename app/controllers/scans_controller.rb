@@ -1,5 +1,6 @@
 class ScansController < ApplicationController
   def show
+    @scan = Scan.find(params[:id])
   end
 
   def new
@@ -26,7 +27,7 @@ class ScansController < ApplicationController
       response = chat.ask(prompt, with: { image: @scan.photo })
       ingredients = JSON.parse(response.content)
       @scan.ingredients = ingredients
-
+      @scan.save
       redirect_to new_scan_recipe_path(@scan), notice: "Photo uploaded successfully!"
     else
       render :new, status: :unprocessable_content
