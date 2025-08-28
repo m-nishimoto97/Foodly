@@ -74,7 +74,7 @@
   data-fd-search-item-selector-value=".fd-grid .col-6"
   data-fd-search-title-selector-value=".fd-recipe-title"
   data-fd-search-debounce-value="200">
-
+<div class="fd-search-input">
   <%= form_with url: recipes_path,
                 method: :get,
                 local: true,
@@ -88,7 +88,7 @@
           autocomplete: "off",
           data: { "fd-search-target": "input" } %>
   <% end %>
-
+</div>
   <% if @recipes.present? %>
     <section class="fd-grid" id="fdRecipeGrid" aria-label="Recipes">
       <div class="row g-2 mt-3">
