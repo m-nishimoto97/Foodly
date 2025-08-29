@@ -13,7 +13,7 @@ class RecipesController < ApplicationController
 You are a precise recipe formatter. Output valid JSON only. Do not wrap in code fences or add prose.
 
 CONTEXT
-- available_ingredients: <#{@scan.ingredients.join(', ')}>
+- available_ingredients: <#{params['recipe']['name'].join(', ')}>
 - max_minutes: <#{params['recipe']['duration']}>
 - user_preference: <#{current_user.preference}>
 - allergies: <#{current_user.allergy}>
