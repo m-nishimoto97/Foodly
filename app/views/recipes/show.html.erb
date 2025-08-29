@@ -1,4 +1,3 @@
-
 <div class="banner banner-overlay">
   <img
     data-commons-image
@@ -6,42 +5,42 @@
     alt="<%= h @recipe.name %>"
     loading="lazy"
     class="banner-img">
-</div>
-<div class="container mt-3">
-  <div class="row">
-    <div class="col-12">
-      <div class="d-flex justify-content-between item-align-center">
-        <span class="badge text-bg-cSeaGreen h-50 w-50 my-1 rounded-pill">
-          <i class="fa-regular fa-clock"></i>
-          <%= @recipe.duration %>
-          Minutes
-        </span>
-        <div class="d-flex">
-          <div id="like_button_<%= @recipe.id %>">
-            <%= render "like_button", recipe: @recipe %>
-          </div>
-          <div id="favorite_button_<%= @recipe.id %>">
-            <%= render "favorite_button", recipe: @recipe %>
-          </div>
-          <div>
-            <%= render "review_offcanvas" %>
+  </div>
+  <div class="container mt-3 pb-5">
+    <div class="row">
+      <div class="col-12">
+        <div class="d-flex justify-content-between item-align-center">
+          <span class="badge text-bg-cSeaGreen h-50 w-50 my-1 rounded-pill">
+            <i class="fa-regular fa-clock"></i>
+            <%= @recipe.duration %>
+            Minutes
+          </span>
+          <div class="d-flex">
+            <div id="like_button_<%= @recipe.id %>">
+              <%= render "like_button", recipe: @recipe %>
+            </div>
+            <div id="favorite_button_<%= @recipe.id %>">
+              <%= render "favorite_button", recipe: @recipe %>
+            </div>
+            <div>
+              <%= render "review_offcanvas" %>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="col-12">
-      <h3 class="text-cWhite mt-3"><%= @recipe.name %></h3>
-    </div>
-    <div class="col-6">
-      <p class="text-cWhite text-start"><%= @recipe.cuisine%></p>
-    </div>
-    <div class="col-6">
-      <p class="text-cWhite text-end"><%= @recipe.diet %></p>
-    </div>
-    <div class="col-12">
-      <div class="text-cWhite" style="white-space: pre-line;">
-        <%= @recipe.directions %>
+      <div class="col-12">
+        <h3 class="text-cWhite mt-3"><%= @recipe.name %></h3>
+      </div>
+      <div class="col-6">
+        <p class="text-cWhite text-start"><%= @recipe.cuisine%></p>
+      </div>
+      <div class="col-6">
+        <p class="text-cWhite text-end"><%= @recipe.diet %></p>
+      </div>
+      <div class="col-12">
+        <div class="text-cWhite" style="white-space: pre-line;">
+          <%= @recipe.directions %>
+        </div>
       </div>
     </div>
   </div>
-</div>
