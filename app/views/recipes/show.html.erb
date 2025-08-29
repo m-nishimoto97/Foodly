@@ -7,7 +7,6 @@
     loading="lazy"
     class="banner-img">
 </div>
-
 <div class="container mt-3">
   <div class="row">
     <div class="col-12">
@@ -40,7 +39,9 @@
       <p class="text-cWhite text-end"><%= @recipe.diet %></p>
     </div>
     <div class="col-12">
-      <p class="text-cWhite"><%= @recipe.directions %></p>
+      <div class="text-cWhite" style="white-space: pre-line;">
+        <%= @recipe.directions %>
+      </div>
     </div>
   </div>
 </div>

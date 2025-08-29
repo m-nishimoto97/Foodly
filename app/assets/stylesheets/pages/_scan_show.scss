@@ -1,0 +1,47 @@
+.scan-header {
+  color: white;
+  font-family: $headers-font;
+  letter-spacing: 1px;
+}
+
+.show-card {
+  position: relative;
+  display: flex;
+  place-items: center;
+}
+
+.show-card-recipe {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  color: white;
+  background-color: #414047;
+  min-height: 190px;
+  width: 100%;
+  margin-top: 20px;
+  border-radius: 5px;
+  z-index: 0;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.show-card-image {
+  position: absolute;
+  top: -20px;
+  width: 80px;
+  height: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  object-fit: cover;
+  z-index: 1;
+}
+
+.show-recipe-text {
+  transform: translateY(10%);
+}
+
+.scan-recipe-duration {
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.5)
+}

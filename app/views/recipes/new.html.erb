@@ -14,7 +14,7 @@
             <div data-add-ingredient-target="container" class="d-flex align-items-center flex-wrap gap-2">
               <% @ingredients.each do |ingredient| %>
                 <div class="d-flex ps-1 ingredient-container">
-                  <%= f.check_box :name, { multiple: true, class: "input-none", id:"ingredient-#{ingredient.parameterize}" }, ingredient, nil %>
+                  <%= f.check_box :name, { multiple: true, class: "input-none", id:"ingredient-#{ingredient.parameterize}", checked: true }, ingredient, nil %>
                   <label for="ingredient-<%= ingredient.parameterize %>" class="d-flex flex-column ingredient-label">
                     <%= image_tag "https://image.pollinations.ai/prompt/#{ingredient}", class: "ingredient rounded-circle" %>
                     <p class="text-center" data-add-ingredient-target="list"><%= ingredient %></p>
@@ -49,12 +49,11 @@
               </div>
             </div>
           </div>
-        </div>
-        <!-------- Duration Form --------->
-        <div data-controller="duration">
-          <%= image_tag "clock.png", class: "w-100"%>
-          <div class="d-flex justify-content-between align-items-center">
-            <%= f.input :duration,
+          <!-------- Duration Form --------->
+          <div data-controller="duration">
+            <%= image_tag "clock.png", class: "w-100"%>
+            <div class="d-flex justify-content-between align-items-center">
+              <%= f.input :duration,
                 as: :radio_buttons,
                 collection: @durations,
                 legend_tag: false,
@@ -62,9 +61,11 @@
                 input_html: { class: "duration-none" },
                 wrapper_html: { class: "d-flex justify-content-between align-items-center w-100 gap-1" }
               %>
+            </div>
           </div>
-        </div>
-        <%= f.submit "Search Recipe", class: "btn btn-cYellow w-100 rounded-pill" %>
-      <% end %>
+          <%= f.submit "Search Recipe", class: "btn btn-cYellow w-100 rounded-pill" %>
+        <% end %>
+      </div>
     </div>
   </div>
+</div>
