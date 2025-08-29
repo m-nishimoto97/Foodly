@@ -12,6 +12,7 @@ class RecipesController < ApplicationController
     prompt = <<-PROMPT
       Generate two recipes using only #{@scan.ingredients.join(',')} that take only #{params['recipe']['duration']} minutes.
       Include the recipe's name, duration, diet (if present such as vegetarian or vegan), cuisine, and directions.
+      The directions must be written as an ordered list, using '\\n' to break line.
       Return in an array of recipe hashes in JSON format
     PROMPT
 
