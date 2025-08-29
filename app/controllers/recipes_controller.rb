@@ -10,10 +10,18 @@ class RecipesController < ApplicationController
     @scan = Scan.find(params[:scan_id])
 
     prompt = <<-PROMPT
-      Generate two recipes using only #{@scan.ingredients.join(',')} that take only #{params['recipe']['duration']} minutes.
-      Include the recipe's name, duration, diet (if present such as vegetarian or vegan), cuisine, and directions.
-      The directions must be written as an ordered list, using '\\n' to break line.
-      Return in an array of recipe hashes in JSON format
+    Generate exactly two recipes using only the following ingredients: #{@scan.ingredients.join(', ')}.
+    Each recipe must take no more than #{params['recipe']['duration']} minutes to prepare.
+    Take into account the user's preference: #{current_user.preference} and allergies: #{current_user.allergy}.
+
+    For each recipe, provide the following keys in a JSON object:
+    - "name": The recipe name should be real and be based off of real recipes and never do this: putting the ingredients together to makeup a new name (string)
+    - "duration": Preparation time in minutes (integer)
+    - "diet": Diet type if applicable (string, e.g., "vegetarian", "vegan"). If none, set as empty string.
+    - "cuisine": Cuisine type (string)
+    - "directions": A single string with **numbered** steps separated by '\\n'. Do not use HTML tags.
+    Return the result as an array of exactly two recipe objects in **valid JSON only**.
+    Do NOT include any text before or after the JSON. The output must be directly parsable.
     PROMPT
 
     response = RubyLLM.chat.ask(prompt)
