@@ -17,12 +17,12 @@
             </div>
             <div class="fs-6 favorite-style">
               <% if recipe.favorited_by?(current_user) %>
-                <i class="fa-heart text-cYellow fa-regular"></i>
+                <i class="fa-solid fa-bookmark fa-lg mb-2"></i>
               <% end %>
             </div>
             <% if recipe.get_likes.size > 0 %>
               <div class="like-style fs-6">
-                <i class="fa-thumbs-up text-cWhite fa-regular" >
+                <i class="fa-solid fa-heart fa-lg" >
                   <span class="badge text-cWhite p-0">
                     <%= recipe.get_likes.size %>
                   </span>
