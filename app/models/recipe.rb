@@ -5,4 +5,8 @@ class Recipe < ApplicationRecord
   has_many :reviews
   has_one :user, through: :scan
   validates :name, :duration, presence: true
+
+  def average_rating
+    reviews.average(:rating)
+  end
 end

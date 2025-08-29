@@ -10,14 +10,14 @@
           Minutes
         </span>
         <div class="d-flex">
+          <div>
+            <%= render "review_offcanvas" %>
+          </div>
           <div id="like_button_<%= @recipe.id %>">
             <%= render "like_button", recipe: @recipe %>
           </div>
           <div id="favorite_button_<%= @recipe.id %>">
             <%= render "favorite_button", recipe: @recipe %>
-          </div>
-          <div>
-            <%= render "review_offcanvas" %>
           </div>
         </div>
       </div>
