@@ -14,7 +14,7 @@
             <div data-add-ingredient-target="container" class="d-flex align-items-center flex-wrap gap-2">
               <% @ingredients.each do |ingredient| %>
                 <div class="d-flex ps-1 ingredient-container">
-                  <%= f.check_box :name, { multiple: true, class: "input-none", id:"ingredient-#{ingredient.parameterize}" }, ingredient, nil %>
+                  <%= f.check_box :name, { multiple: true, class: "input-none", id:"ingredient-#{ingredient.parameterize}", checked: true }, ingredient, nil %>
                   <label for="ingredient-<%= ingredient.parameterize %>" class="d-flex flex-column ingredient-label">
                     <%= image_tag "https://image.pollinations.ai/prompt/#{ingredient}", class: "ingredient rounded-circle" %>
                     <p class="text-center" data-add-ingredient-target="list"><%= ingredient %></p>
@@ -68,3 +68,4 @@
       <% end %>
     </div>
   </div>
+</div>
