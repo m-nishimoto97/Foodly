@@ -19,7 +19,7 @@ CONTEXT
 - allergies: <#{current_user.allergy}>
 
 TASK
-Create EXACTLY TWO real, sensible recipes that can be prepared within max_minutes using only the available_ingredients
+Create EXACTLY SIX real, sensible recipes that can be prepared within max_minutes using only the available_ingredients
 (plus common pantry staples: water, salt, black pepper, sugar, neutral/olive oil, butter, vinegar, stock/broth, flour, baking powder, soy sauce, lemon juice). Respect user_preference and strictly avoid allergies.
 
 OUTPUT FORMAT — JSON array with TWO objects. Each object MUST have ONLY these keys:
