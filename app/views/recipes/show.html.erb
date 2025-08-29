@@ -39,7 +39,7 @@
       </div>
       <div class="col-12">
         <div class="text-cWhite" style="white-space: pre-line;">
-          <%= @recipe.directions %>
+          <%= @recipe.directions&.html_safe %>
         </div>
       </div>
     </div>
