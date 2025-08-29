@@ -1,13 +1,32 @@
+.scan-recipe-container {
+  background: linear-gradient(to bottom, $Black, black);
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.scan-cards {
+ overflow-y: auto;
+ flex: 1 1 auto;
+ margin-bottom: 3rem;
+ margin-top: 2rem;
+}
+
 .scan-header {
   color: white;
   font-family: $headers-font;
   letter-spacing: 1px;
+  position: sticky;
+  top: 0;
+  flex: 0 0 auto;
 }
 
 .show-card {
   position: relative;
   display: flex;
   place-items: center;
+  margin-bottom: 24px;
 }
 
 .show-card-recipe {
