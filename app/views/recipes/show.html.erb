@@ -1,10 +1,17 @@
+
 <div class="banner banner-overlay">
+  <img
+    data-commons-image
+    data-name="<%= j @recipe.name %>"
+    alt="<%= h @recipe.name %>"
+    loading="lazy"
+    class="banner-img">
 </div>
-<div class="container mt-3 mb-5">
+<div class="container mt-3">
   <div class="row">
     <div class="col-12">
       <div class="d-flex justify-content-between item-align-center">
-        <span class="badge text-bg-cSeaGreen p-2 rounded-pill">
+        <span class="badge text-bg-cSeaGreen h-50 w-50 my-1 rounded-pill">
           <i class="fa-regular fa-clock"></i>
           <%= @recipe.duration %>
           Minutes
