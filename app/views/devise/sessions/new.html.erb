@@ -17,7 +17,7 @@
                 input_html: { placeholder: "current-password", autocomplete: "current-password", class: "pill-input margin-0" } %>
           <!-----  remember me   ----->
           <% if devise_mapping.rememberable? %>
-            <div class="form-check mt-2 remember-me">
+            <div class="mt-2 remember-me">
               <%= f.check_box :remember_me, class: "form-check-input", id: "rememberMe" %>
               <%= f.label :remember_me, "Remember me", class: "form-check-label", for: "rememberMe" %>
             </div>
