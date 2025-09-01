@@ -10,6 +10,7 @@ class RecipesController < ApplicationController
     @scan = Scan.find(params[:scan_id])
 
     prompt = <<-PROMPT
+
 You are a precise recipe formatter. Output valid JSON only. Do not wrap in code fences or add prose.
 
 CONTEXT
@@ -20,47 +21,77 @@ CONTEXT
 
 TASK
 Create EXACTLY TWO real, sensible recipes that can be prepared within max_minutes using only the available_ingredients
-(plus common pantry staples: water, salt, black pepper, sugar, neutral/olive oil, butter, vinegar, stock/broth, flour, baking powder, soy sauce, lemon juice). Respect user_preference and strictly avoid allergies.
+(plus common pantry staples: water, salt, black pepper, sugar, neutral/olive oil, butter, vinegar, stock/broth, flour, baking powder, soy sauce, lemon juice).
+Respect user_preference and strictly avoid allergies.
 
-OUTPUT FORMAT — JSON array with TWO objects. Each object MUST have ONLY these keys:
-EXAMPLE SHAPE (structure only; do NOT copy values):
+INGREDIENT RULES (CRITICAL for UI scaling)
+- Provide both:
+  1) "ingredients": an OBJECT mapping ingredient names to amount strings
+  2) "base_servings": an INTEGER (number of people the recipe serves, e.g., 2 or 4)
+- Ingredient NAMES must be simple food items only (no adjectives at the start). Examples: "spaghetti", "garlic", "red onion", "banana".
+- Amount strings must use ONE of these formats only (never mix notations):
+  • Integer/decimal + unit: "2 cups", "2.5 cups", "250 g"
+  • Mixed number: "1 1/2 cups"
+  • Unicode fraction: "½ cup", "¼ cup", "¾ cup"
+  • Range: "2-3 cups", "1-2 cloves"
+  • Taste/approx: "to taste", "pinch"
+- Never produce invalid strings like "1/2 /2 cup" or duplicated slashes.
+- Optional short notes may go at the END in parentheses, e.g., "1 onion (finely chopped)".
+
+HTML RULES (STRICT)
+- "ingredients_html" MUST be exactly: "<ul>...<li>...</li>...</ul>" with ONLY <ul> and <li> tags. No attributes, classes, styles, or Markdown.
+- "directions_html" MUST be exactly: "<ol>...<li>...</li>...</ol>" with ONLY <ol> and <li> tags. No attributes, classes, styles, or Markdown.
+- "summary_html" MUST be exactly one "<p>…</p>".
+- Keep ingredients_html ≤ 800 characters and directions_html ≤ 1200 characters. Be concise.
+
+QUALITY RULES
+- Avoid trivial dishes unless ingredients strictly force it.
+- Prefer straightforward mains or substantial sides that fit the time limit.
+- Sentences must be clear and instructional. No storytelling.
+
+OUTPUT FORMAT
+Return ONE JSON array with TWO objects. Each object MUST have ONLY these keys:
+
 [
   {
-    "name": "Spaghetti aglio e olio",
-    "localized_name": "Espaguetis aglio e olio",
-    "cuisine": "Italian",
-    "diet": "",
-    "duration": 15,
-    "source_hint": "Wikipedia: Spaghetti aglio e olio",
-    "directions": "1) ...\n2) ...\n3) ..."
-    "ingredients": { "spaghetti" => "500g", "garlic" => "two cloves", ... }
+    "name": string,
+    "localized_name": string,
+    "cuisine": string,
+    "diet": string,
+    "duration": integer,
+    "source_hint": string,
+    "base_servings": integer,
+    "ingredients": { "spaghetti": "200 g", "garlic": "2 cloves", ... },
+    "ingredients_html": "<ul>...</ul>",
+    "directions": "1) ...\n2) ...\n3) ...",
+    "directions_html": "<ol><li>...</li><li>...</li><li>...</li></ol>",
+    "summary_html": "<p>...</p>"
   },
   {
-    "name": "Tomato bruschetta",
-    "localized_name": "Bruschetta de tomate",
-    "cuisine": "Italian",
-    "diet": "vegetarian",
-    "duration": 12,
-    "source_hint": "BBC Good Food: tomato bruschetta",
-    "directions": "1) ...\n2) ...\n3) ..."
-    "ingredients": { "tomatoes" => "8 tomatoes", "red onions" => "half an onion", ... }
+    "name": "...",
+    "localized_name": "...",
+    "cuisine": "...",
+    "diet": "...",
+    "duration": ...,
+    "source_hint": "...",
+    "base_servings": ...,
+    "ingredients": { "...": "..." },
+    "ingredients_html": "<ul>...</ul>",
+    "directions": "1) ...\n2) ...\n3) ...",
+    "directions_html": "<ol><li>...</li><li>...</li><li>...</li></ol>",
+    "summary_html": "<p>...</p>"
   }
 ]
 
-STRICT HTML RULES
-- ingredients_html MUST start with "<ul>" and end with "</ul>" and include only <li>…</li>.
-- directions MUST start with "<ol>" and end with "</ol>" and include only <li>…</li>.
-- summary_html MUST be exactly one "<p>…</p>".
-- No attributes, classes, styles, Markdown, or extra text outside the specified tags.
-- Keep ingredients_html ≤ 800 chars and directions (the HTML string) ≤ 1200 chars.
+VALIDATION
+- Use only available_ingredients + the allowed staples.
+- Keep duration ≤ max_minutes.
+- Conform to user_preference and exclude allergies.
+- Output MUST be valid JSON. Use ":" for JSON key/value separators (never "=>").
+- Return ONLY the JSON array with two recipe objects, nothing before or after.
 
-QUALITY RULES
-- Avoid trivial dishes (e.g., plain toast or cucumber sandwich) unless ingredients strictly force it.
-- Prefer straightforward mains or substantial sides that fit the time limit.
-- Clear, concise sentences; avoid superlatives and storytelling.
 
-RESPONSE
-Return ONLY the JSON array with two recipe objects, nothing before or after.
+
 PROMPT
 
     response = RubyLLM.chat.ask(prompt)
