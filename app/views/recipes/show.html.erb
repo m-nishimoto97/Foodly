@@ -44,4 +44,14 @@
       </div>
     </div>
     <%= link_to 'Back', :back, class: "btn btn-secondary my-3" %>
+    <h3 class="text-light">Ingredients</h3>
+    <div class="d-flex mt-3" style="overflow-y:auto">
+      <% @ingredients.each do |ingredient| %>
+        <div class="ingredient-container mx-4 h-25 flex-column">
+          <% prompt = "give me a realistic image of the FOOD #{ingredient}, only FOOD(fruits etc)." %>
+          <%= image_tag "https://image.pollinations.ai/prompt/#{ERB::Util.url_encode(prompt)}", class: "ingredient rounded-circle" %>
+          <p class="text-light text-truncate"><%= ingredient %></p>
+        </div>
+      <% end %>
+    </div>
   </div>

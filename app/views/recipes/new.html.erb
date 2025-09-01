@@ -16,7 +16,8 @@
                 <div class="d-flex ps-1 ingredient-container">
                   <%= f.check_box :name, { multiple: true, class: "input-none", id:"ingredient-#{ingredient.parameterize}", checked: true }, ingredient, nil %>
                   <label for="ingredient-<%= ingredient.parameterize %>" class="d-flex flex-column ingredient-label">
-                    <%= image_tag "https://image.pollinations.ai/prompt/#{ingredient}", class: "ingredient rounded-circle" %>
+                    <% prompt = "give me a realistic image of the FOOD #{ingredient}, only FOOD(fruits etc)." %>
+                    <%= image_tag "https://image.pollinations.ai/prompt/#{ERB::Util.url_encode(prompt)}", class: "ingredient rounded-circle" %>
                     <p class="text-center" data-add-ingredient-target="list"><%= ingredient %></p>
                   </label>
                 </div>
