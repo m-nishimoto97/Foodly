@@ -33,8 +33,8 @@ user3scan = Scan.create!(user_id: user3.id)
 puts "Scans created!"
 
 puts "Making recipes..."
-Scan.all.each do |scan|
-  Recipe.create!(
+
+Recipe.create!(
     name: "Spaghetti Aglio e Olio",
     directions: "Cook pasta. Fry garlic in olive oil. Toss with parsley and chili flakes.",
     duration: 20,
@@ -42,8 +42,7 @@ Scan.all.each do |scan|
     diet: "vegetarian",
     scan_id: scan.id
   )
-end
-
+  
 Recipe.create!(
   name: "Chicken Teriyaki Bowl",
   directions: "Cook chicken. Make teriyaki sauce. Serve with rice and steamed broccoli.",
@@ -122,15 +121,6 @@ Recipe.create!(
   duration: 25,
   cuisine: "Mexican",
   diet: "omnivore",
-  scan_id: user3scan.id
-)
-
-Recipe.create!(
-  name: "Vegan Curry",
-  directions: "Simmer lentils with coconut milk, tomatoes, and curry spices.",
-  duration: 40,
-  cuisine: "Indian",
-  diet: "vegan",
   scan_id: user3scan.id
 )
 
