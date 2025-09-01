@@ -42,7 +42,7 @@ Recipe.create!(
     diet: "vegetarian",
     scan_id: scan.id
   )
-  
+
 Recipe.create!(
   name: "Chicken Teriyaki Bowl",
   directions: "Cook chicken. Make teriyaki sauce. Serve with rice and steamed broccoli.",
@@ -86,15 +86,6 @@ Recipe.create!(
   cuisine: "Japanese",
   diet: "vegan",
   scan_id: user2scan.id
-)
-
-Recipe.create!(
-  name: "Quinoa Buddha Bowl",
-  directions: "Cook quinoa. Top with roasted veggies, avocado, and tahini dressing.",
-  duration: 35,
-  cuisine: "Fusion",
-  diet: "vegan",
-  scan_id: user3scan.id
 )
 
 Recipe.create!(
