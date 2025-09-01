@@ -59,6 +59,7 @@
     <!-- Search + Grid (Stimulus) -->
     <section class="fd-search-section" data-controller="fd-search" data-fd-search-item-selector-value=".fd-grid .col-6"
       data-fd-search-title-selector-value=".fd-recipe-title" data-fd-search-debounce-value="200">
+      <h2 class="fd-section-title-search">All Our Recipes</h2>
       <div class="fd-search-input">
         <%= form_with url: recipes_path,
                 method: :get,
@@ -85,8 +86,8 @@
               <img data-commons-image data-name="<%= j recipe.name %>" alt="<%= h recipe.name %>" loading="lazy"
                 class="fd-card-image rounded-circle">
             </div>
-            <div class="fd-card-recipe flex-column p-1">
-              <div class="fd-text-ink text-center fs-6">
+            <div class="fd-card-recipe flex-column">
+              <div class="fd-text-ink text-center fs-6 px-2">
                 <p class="my-1 fd-recipe-title">
                   <%= recipe.respond_to?(:title) ? recipe.title : recipe.name %>
                 </p>
