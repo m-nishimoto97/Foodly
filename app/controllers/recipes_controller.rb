@@ -30,6 +30,7 @@ EXAMPLE SHAPE (structure only; do NOT copy values):
     "duration": 15,
     "source_hint": "Wikipedia: Spaghetti aglio e olio",
     "directions": "1) ...\n2) ...\n3) ..."
+    "ingredients": { "spaghetti" => "500g", "garlic" => "two cloves", ... }
   },
   {
     "name": "Tomato bruschetta",
@@ -39,6 +40,7 @@ EXAMPLE SHAPE (structure only; do NOT copy values):
     "duration": 12,
     "source_hint": "BBC Good Food: tomato bruschetta",
     "directions": "1) ...\n2) ...\n3) ..."
+    "ingredients": { "tomatoes" => "8 tomatoes", "red onions" => "half an onion", ... }
   }
 ]
 STRICT HTML RULES
@@ -72,7 +74,7 @@ PROMPT
         diet: recipe_data["diet"],
         cuisine: recipe_data["cuisine"],
         directions: recipe_data["directions"],
-        ingredients: @scan.ingredients
+        ingredients: recipe_data["ingredients"]
       )
     end
 
@@ -81,7 +83,6 @@ PROMPT
 
   def show
     @recipe = Recipe.find(params[:id])
-    @ingredients = JSON.parse(@recipe.ingredients || "[]")
   end
 
   def index
