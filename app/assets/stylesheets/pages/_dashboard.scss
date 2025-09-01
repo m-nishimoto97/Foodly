@@ -108,7 +108,7 @@
   .fd-container {
     max-width: 980px;
     margin: 0 auto;
-    padding: 12px 12px 96px;
+    padding: 12px 12px 64px;
     background: radial-gradient(1200px 600px at 50% -20%, #1f2027 0%, #1f2027 60%, #1f2027 100%);
   }
 
@@ -213,6 +213,12 @@
     position: sticky;
   }
 
+  .fd-section-title-search {
+    color: var(--fd-muted);
+    font-size: 1.05rem;
+    margin: 24px 4px 10px;
+  }
+
   .fd-search-input {
     position: sticky;
     top: 10px;
@@ -225,7 +231,7 @@
     border-radius: 9999px;
     border: 1px solid rgba(255, 255, 255, .12);
     background: #11141a;
-    color: var(--fd-ink);
+    color: #F3B12F;
     outline: none;
 
     &::placeholder {
