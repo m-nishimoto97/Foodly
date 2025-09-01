@@ -55,12 +55,12 @@
     <h3 class="text-light">Ingredients</h3>
     <div class="d-flex mt-3" style="overflow-y:auto">
       <% @recipe.ingredients.each do |name, amount| %>
-        <div class="ingredient-container mx-4 h-25 flex-column">
+        <div class="ingredient-container mx-2 h-25 flex-column">
           <% prompt = "give me a realistic image of the FOOD #{name}, only FOOD(fruits etc)." %>
           <%= image_tag "https://image.pollinations.ai/prompt/#{ERB::Util.url_encode(prompt)}", class: "ingredient rounded-circle" %>
           <div class="recipe-ingredient-text">
-            <p class="text-light text-truncate mt-2 mb-0"><%= name.capitalize %></p>
-            <p class="text-light text-truncate"><%= amount %></p>
+            <p class="text-light mt-2 mb-0 recipe-name-text"><%= name.capitalize %></p>
+            <p class="recipe-amount-text"><%= amount %></p>
           </div>
         </div>
       <% end %>
