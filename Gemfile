@@ -56,6 +56,8 @@ gem 'acts_as_votable'
 gem 'ruby_llm'
 gem "faker", "~> 3.4"
 
+# Removed to not use AI for image generation
+# gem "solid_queue"
 
 group :development, :test do
   gem "dotenv-rails"
