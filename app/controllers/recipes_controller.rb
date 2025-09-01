@@ -63,7 +63,7 @@ PROMPT
 
     response = RubyLLM.chat.ask(prompt)
     json_str = response.content.gsub(/```json\n|```/, '')
-    # Raises an error if the AI response is weirdd
+    # Raises an error if the AI response is weird
     begin
       recipes = JSON.parse(json_str)
     rescue JSON::ParserError => e
