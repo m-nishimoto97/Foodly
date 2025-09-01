@@ -29,8 +29,13 @@
               <% href  = (recipe.scan_id ? scan_recipe_path(recipe.scan_id, recipe) : recipe_path(recipe)) %>
               <article class="fd-slide" data-title="<%= title %>">
                 <%= link_to href, class: "fd-slide-link", "aria-label": "Open #{title}" do %>
-                  <img data-commons-image data-name="<%= j title %>" data-width="600" alt="<%= h title %>"
-              class="fd-slide-img" />
+                  <% if recipe.photo.attached? %>
+                    <%= cl_image_tag recipe.photo.key, width: 600,
+                        crop: :fill,  class: "fd-slide-img" %>
+                  <% else %>
+                    <img data-commons-image data-name="<%= j title %>" data-width="600" alt="<%= h title %>"
+                      class="fd-slide-img" />
+                  <% end %>
                   <div class="fd-slide-caption">
                     <h3 class="fd-slide-title"><%= title %></h3>
                     <span class="fd-slide-hearts">♥ <%= likes %></span>
