@@ -11,14 +11,17 @@ class RecipesController < ApplicationController
 
     prompt = <<-PROMPT
 You are a precise recipe formatter. Output valid JSON only. Do not wrap in code fences or add prose.
+
 CONTEXT
 - available_ingredients: <#{params['recipe']['name'].join(', ')}>
 - max_minutes: <#{params['recipe']['duration']}>
 - user_preference: <#{current_user.preference}>
 - allergies: <#{current_user.allergy}>
+
 TASK
 Create EXACTLY TWO real, sensible recipes that can be prepared within max_minutes using only the available_ingredients
 (plus common pantry staples: water, salt, black pepper, sugar, neutral/olive oil, butter, vinegar, stock/broth, flour, baking powder, soy sauce, lemon juice). Respect user_preference and strictly avoid allergies.
+
 OUTPUT FORMAT — JSON array with TWO objects. Each object MUST have ONLY these keys:
 EXAMPLE SHAPE (structure only; do NOT copy values):
 [
@@ -43,23 +46,26 @@ EXAMPLE SHAPE (structure only; do NOT copy values):
     "ingredients": { "tomatoes" => "8 tomatoes", "red onions" => "half an onion", ... }
   }
 ]
+
 STRICT HTML RULES
 - ingredients_html MUST start with "<ul>" and end with "</ul>" and include only <li>…</li>.
 - directions MUST start with "<ol>" and end with "</ol>" and include only <li>…</li>.
 - summary_html MUST be exactly one "<p>…</p>".
 - No attributes, classes, styles, Markdown, or extra text outside the specified tags.
 - Keep ingredients_html ≤ 800 chars and directions (the HTML string) ≤ 1200 chars.
+
 QUALITY RULES
 - Avoid trivial dishes (e.g., plain toast or cucumber sandwich) unless ingredients strictly force it.
 - Prefer straightforward mains or substantial sides that fit the time limit.
 - Clear, concise sentences; avoid superlatives and storytelling.
+
 RESPONSE
 Return ONLY the JSON array with two recipe objects, nothing before or after.
 PROMPT
 
     response = RubyLLM.chat.ask(prompt)
     json_str = response.content.gsub(/```json\n|```/, '')
-    # Raises an error if the AI response is weird
+    # Raises an error if the AI response is weirdd
     begin
       recipes = JSON.parse(json_str)
     rescue JSON::ParserError => e

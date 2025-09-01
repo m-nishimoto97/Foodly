@@ -44,6 +44,6 @@ pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
 plugin :tmp_restart
 
 # Solid Queue
-# if ENV['RAILS_ENV'] == 'development'
-#   plugin :solid_queue
-# end
+if ENV['RAILS_ENV'] == 'development'
+  plugin :solid_queue
+end

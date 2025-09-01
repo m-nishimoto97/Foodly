@@ -1,11 +1,16 @@
 <div class="banner banner-overlay position-relative">
-  <img
+  <% if @recipe.photo.attached? %>
+    <%= cl_image_tag @recipe.photo.key,
+      crop: "fill", class: "banner-img"
+      %>
+  <% else %>
+    <img
     data-commons-image
     data-name="<%= j @recipe.name %>"
     alt="<%= h @recipe.name %>"
     loading="lazy"
     class="banner-img">
-
+  <% end %>
     <%= link_to :back, class: "btn btn-secondary banner-back-button" do %>
       <i class="fa-solid fa-arrow-left fa-lg"></i>
     <% end %>
