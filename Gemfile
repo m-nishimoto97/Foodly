@@ -54,6 +54,8 @@ gem "cloudinary"
 gem 'acts_as_favoritor'
 gem 'acts_as_votable'
 gem 'ruby_llm'
+# Removed to not use AI for image generation
+# gem "solid_queue"
 
 group :development, :test do
   gem "dotenv-rails"
