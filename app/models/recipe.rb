@@ -6,8 +6,7 @@ class Recipe < ApplicationRecord
   has_one :user, through: :scan
   has_one_attached :photo
   validates :name, :duration, presence: true
-  # Removed to not try to use AI to generate recipe image
-  # after_commit :async_update, on: [:create]
+  after_commit :async_update, on: [:create]
 
   def average_rating
     reviews.average(:rating)
@@ -16,7 +15,6 @@ class Recipe < ApplicationRecord
   private
 
   def async_update
-    # Removed to not generate the AI recipe image
-    # ImageGeneratorJob.perform_later(self.id)
+    ImageGeneratorJob.perform_later(self.id)
   end
 end

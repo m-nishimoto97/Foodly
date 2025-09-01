@@ -1,60 +1,51 @@
 <div id="fd-dashboard">
   <header class="fd-topbar" data-controller="profile-menu" data-profile-menu-outside-value=".fd-topbar">
     <div class="fd-logo">Foodly</div>
-
     <!-- Perfil -->
     <button class="fd-profile-btn" aria-haspopup="true" aria-expanded="false" data-profile-menu-target="button"
       data-action="click->profile-menu#toggle">
       <%= image_tag "logo.png", class: "fd-avatar", alt: "User avatar" %>
     </button>
-
     <nav class="fd-dropdown" aria-label="Profile menu" data-profile-menu-target="menu">
       <%= link_to "Config", edit_user_registration_path %>
       <%= link_to "Edit",   edit_user_registration_path %>
       <%= link_to "Log out", destroy_user_session_path, data: {turbo_method: :delete} %>
     </nav>
   </header>
-
   <main class="fd-container">
     <% if @top_recipes.present? %>
-    <section class="fd-carousel-section" aria-label="Most liked recipes">
-      <h2 class="fd-section-title">Most liked recipes</h2>
-
-      <div class="fd-carousel" data-controller="fd-carousel">
-        <button class="fd-car-arrow fd-left" aria-label="Previous" data-fd-carousel-target="prev"
+      <section class="fd-carousel-section" aria-label="Most liked recipes">
+        <h2 class="fd-section-title">Most liked recipes</h2>
+        <div class="fd-carousel" data-controller="fd-carousel">
+          <button class="fd-car-arrow fd-left" aria-label="Previous" data-fd-carousel-target="prev"
           data-action="click->fd-carousel#prev">
-          &#10094;
-        </button>
-
-        <div class="fd-car-track" tabindex="0" data-fd-carousel-target="track"
+            &#10094;
+          </button>
+          <div class="fd-car-track" tabindex="0" data-fd-carousel-target="track"
           data-action="keydown->fd-carousel#keydown">
-          <% @top_recipes.each do |recipe| %>
-          <% title = recipe.respond_to?(:title) ? recipe.title : recipe.name %>
-          <% likes = (recipe.try(:likes_count) || recipe['likes_count'] || 0).to_i %>
-          <% href  = (recipe.scan_id ? scan_recipe_path(recipe.scan_id, recipe) : recipe_path(recipe)) %>
-
-          <article class="fd-slide" data-title="<%= title %>">
-            <%= link_to href, class: "fd-slide-link", "aria-label": "Open #{title}" do %>
-            <img data-commons-image data-name="<%= j title %>" data-width="600" alt="<%= h title %>"
+            <% @top_recipes.each do |recipe| %>
+              <% title = recipe.respond_to?(:title) ? recipe.title : recipe.name %>
+              <% likes = (recipe.try(:likes_count) || recipe['likes_count'] || 0).to_i %>
+              <% href  = (recipe.scan_id ? scan_recipe_path(recipe.scan_id, recipe) : recipe_path(recipe)) %>
+              <article class="fd-slide" data-title="<%= title %>">
+                <%= link_to href, class: "fd-slide-link", "aria-label": "Open #{title}" do %>
+                  <img data-commons-image data-name="<%= j title %>" data-width="600" alt="<%= h title %>"
               class="fd-slide-img" />
-
-            <div class="fd-slide-caption">
-              <h3 class="fd-slide-title"><%= title %></h3>
-              <span class="fd-slide-hearts">♥ <%= likes %></span>
-            </div>
+                  <div class="fd-slide-caption">
+                    <h3 class="fd-slide-title"><%= title %></h3>
+                    <span class="fd-slide-hearts">♥ <%= likes %></span>
+                  </div>
+                <% end %>
+              </article>
             <% end %>
-          </article>
-          <% end %>
-        </div>
-
-        <button class="fd-car-arrow fd-right" aria-label="Next" data-fd-carousel-target="next"
+          </div>
+          <button class="fd-car-arrow fd-right" aria-label="Next" data-fd-carousel-target="next"
           data-action="click->fd-carousel#next">
-          &#10095;
-        </button>
-      </div>
-    </section>
+            &#10095;
+          </button>
+        </div>
+      </section>
     <% end %>
-
     <!-- Search -->
     <!-- Search + Grid (Stimulus) -->
     <section class="fd-search-section" data-controller="fd-search" data-fd-search-item-selector-value=".fd-grid .col-6"
@@ -66,7 +57,7 @@
                 local: true,
                 role: "search",
                 data: { action: "submit->fd-search#prevent" } do |f| %>
-        <%= f.search_field :query,
+          <%= f.search_field :query,
           placeholder: "Search for specifics…",
           class: "fd-pill",
           id: "fdSearchInput",
@@ -76,60 +67,59 @@
         <% end %>
       </div>
       <% if @recipes.present? %>
-      <section class="fd-grid" id="fdRecipeGrid" aria-label="Recipes">
-        <div class="row g-2 mt-3">
-          <% @recipes.each_with_index do |recipe, index| %>
-          <div class="col-6 fd-text-ink mb-1 mt-2 <%= index.even? ? "pe-2" : "ps-2" %>">
-            <%= link_to (recipe.scan_id ? scan_recipe_path(recipe.scan_id, recipe) : recipe_path(recipe)),
+        <section class="fd-grid" id="fdRecipeGrid" aria-label="Recipes">
+          <div class="row g-2 mt-3">
+            <% @recipes.each_with_index do |recipe, index| %>
+              <div class="col-6 fd-text-ink mb-1 mt-2 <%= index.even? ? "pe-2" : "ps-2" %>">
+                <%= link_to (recipe.scan_id ? scan_recipe_path(recipe.scan_id, recipe) : recipe_path(recipe)),
                         class: "text-decoration-none fd-card-link" do %>
-            <div class="position-relative">
-              <img data-commons-image data-name="<%= j recipe.name %>" alt="<%= h recipe.name %>" loading="lazy"
-                class="fd-card-image rounded-circle">
-            </div>
-            <div class="fd-card-recipe flex-column">
-              <div class="fd-text-ink text-center fs-6 px-2">
-                <p class="my-1 fd-recipe-title">
-                  <%= recipe.respond_to?(:title) ? recipe.title : recipe.name %>
-                </p>
-                <div>
-                  <span class="fd-duration">
-                    <i class="fa-regular fa-clock"></i>
-                    <%= recipe.try(:duration) || "-" %> Min
-                  </span>
-                </div>
+                  <div class="position-relative">
+                    <% if recipe.photo.attached? %>
+                      <%= cl_image_tag recipe.photo.key, height: 300, width: 400,
+                        crop: :fill,  class: "show-card-image rounded-circle" %>
+                    <% else %>
+                      <img data-commons-image data-name="<%= j recipe.name %>" alt="<%= h recipe.name %>" loading="lazy"
+                        class="fd-card-image rounded-circle">
+                    <% end %>
+                  </div>
+                  <div class="fd-card-recipe flex-column">
+                    <div class="fd-text-ink text-center fs-6 px-2">
+                      <p class="my-1 fd-recipe-title">
+                        <%= recipe.respond_to?(:title) ? recipe.title : recipe.name %>
+                      </p>
+                      <div>
+                        <span class="fd-duration">
+                          <i class="fa-regular fa-clock"></i>
+                          <%= recipe.try(:duration) || "-" %> Min
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                <% end %>
               </div>
-            </div>
             <% end %>
           </div>
-          <% end %>
-        </div>
-      </section>
-
-      <!-- Estado vacío cuando el filtro no encuentra nada -->
-      <div data-fd-search-target="empty" class="d-none my-3 fd-text-muted">No recipes found.</div>
+        </section>
+        <!-- Estado vacío cuando el filtro no encuentra nada -->
+        <div data-fd-search-target="empty" class="d-none my-3 fd-text-muted">No recipes found.</div>
       <% else %>
-      <em class="fd-text-muted">Sorry, no recipes found.</em>
+        <em class="fd-text-muted">Sorry, no recipes found.</em>
       <% end %>
     </section>
-
   </main>
-
   <!-- Bottombar -->
   <nav class="fd-bottombar" aria-label="Primary">
     <%= link_to root_path, class: "fd-btn", id: "fdHomeBtn", "aria-label": "Home" do %>
-    <i class="fa-solid fa-house"></i>
+      <i class="fa-solid fa-house"></i>
     <% end %>
-
     <%= link_to "/scans/new", class: "fd-btn fd-btn-accent", id: "fdScanBtn", "aria-label": "Scan / New" do %>
-    <i class="fa-solid fa-camera"></i>
+      <i class="fa-solid fa-camera"></i>
     <% end %>
-
     <%= link_to recipes_path, class: "fd-btn", id: "fdRecipesBtn", "aria-label": "Recipes" do %>
-    <i class="fa-solid fa-book"></i>
+      <i class="fa-solid fa-book"></i>
     <% end %>
   </nav>
 </div>
-
 <style>
   #floatingButton {
     display: none;
