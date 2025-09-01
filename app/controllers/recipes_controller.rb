@@ -79,10 +79,10 @@ PROMPT
     redirect_to scan_path(@scan)
   end
 
-  def show
-    @recipe = Recipe.find(params[:id])
-    @ingredients = JSON.parse(@recipe.ingredients || "[]")
-  end
+   def show
+     @recipe = Recipe.find(params[:id])
+   end
+
 
   def index
     recipes = current_user.recipes
