@@ -1,4 +1,4 @@
-<div class="banner banner-overlay">
+<div class="banner banner-overlay position-relative">
   <% if @recipe.photo.attached? %>
     <%= cl_image_tag @recipe.photo.key,
       crop: "fill", class: "banner-img"
@@ -10,9 +10,12 @@
     alt="<%= h @recipe.name %>"
     loading="lazy"
     class="banner-img">
+  <% end %>
+    <%= link_to :back, class: "btn btn-secondary banner-back-button" do %>
+      <i class="fa-solid fa-arrow-left fa-lg"></i>
     <% end %>
   </div>
-  <div class="container mt-3 pb-5">
+  <div class="container mt-3 mb-5">
     <div class="row">
       <div class="col-12">
         <div class="d-flex justify-content-between item-align-center">
@@ -49,14 +52,16 @@
         </div>
       </div>
     </div>
-    <%= link_to 'Back', :back, class: "btn btn-secondary my-3" %>
     <h3 class="text-light">Ingredients</h3>
     <div class="d-flex mt-3" style="overflow-y:auto">
-      <% @ingredients.each do |ingredient| %>
+      <% @recipe.ingredients.each do |name, amount| %>
         <div class="ingredient-container mx-4 h-25 flex-column">
-          <% prompt = "give me a realistic image of the FOOD #{ingredient}, only FOOD(fruits etc)." %>
+          <% prompt = "give me a realistic image of the FOOD #{name}, only FOOD(fruits etc)." %>
           <%= image_tag "https://image.pollinations.ai/prompt/#{ERB::Util.url_encode(prompt)}", class: "ingredient rounded-circle" %>
-          <p class="text-light text-truncate"><%= ingredient %></p>
+          <div class="recipe-ingredient-text">
+            <p class="text-light text-truncate mt-2 mb-0"><%= name.capitalize %></p>
+            <p class="text-light text-truncate"><%= amount %></p>
+          </div>
         </div>
       <% end %>
     </div>

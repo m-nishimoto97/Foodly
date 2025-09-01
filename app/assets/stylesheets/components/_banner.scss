@@ -41,3 +41,10 @@
   background: linear-gradient(rgba(146,146,146,0), rgba(31,32,39,1) 99%);
   pointer-events: none; /* doesnt block clicks */
 }
+
+.banner-back-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: rgba(0, 0, 0, 0.3);
+}
