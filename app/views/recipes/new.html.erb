@@ -13,9 +13,9 @@
           <div class="d-flex flex-wrap" data-controller="add-ingredient">
             <div data-add-ingredient-target="container" class="d-flex align-items-center justify-content-center flex-wrap gap-2">
               <% @ingredients.each do |ingredient| %>
-                <div class="d-flex ps-1 ingredient-container">
+                <div class="d-flex mx-2 ingredient-container">
                   <%= f.check_box :name, { multiple: true, class: "input-none", id:"ingredient-#{ingredient.parameterize}", checked: true }, ingredient, nil %>
-                  <label for="ingredient-<%= ingredient.parameterize %>" class="d-flex flex-column ingredient-label">
+                  <label for="ingredient-<%= ingredient.parameterize %>" class="d-flex flex-column ingredient-label align-items-center" style="min-height: 130px;">
                     <% prompt = "give me a realistic image of the FOOD #{ingredient}, only FOOD(fruits etc)." %>
                     <%= image_tag "https://image.pollinations.ai/prompt/#{ERB::Util.url_encode(prompt)}", class: "ingredient rounded-circle" %>
                     <p class="text-center" data-add-ingredient-target="list"><%= ingredient %></p>
