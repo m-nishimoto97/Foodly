@@ -1,0 +1,133 @@
+<h2 class="bg-dark text-light  pt-3 px-3 pb-4 d-flex align-items-center gap-2 ">
+  <i class="card bg-dark text-light border-0 shadow-sm fa-solid fa-sliders"></i>
+  Filters
+</h2>
+
+<!-- ONE SINGLE FORM: submit to dashboard so results render on the dashboard -->
+<%= form_with url: dashboard_path, method: :get, local: true, class: "card bg-dark border-0 shadow-sm" do %>
+  <div class="card-body">
+    <div class="row g-3">
+
+      <div class="col-12">
+        <%= label_tag :query, "Search by name", class: "form-label text-secondary small mb-1" %>
+        <%= text_field_tag :query, params[:query],
+              class: "form-control form-control-lg bg-black text-light border-secondary",
+              placeholder: "Spaghetti..." %>
+      </div>
+
+      <div class="col-12 col-md-6">
+        <%= label_tag :ingredient, "Ingredient", class: "form-label text-secondary small mb-1" %>
+        <%= text_field_tag :ingredient, params[:ingredient],
+              class: "form-control bg-black text-light border-secondary",
+              placeholder: "garlic, onion…" %>
+      </div>
+
+      <div class="col-12 col-md-6">
+        <%= label_tag :cuisine, "Cuisine", class: "form-label text-secondary small mb-1" %>
+        <%= select_tag :cuisine,
+              options_for_select(%w[Italian Japanese Mexican Indian Thai Greek Spanish French], params[:cuisine]),
+              include_blank: "Any",
+              class: "form-select bg-black text-light border-secondary" %>
+      </div>
+
+      <div class="col-12 col-md-6">
+        <%= label_tag :method, "Cooking method", class: "form-label text-secondary small mb-1" %>
+        <%= select_tag :method,
+              options_for_select(%w[grilled baked steamed fried raw boiled], params[:method]),
+              include_blank: "Any",
+              class: "form-select bg-black text-light border-secondary" %>
+      </div>
+
+      <div class="col-12 col-md-6">
+        <%= label_tag :diet, "Diet", class: "form-label text-secondary small mb-1" %>
+        <%= select_tag :diet,
+              options_for_select(%w[vegan vegetarian omnivore keto paleo pescatarian], params[:diet]),
+              include_blank: "Any",
+              class: "form-select bg-black text-light border-secondary" %>
+      </div>
+
+      <div class="col-12 col-md-6">
+        <%= label_tag :meal_type, "Meal type", class: "form-label text-secondary small mb-1" %>
+        <%= select_tag :meal_type,
+              options_for_select(%w[breakfast lunch dinner snack], params[:meal_type]),
+              include_blank: "Any",
+              class: "form-select bg-black text-light border-secondary" %>
+      </div>
+
+      <div class="col-12 col-md-6">
+        <%= label_tag :difficulty, "Difficulty", class: "form-label text-secondary small mb-1" %>
+        <%= select_tag :difficulty,
+              options_for_select([["Easy",1],["Medium",2],["Hard",3]], params[:difficulty]),
+              include_blank: "Any",
+              class: "form-select bg-black text-light border-secondary" %>
+      </div>
+
+      <div class="col-6 col-md-4">
+        <%= label_tag :max_minutes, "≤ Minutes", class: "form-label text-secondary small mb-1" %>
+        <%= number_field_tag :max_minutes, params[:max_minutes], min: 1,
+              class: "form-control bg-black text-light border-secondary" %>
+      </div>
+
+      <div class="col-6 col-md-4">
+        <%= label_tag :max_kcal, "≤ Calories/serv", class: "form-label text-secondary small mb-1" %>
+        <%= number_field_tag :max_kcal, params[:max_kcal], min: 0,
+              class: "form-control bg-black text-light border-secondary" %>
+      </div>
+
+      <div class="col-12 col-md-4">
+        <%= label_tag :max_price_cents, "≤ Price/serv (¢)", class: "form-label text-secondary small mb-1" %>
+        <%= number_field_tag :max_price_cents, params[:max_price_cents], min: 0, step: 10,
+              class: "form-control bg-black text-light border-secondary" %>
+      </div>
+
+      <div class="col-12 col-md-6">
+        <%= label_tag :mood, "Mood", class: "form-label text-secondary small mb-1" %>
+        <%= text_field_tag :mood, params[:mood], placeholder: "comfort, party, romantic",
+              class: "form-control bg-black text-light border-secondary" %>
+      </div>
+
+      <div class="col-12 col-md-3 mt-4"
+     data-controller="filter-dashboard">
+
+  <input type="hidden"
+         name="seasonal"
+         value="<%= params[:seasonal].present? ? '1' : '' %>"
+         data-filter-dashboard-target="seasonalInput">
+
+  <button type="button"
+          class="btn w-100 <%= params[:seasonal].present? ? 'btn-success' : 'btn-outline-secondary' %>"
+          data-filter-dashboard-target="seasonalButton"
+          data-action="click->filter-dashboard#toggleSeasonal"
+          aria-pressed="<%= params[:seasonal].present? ? 'true' : 'false' %>">
+    <i class="fa-solid fa-leaf me-1"></i>
+    Seasonal only
+  </button>
+</div>
+
+
+</div>
+
+
+
+      <div class="col-12 col-md-3">
+        <%= label_tag :sort, "Sort by", class: "form-label text-secondary small mb-1" %>
+        <%= select_tag :sort,
+              options_for_select(
+                [["Newest","newest"],["Oldest","oldest"],["Lowest calories","low_cal"],
+                 ["Fastest","fastest"],["Lowest price","low_price"]],
+                params[:sort]
+              ),
+              include_blank: "Default",
+              class: "form-select bg-black text-light border-secondary" %>
+      </div>
+
+      <div class="col-12 d-flex justify-content-between gap-2 mt-2">
+        <!-- Clear: resets filters on this page -->
+        <%= link_to "Clear", filters_recipes_path, class: "btn btn-outline-secondary" %>
+        <!-- Apply: submits to /dashboard with all params -->
+        <%= submit_tag "Apply", class: "btn btn-primary px-4" %>
+      </div>
+
+    </div>
+  </div>
+<% end %>

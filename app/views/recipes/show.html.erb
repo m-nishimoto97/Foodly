@@ -24,6 +24,10 @@
             <%= @recipe.duration %>
             Minutes
           </span>
+         <span class="badge bg-success">
+  <%= @recipe.calories_per_serving.present? ? "#{@recipe.calories_per_serving} kcal/serv" : "kcal —" %>
+</span>
+
           <div class="d-flex">
             <div id="like_button_<%= @recipe.id %>">
               <%= render "like_button", recipe: @recipe %>
