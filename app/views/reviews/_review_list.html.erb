@@ -1,5 +1,8 @@
 <% reviews.each do |review| %>
   <div class="review mb-2 p-3 bg-cGray rounded-3 position-relative">
+    <% if review.photo.attached? %>
+      <%= cl_image_tag review.photo.key, width: 100, height: 100, crop: :limit %>
+    <% end %>
     <div class="d-flex justify-content-between">
       <strong class="text-cYellow"><%= review.user.username %></strong>
       <div>
