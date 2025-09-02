@@ -26,7 +26,7 @@ export default class extends Controller {
     node.innerHTML = `
       <input type="checkbox" multiple checked= "true" class="input-none" id="${id}" name="recipe[name][]" value="${value}">
       <label for="${id}" class="ingredient-container d-flex flex-column align-items-center ingredient-label">
-        <img src="https://image.pollinations.ai/prompt/${value}" class="ingredient rounded-circle">
+        <img src="https://image.pollinations.ai/prompt/only give me realistic image of FOOD, this ${value}" class="ingredient rounded-circle">
         <p data-add-ingredient-target="list" class="text-center">${value}</p>
       </label>
     `

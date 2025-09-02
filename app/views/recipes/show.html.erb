@@ -10,7 +10,7 @@
     alt="<%= h @recipe.name %>"
     loading="lazy"
     class="banner-img">
-  <% end %>
+    <% end %>
     <%= link_to :back, class: "btn btn-secondary banner-back-button" do %>
       <i class="fa-solid fa-arrow-left fa-lg"></i>
     <% end %>
@@ -63,47 +63,46 @@
       </div>
     </div>
     <br>
-  <section
+    <section
   data-controller="servings"
   data-servings-base-value="<%= @recipe.try(:base_servings) || 2 %>"
   data-servings-hint-selector-value="#servingHint">
-
-  <h3 class="text-light d-flex align-items-center gap-2">
-    Ingredients
-    <span class="fd-text-muted small" id="servingHint"></span>
-  </h3>
-
-  <!-- RANGE SLIDER -->
-  <div class="d-flex align-items-center gap-3 my-2">
-    <label class="text-light m-0" for="servingsRange">Servings</label>
-    <input type="range"
+      <h3 class="text-light d-flex align-items-center gap-2">
+        Ingredients
+        <span class="fd-text-muted small" id="servingHint"></span>
+      </h3>
+      <!-- RANGE SLIDER -->
+      <div class="d-flex align-items-center gap-3 my-2">
+        <label class="text-light m-0" for="servingsRange">Servings</label>
+        <input type="range"
            id="servingsRange"
            class="fd-range"
            min="1" max="20" step="1"
            value="<%= @recipe.try(:base_servings) || 2 %>"
            data-servings-target="input"
            data-action="input->servings#update change->servings#update">
-    <output class="text-light fw-semibold" data-servings-target="output">
-      <%= @recipe.try(:base_servings) || 2 %>
-    </output>
-  </div>
-
-  <!-- INGREDIENTS (your API hash: name => amount string) -->
-  <div class="d-flex mt-3" style="overflow-y:auto">
-    <% @recipe.ingredients.each do |name, amount| %>
-      <div class="ingredient-container mx-4 h-25 flex-column">
-        <% prompt = "give me a realistic image of the FOOD #{name}, only FOOD(fruits etc)." %>
-        <%= image_tag "https://image.pollinations.ai/prompt/#{ERB::Util.url_encode(prompt)}",
+        <output class="text-light fw-semibold" data-servings-target="output">
+          <%= @recipe.try(:base_servings) || 2 %>
+        </output>
+      </div>
+      <!-- INGREDIENTS (your API hash: name => amount string) -->
+      <div class="d-flex mt-3" style="overflow-y:auto">
+        <% @recipe.ingredients.each do |name, amount| %>
+          <div class="ingredient-container mx-4 h-25 flex-column">
+            <% prompt = "give me a realistic image of the FOOD #{name}, only FOOD(fruits etc)." %>
+            <%= image_tag "https://image.pollinations.ai/prompt/#{ERB::Util.url_encode(prompt)}",
                       class: "ingredient rounded-circle", alt: name %>
-
-        <div class="recipe-ingredient-text">
-          <p class="text-light text-truncate mt-2 mb-0"><%= name.to_s.capitalize %></p>
-          <p class="text-light text-truncate"
+            <div class="recipe-ingredient-text">
+              <p class="text-light text-truncate mt-2 mb-0"><%= name.to_s.capitalize %></p>
+              <p class="text-light text-truncate"
              data-servings-target="amount"
              data-name="<%= name %>"
              data-base-amount="<%= amount %>"><%= amount %></p>
-        </div>
+            </div>
+          </div>
+        <% end %>
       </div>
+
     <% end %>
   </div>
 </section>
@@ -114,4 +113,5 @@
 
 
     </div>
+
 </div>
