@@ -18,8 +18,14 @@
         </div>
 
         <!-- Submit button -->
-        <div class="text-center" style="display: none;" data-scan-new-target="photoSubmitButton">
+        <div class="text-center my-4" style="display: none;" data-scan-new-target="photoSubmitButton">
           <%= f.button :submit, "Upload Scan", class: "btn rounded-pill photo-submit-button" %>
+        </div>
+
+      <!-- Redo Photo Button -->
+        <div class="text-center">
+          <%= f.input :photo, as: :file, input_html: { accept: "image/*", capture: "camera", id: "redo-photo-input", style: "display: none;", data: { action: "change->scan-new#previewPhoto" }}, label: false %>
+          <%= label_tag "redo-photo-input", "Redo", class: "btn rounded-pill photo-submit-button mt-2 w-auto", data: { scan_new_target: "redoPhotoButton", action: "click->scan-new#redoPhoto" }, style: "display: none;" %>
         </div>
       <% end %>
   </div>
