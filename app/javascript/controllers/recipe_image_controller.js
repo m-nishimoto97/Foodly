@@ -1,10 +1,3 @@
-import { Controller } from "@hotwired/stimulus"
-export default class extends Controller {
-  connect() {
-    // listo para tus imágenes; por ahora vacío para no romper carga
-  }
-}
-
 (function(){
   const TTL = 30*24*60*60*1000, WIDTHS=[400,800,1200]
   const key=(n,w)=>`commons:${w}:${n.toLowerCase()}`

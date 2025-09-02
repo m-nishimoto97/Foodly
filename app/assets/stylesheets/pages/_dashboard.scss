@@ -292,6 +292,21 @@
     color: var(--fd-muted);
     font-weight: 600;
   }
+  /* ===== Calories Pill ===== */
+   .fd-calories {
+  display: inline-block;
+  padding: 2px 10px;
+  font-size: 0.75rem;          /* small text */
+  font-weight: 500;
+  color: #fff;                 /* white text */
+  background-color: #28a745;   /* green background (Bootstrap success green) */
+  border-radius: 9999px;       /* makes it a pill */
+  line-height: 1.2;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* subtle depth */
+  margin-top: 6px;             /* spacing from content above */
+  }
+
 
   /* Empty */
   .fd-empty {
