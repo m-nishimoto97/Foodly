@@ -56,6 +56,7 @@ gem 'acts_as_votable'
 gem 'ruby_llm'
 gem "faker", "~> 3.4"
 gem "solid_queue"
+# gem "activestorage-cloudinary-service"
 
 group :development, :test do
   gem "dotenv-rails"
