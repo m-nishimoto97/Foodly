@@ -1,0 +1,44 @@
+<div id="schedulerrecipe" class="row">
+  <% if recipes.any? %>
+    <div class="d-flex pt-2" style="overflow-y:auto;">
+      <% recipes.each do |recipe| %>
+        <div class="text-cWhite mb-1 mt-2 p-2">
+          <div class="card-recipe flex-column position-relative px-2">
+            <% if recipe.photo.attached? %>
+              <%= cl_image_tag recipe.photo.key,
+              aspect_ratio: "1.0",
+              crop: "fill", class: "card-image rounded-circle" %>
+            <% else %>
+              <img
+              data-commons-image
+              data-name="<%= j recipe.name %>"
+              alt="<%= h recipe.name %>"
+              loading="lazy"
+              class="card-image rounded-circle">
+              <% end %>
+              <div class="text-cwhite text-center fs-6">
+                <p class="my-1"><%= recipe.name %></p>
+              </div>
+              <span class="duration-font">
+                <i class="fa-regular fa-clock"></i>
+                <%= recipe.duration %> min
+              </span>
+              <div class="fs-6 favorite-style">
+                <% if recipe.favorited_by?(current_user) %>
+                  <i class="fa-solid fa-bookmark fa-lg mb-2"></i>
+                <% end %>
+              </div>
+              <% if recipe.get_likes.size > 0 %>
+                <div class="like-style fs-6">
+                  <i class="fa-solid fa-heart fa-lg"></i>
+                  <span class="badge text-cWhite p-0"><%= recipe.get_likes.size %></span>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <em class="text-cWhite">Sorry, no recipes found.</em>
+    <% end %>
+  </div>

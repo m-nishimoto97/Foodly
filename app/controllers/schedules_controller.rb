@@ -3,6 +3,16 @@ class SchedulesController < ApplicationController
     @schedule = current_user.schedules.new
     @schedules = current_user.schedules.includes(:recipe)
     @start_date = params[:start_date] ? Date.parse(params[:start_date]) : Date.today
+
+    @recipes = if params[:query].present?
+                current_user.recipes.where("name ILIKE ?", "%#{params[:query]}%")
+              else
+                current_user.recipes
+              end
+   respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   def create
