@@ -4,6 +4,7 @@
       <%= b.radio_button + b.label %>
     <% end %>
     <%= f.input :comment %>
+    <%= f.input :photo, as: :file, label: "Upload a photo (optional)" %>
     <%= f.hidden_field :user_id, value: current_user.id %>
     <%= f.submit "Add Review", class: "btn btn-cYellow w-100" %>
   <% end %>
