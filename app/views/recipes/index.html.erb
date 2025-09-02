@@ -11,11 +11,6 @@
         %>
     <% end %>
   </div>
-  <%= month_calendar events: @events, attribute: :start_time do |date, events| %>
-    <div class="week">
-      <strong><%= date.day %></strong>
-    </div>
-  <% end %>
   <div id="recipes" class="row">
     <% unless params[:query].present? %>
       <h2 class="text-cWhite mt-5 mb-4">Favorites</h2>
