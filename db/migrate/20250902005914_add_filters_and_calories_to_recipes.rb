@@ -1,5 +1,5 @@
 # db/migrate/20250902_add_extended_fields_to_recipes.rb
-class AddExtendedFieldsToRecipes < ActiveRecord::Migration[7.1]
+class AddFiltersAndCaloriesToRecipes < ActiveRecord::Migration[7.1]
   def change
     change_table :recipes, bulk: true do |t|
       t.string  :localized_name
