@@ -2,6 +2,7 @@ class SchedulesController < ApplicationController
   def show
     @schedule = current_user.schedules.new
     @schedules = current_user.schedules.includes(:recipe)
+    @start_date = params[:start_date] ? Date.parse(params[:start_date]) : Date.today
   end
 
   def create
