@@ -2,9 +2,6 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static targets = ["photoButton", "previewImage", "takePhotoText", "checkPhotoText", "photoSubmitButton", "redoPhotoButton"]
-  connect() {
-    console.log("It connected!")
-  }
 
   redoPhoto() {
     const redoInput = this.redoPhotoButtonTarget.previousElementSibling; // the hidden file input
@@ -30,6 +27,5 @@ export default class extends Controller {
 
       reader.readAsDataURL(input.files[0])
     }
-    console.log("you changed me!")
   }
 }

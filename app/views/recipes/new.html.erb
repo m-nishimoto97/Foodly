@@ -1,9 +1,11 @@
-<div class="container mt-5 text-light ">
+<div class="container text-light" >
   <h1 class="text-center">Ingredients</h1>
   <div class="mt-4">
     <div class="p-0 mx-1 gap-4">
-      <div class="d-flex flex-wrap align-items-center">
-        <%= simple_form_for([@scan, @recipe]) do |f| %>
+      <div class="d-flex flex-wrap align-items-center" data-controller="load">
+        <%= simple_form_for([@scan, @recipe], html: { data: { action: "submit->load#addLoad" } }) do |f| %>
+          <!-- Spinner -->
+          <%= render "spinner" %>
           <style>
             .ingredient {
               justify-content: space-between;
