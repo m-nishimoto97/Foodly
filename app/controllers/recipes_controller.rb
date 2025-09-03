@@ -144,7 +144,7 @@ PROMPT
       difficulty:               rd["difficulty"],
       price_per_serving_cents:  rd["price_per_serving_cents"],
       best_season_start:        rd["best_season_start"],
-      best_season_end:          rd["best_season_end"],
+      best_season_end:          rd["best_season_end"]
     }.compact
 
     # Checks what recipes are similar
