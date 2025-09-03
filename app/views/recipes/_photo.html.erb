@@ -1,0 +1,13 @@
+<div id="recipe-photo-<%= recipe.id %>">
+<% if recipe.photo.attached? %>
+     <%= image_tag(
+           url_for(recipe.photo),
+           class: "show-card-image rounded-circle",
+           width: 400,
+           height: 300,
+           alt: recipe.name
+         ) %>
+   <% else %>
+     <div class="photo-skeleton rounded-circle" aria-hidden="true"></div>
+   <% end %>
+</div>

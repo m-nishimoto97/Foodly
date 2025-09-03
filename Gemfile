@@ -58,6 +58,7 @@ gem "faker", "~> 3.4"
 gem "solid_queue"
 gem 'neighbor'
 gem "simple_calendar"
+gem "solid_cable"
 
 # gem "activestorage-cloudinary-service"
 

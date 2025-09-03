@@ -166,7 +166,7 @@ PROMPT
     end
 
     begin
-        ImageGeneratorJob.perform_now(recipe.id)
+        ImageGeneratorJob.perform_later(recipe.id)
       rescue => e
         Rails.logger.error("[Recipes#create] Image attach failed for recipe=#{recipe.id} #{e.class}: #{e.message}")
         # We don't raise; UI will just show the placeholder if something went wrong.
