@@ -22,7 +22,7 @@ CONTEXT
 - allergies: <#{current_user.allergy}>
 
 TASK
-Create EXACTLY FOUR real, sensible recipes that can be prepared within max_minutes using only the available_ingredients
+Create EXACTLY TWO real, sensible recipes that can be prepared within max_minutes using only the available_ingredients
 (plus common pantry staples: water, salt, black pepper, sugar, neutral/olive oil, butter, vinegar, stock/broth, flour, baking powder, soy sauce, lemon juice).
 Respect user_preference and strictly avoid allergies.
 
@@ -131,7 +131,7 @@ PROMPT
           servings: rd["base_servings"] || 2
         ).call
       end
-      
+
     attrs = {
       name:                     rd["name"],
       duration:                 rd["duration"],
@@ -152,7 +152,7 @@ PROMPT
     # Checks what recipes are similar
     recipe = @scan.recipes.new(attrs)
     recipe.set_embedding
-    similar_recipes = Recipe.nearest_neighbors(:embedding, recipe.embedding, distance: "cosine").limit(5)
+    similar_recipes = Recipe.nearest_neighbors(:embedding, recipe.embedding, distance: "cosine").limit(3)
     threshold = 0.85
     is_duplicate = similar_recipes.any? do |r|
       distance = r.neighbor_distance
@@ -164,14 +164,14 @@ PROMPT
     else
       @scan.recipes += Recipe.nearest_neighbors(:embedding, recipe.embedding, distance: "cosine").limit(1)
     end
-    
+
     begin
         ImageGeneratorJob.perform_now(recipe.id)
       rescue => e
         Rails.logger.error("[Recipes#create] Image attach failed for recipe=#{recipe.id} #{e.class}: #{e.message}")
         # We don't raise; UI will just show the placeholder if something went wrong.
       end
-     
+
     end
   redirect_to scan_path(@scan)
   end
