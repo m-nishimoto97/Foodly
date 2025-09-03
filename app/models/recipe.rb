@@ -1,10 +1,8 @@
-# app/models/recipe.rb
 class Recipe < ApplicationRecord
   acts_as_favoritable
   acts_as_votable
 
   belongs_to :scan
-
   has_one :user, through: :scan
   has_one_attached :photo
 
@@ -13,13 +11,15 @@ class Recipe < ApplicationRecord
   has_many :recipe_tags, dependent: :destroy
   has_many :tags, through: :recipe_tags
 
-  validates :name, :duration, presence: true
+  # For Embeddings
+  has_neighbors :embedding
+  before_validation :set_embedding, on: :create
 
-  after_commit :async_update, on: [:create]
+  validates :name, :duration, presence: true
 
   enum difficulty: { easy: 1, medium: 2, hard: 3 }
 
-  # ---- Scopes (as you had) ----
+  # ---- Scopes (unchanged) ----
   scope :with_ingredient, ->(q) { q.present? ? where("ingredients ILIKE ?", "%#{sanitize_sql_like(q)}%") : all }
   scope :by_cuisine,      ->(c) { c.present? ? where(cuisine: c) : all }
   scope :by_diet,         ->(d) { d.present? ? where(diet: d) : all }
@@ -48,8 +48,14 @@ class Recipe < ApplicationRecord
     {}
   end
 
+  def set_embedding
+    self.embedding = RubyLLM.embed("Recipe name: #{name}", model: "text-embedding-3-small").vectors
+  end
+
   private
+
   def async_update
     ImageGeneratorJob.perform_later(self.id)
   end
+
 end
