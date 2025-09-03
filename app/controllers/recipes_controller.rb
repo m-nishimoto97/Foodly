@@ -22,7 +22,7 @@ CONTEXT
 - allergies: <#{current_user.allergy}>
 
 TASK
-Create EXACTLY TWO real, sensible recipes that can be prepared within max_minutes using only the available_ingredients
+Create EXACTLY FOUR real, sensible recipes that can be prepared within max_minutes using only the available_ingredients
 (plus common pantry staples: water, salt, black pepper, sugar, neutral/olive oil, butter, vinegar, stock/broth, flour, baking powder, soy sauce, lemon juice).
 Respect user_preference and strictly avoid allergies.
 
@@ -52,7 +52,7 @@ QUALITY RULES
 - Sentences must be clear and instructional. No storytelling.
 
 OUTPUT FORMAT
-Return ONE JSON array with TWO objects. Each object MUST have ONLY these keys:
+Return ONE JSON array with FOUR objects. Each object MUST have ONLY these keys:
 
 [
   {
@@ -108,7 +108,7 @@ VALIDATION
 - Mood must be one of: comfort food, party food, romantic dinner.
 - Price per serving must be an integer in cents (USD).
 - Output MUST be valid JSON. Use ":" for JSON key/value separators (never "=>").
-- Return ONLY the JSON array with two recipe objects, nothing before or after.
+- Return ONLY the JSON array with four recipe objects, nothing before or after.
 
 PROMPT
 
@@ -131,39 +131,49 @@ PROMPT
           servings: rd["base_servings"] || 2
         ).call
       end
+      
+    attrs = {
+      name:                     rd["name"],
+      duration:                 rd["duration"],
+      diet:                     rd["diet"],
+      cuisine:                  rd["cuisine"],
+      directions:               rd["directions"],
+      ingredients:              rd["ingredients"],
+      base_servings:            rd["base_servings"],
+      calories_per_serving:     calories,
+      method:                   rd["method"],
+      meal_type:                rd["meal_type"],
+      difficulty:               rd["difficulty"],
+      price_per_serving_cents:  rd["price_per_serving_cents"],
+      best_season_start:        rd["best_season_start"],
+      best_season_end:          rd["best_season_end"]
+    }.compact
 
-      attrs = {
-        name:                     rd["name"],
-        duration:                 rd["duration"],
-        diet:                     rd["diet"],
-        cuisine:                  rd["cuisine"],
-        directions:               rd["directions"],
-        ingredients:              rd["ingredients"],
-        base_servings:            rd["base_servings"],
-        calories_per_serving:     calories,
-        method:                   rd["method"],
-        meal_type:                rd["meal_type"],
-        difficulty:               rd["difficulty"],
-        price_per_serving_cents:  rd["price_per_serving_cents"],
-        best_season_start:        rd["best_season_start"],
-        best_season_end:          rd["best_season_end"]
-      }.compact
+    # Checks what recipes are similar
+    recipe = @scan.recipes.new(attrs)
+    recipe.set_embedding
+    similar_recipes = Recipe.nearest_neighbors(:embedding, recipe.embedding, distance: "cosine").limit(5)
+    threshold = 0.85
+    is_duplicate = similar_recipes.any? do |r|
+      distance = r.neighbor_distance
+      (1 - distance) > threshold
+    end
 
-      # Create the recipe row
-      recipe = @scan.recipes.create!(attrs)
-
-      # === KEY CHANGE ===
-      # Generate and attach the photo synchronously so the image is available
-      # immediately when we redirect to the scan page (no refresh needed).
-      begin
+    if !is_duplicate
+      recipe.save
+    else
+      @scan.recipes += Recipe.nearest_neighbors(:embedding, recipe.embedding, distance: "cosine").limit(1)
+    end
+    
+    begin
         ImageGeneratorJob.perform_now(recipe.id)
       rescue => e
         Rails.logger.error("[Recipes#create] Image attach failed for recipe=#{recipe.id} #{e.class}: #{e.message}")
         # We don't raise; UI will just show the placeholder if something went wrong.
       end
+     
     end
-
-    redirect_to scan_path(@scan)
+  redirect_to scan_path(@scan)
   end
 
   def filters

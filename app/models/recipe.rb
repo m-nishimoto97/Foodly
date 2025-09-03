@@ -11,6 +11,10 @@ class Recipe < ApplicationRecord
   has_many :recipe_tags, dependent: :destroy
   has_many :tags, through: :recipe_tags
 
+  # For Embeddings
+  has_neighbors :embedding
+  before_validation :set_embedding, on: :create
+
   validates :name, :duration, presence: true
 
   enum difficulty: { easy: 1, medium: 2, hard: 3 }
@@ -35,9 +39,23 @@ class Recipe < ApplicationRecord
     reviews.average(:rating)
   end
 
-  # Keep the method around (unused now). Handy if you want to restore async later.
+  # Safe accessor if ingredients is stored as a JSON string
+  def ingredients_hash
+    v = self.ingredients
+    return v if v.is_a?(Hash)
+    JSON.parse(v.presence || "{}")
+  rescue JSON::ParserError
+    {}
+  end
+
+  def set_embedding
+    self.embedding = RubyLLM.embed("Recipe name: #{name}", model: "text-embedding-3-small").vectors
+  end
+
   private
+
   def async_update
     ImageGeneratorJob.perform_later(self.id)
   end
+
 end
