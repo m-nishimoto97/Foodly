@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'schedules/show'
   get 'profiles/show'
   get 'profiles/update'
   get 'pages/dashboard'
@@ -27,6 +28,7 @@ end
     post :like, on: :member
   end
   resource :profile, only: [:show, :update]
+  resources :schedules, only: [:index, :create]
   # Defines the root path route ("/")
   # root "posts#index"
 end
