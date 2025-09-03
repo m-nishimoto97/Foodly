@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_09_03_025019) do
+ActiveRecord::Schema[7.1].define(version: 2025_09_03_081925) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "vector"
@@ -80,17 +80,12 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_03_025019) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.jsonb "ingredients", default: {}, null: false
-    t.string "localized_name"
     t.integer "base_servings", default: 2, null: false
-    t.text "ingredients_html"
-    t.text "directions_html"
-    t.text "summary_html"
     t.integer "calories_per_serving"
     t.string "method"
     t.string "meal_type"
     t.integer "difficulty", default: 1, null: false
     t.integer "price_per_serving_cents"
-    t.string "mood"
     t.date "best_season_start"
     t.date "best_season_end"
     t.vector "embedding", limit: 1536
@@ -132,6 +127,15 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_03_025019) do
     t.datetime "updated_at", null: false
     t.index ["recipe_id"], name: "index_schedules_on_recipe_id"
     t.index ["user_id"], name: "index_schedules_on_user_id"
+  end
+
+  create_table "solid_cable_messages", force: :cascade do |t|
+    t.text "channel"
+    t.text "payload"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["channel"], name: "index_solid_cable_messages_on_channel"
+    t.index ["created_at"], name: "index_solid_cable_messages_on_created_at"
   end
 
   create_table "solid_queue_blocked_executions", force: :cascade do |t|

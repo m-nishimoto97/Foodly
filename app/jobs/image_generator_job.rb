@@ -16,6 +16,8 @@ class ImageGeneratorJob < ApplicationJob
       filename: "#{recipe.id}.png",
       content_type: "image/png"
     )
+  Turbo::StreamsChannel.broadcast_replace_to(recipe.scan, target: "recipe-photo-#{recipe.id}", partial: "recipes/photo", locals: { recipe: recipe })
+
     Rails.logger.info("[ImageGeneratorJob] attached photo to recipe=#{recipe.id}")
   rescue => e
     Rails.logger.error("[ImageGeneratorJob] recipe=#{id} #{e.class}: #{e.message}")
