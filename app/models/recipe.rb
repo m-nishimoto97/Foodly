@@ -13,6 +13,10 @@ class Recipe < ApplicationRecord
   has_many :recipe_tags, dependent: :destroy
   has_many :tags, through: :recipe_tags
 
+  # For Embeddings
+  has_neighbors :embedding
+  before_validation :set_embedding, on: :create
+
   validates :name, :duration, presence: true
 
   after_commit :async_update, on: [:create]
@@ -48,8 +52,14 @@ class Recipe < ApplicationRecord
     {}
   end
 
+  def set_embedding
+    self.embedding = RubyLLM.embed("Recipe name: #{name}", model: "text-embedding-3-small").vectors
+  end
+
   private
+
   def async_update
     ImageGeneratorJob.perform_later(self.id)
   end
+
 end
