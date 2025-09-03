@@ -17,6 +17,7 @@ class SchedulesController < ApplicationController
 
   def create
     @schedule = current_user.schedules.new(schedule_params)
+    @recipes = current_user.recipes
     if @schedule.save
       @schedules = current_user.schedules.includes(:recipe)
       respond_to do |format|
@@ -24,7 +25,7 @@ class SchedulesController < ApplicationController
         format.html { redirect_to schedules_path(start_date: @schedule.date.beginning_of_month), status: :see_other }
       end
     else
-      render :new, status: :unprocessable_content
+      render :index, status: :unprocessable_content
     end
   end
 
