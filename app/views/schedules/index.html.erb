@@ -9,10 +9,11 @@
     </div>
   </div>
   <div class="mt-4">
-    <div class="d-flex justify-content-between">
+    <div class="d-flex justify-content-between align-items-center">
       <%= link_to schedules_path(start_date: @start_date - 1.month), class: "btn rounded-circle text-cWhite" do %>
         <i class="fa-solid fa-arrow-left"></i>
       <% end %>
+      <span class="text-cWhite d-flex align-items-center"><%= @start_date.strftime("%B %Y") %></span>
       <%= link_to schedules_path(start_date: @start_date + 1.month), class: "btn rounded-circle text-cWhite" do %>
         <i class="fa-solid fa-arrow-right"></i>
       <% end %>

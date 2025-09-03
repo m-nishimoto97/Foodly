@@ -1,4 +1,4 @@
- <%= month_calendar events: @schedules, attribute: :date do |date, schedules| %>
+<%= month_calendar events: @schedules, attribute: :date do |date, schedules| %>
   <div class="day calendar-day position-relative">
     <%= date.day %>
     <% if schedules.count > 0 %>
