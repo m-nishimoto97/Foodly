@@ -2,7 +2,8 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="scheduler"
 export default class extends Controller {
-  static targets = ["searchinput", "recipeInput", "divRecipeCards", "formScheduler"]
+  static targets = ["searchinput", "recipeInput", "divRecipeCards",
+                    "formScheduler", "aiFormScheduler"]
   static values = { url: String }
 
   submit() {

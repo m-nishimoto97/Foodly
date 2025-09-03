@@ -1,8 +1,8 @@
-<%= turbo_stream.update "calendar" do %>
-  <%= render "schedules/calendar", schedules: @schedules %>
-<% end %>
 <%= turbo_stream.replace "divForm" do %>
   <div id="divForm">
     <%= render "schedules/form", schedule: Schedule.new %>
   </div>
+<% end %>
+<%= turbo_stream.update "calendar" do %>
+  <%= render "schedules/calendar", schedules: @schedules %>
 <% end %>

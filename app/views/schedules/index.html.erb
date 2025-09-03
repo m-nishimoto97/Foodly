@@ -4,9 +4,38 @@
     class: "btn btn-cDarkYellow mb-3 rounded-4",
     data: { bs_toggle: "collapse", bs_target: "#collapseExample" } %>
   <div class="text-cWhite collapse bg-cGray p-2 rounded-4" id="collapseExample"  >
-    <div id="divForm">
-      <%= render "schedules/form", schedule: @schedule %>
+    <ul class="nav nav-underline mb-3" id="schedulerNav" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link text-cWhite active"
+          id="nav-ai-tab" data-bs-toggle="tab"
+          data-bs-target="#nav-ai" type="button"
+          role="tab" aria-controls="nav-ai"
+          aria-selected="true">
+          AI
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link text-cWhite"
+          id="nav-manually-tab" data-bs-toggle="tab"
+          data-bs-target="#nav-manually" type="button"
+          role="tab" aria-controls="nav-manually"
+          aria-selected="false">
+          Manually
+        </button>
+      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="nav-ai" role="tabpanel" aria-labelledby="nav-ai-tab">
+        <%= render "schedules/ai", schedule: @schedule %>
+      </div>
+      <div class="tab-pane fade" id="nav-manually" role="tabpanel" aria-labelledby="nav-manually-tab">
+        <div id="divForm">
+          <%= render "schedules/form", schedule: @schedule %>
+        </div>
+      </div>
     </div>
+  </div>
+  <div class="text-cWhite collapse bg-cGray p-2 rounded-4" id="collapseAI">
   </div>
   <div class="mt-4">
     <div class="d-flex justify-content-between align-items-center">

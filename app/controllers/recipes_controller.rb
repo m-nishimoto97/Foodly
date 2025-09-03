@@ -1,4 +1,3 @@
-# app/controllers/recipes_controller.rb
 class RecipesController < ApplicationController
   def new
     @scan = Scan.find(params[:scan_id])
@@ -10,14 +9,13 @@ class RecipesController < ApplicationController
   def create
     @scan = Scan.find(params[:scan_id])
 
-    # === BUILD PROMPT FOR RubyLLM ===
     prompt = <<-PROMPT
 
 You are a precise recipe formatter. Output valid JSON only. Do not wrap in code fences or add prose.
 
 CONTEXT
-- available_ingredients: <#{params['recipe']['name'].join(', ')}>        # user ingredients
-- max_minutes: <#{params['recipe']['duration']}>                           # time limit
+- available_ingredients: <#{params['recipe']['name'].join(', ')}>
+- max_minutes: <#{params['recipe']['duration']}>
 - user_preference: <#{current_user.preference}>
 - allergies: <#{current_user.allergy}>
 
@@ -108,19 +106,19 @@ VALIDATION
 - Mood must be one of: comfort food, party food, romantic dinner.
 - Price per serving must be an integer in cents (USD).
 - Output MUST be valid JSON. Use ":" for JSON key/value separators (never "=>").
-- Return ONLY the JSON array with TWO recipe objects, nothing before or after.
+- Return ONLY the JSON array with four recipe objects, nothing before or after.
 
 PROMPT
 
-    response = RubyLLM.chat.ask(prompt)
-    json_str = response.content.gsub(/```json\n|```/, '')
+  response = RubyLLM.chat.ask(prompt)
+  json_str = response.content.gsub(/```json\n|```/, '')
 
-    begin
-      recipes = JSON.parse(json_str)
-    rescue JSON::ParserError
-      flash[:alert] = "Failed to parse AI Response"
-      redirect_to scan_path(@scan) and return
-    end
+  begin
+    recipes = JSON.parse(json_str)
+  rescue JSON::ParserError
+    flash[:alert] = "Failed to parse AI Response"
+    redirect_to scan_path(@scan) and return
+  end
 
     recipes.each do |rd|
       # --- calories fallback (kept as you had) ---
@@ -174,61 +172,61 @@ PROMPT
 
     end
   redirect_to scan_path(@scan)
-  end
+end
 
   def filters
   end
-
   def show
     @recipe = Recipe.find(params[:id])
   end
 
-  def index
-    # Base: my recipes + my favorites
-    owned_ids = current_user.recipes.select(:id)
+def index
+  # Base: my recipes + my favorites
+  owned_ids = current_user.recipes.select(:id)
 
-    favorited_ids =
-      if current_user.respond_to?(:favorited)
-        current_user.favorited(Recipe).select(:id)
-      elsif current_user.respond_to?(:favorited_by_type)
-        Recipe.where(id: current_user.favorited_by_type('Recipe').pluck(:id)).select(:id)
-      else
-        Recipe.none.select(:id)
-      end
+  favorited_ids =
+    if current_user.respond_to?(:favorited)
+      current_user.favorited(Recipe).select(:id)
+    elsif current_user.respond_to?(:favorited_by_type)
+      Recipe.where(id: current_user.favorited_by_type('Recipe').pluck(:id)).select(:id)
+    else
+      Recipe.none.select(:id)
+    end
 
-    @recipes = Recipe.where(id: owned_ids).or(Recipe.where(id: favorited_ids))
+  @recipes = Recipe.where(id: owned_ids).or(Recipe.where(id: favorited_ids))
 
-    # quick search by name
-    @recipes = @recipes.where("recipes.name ILIKE ?", "%#{params[:query]}%") if params[:query].present?
+  # quick search by name
+  @recipes = @recipes.where("recipes.name ILIKE ?", "%#{params[:query]}%") if params[:query].present?
 
-    # filters
-    @recipes = @recipes
-                 .with_ingredient(params[:ingredient])
-                 .by_cuisine(params[:cuisine])
-                 .by_diet(params[:diet])
-                 .by_method(params[:method])
-                 .by_meal_type(params[:meal_type])
-                 .by_time_lte(params[:max_minutes])
-                 .by_difficulty(params[:difficulty])
-                 .by_price_lte(params[:max_price_cents])
-                 .calories_lte(params[:max_kcal])
+  # filters
+  @recipes = @recipes
+               .with_ingredient(params[:ingredient])
+               .by_cuisine(params[:cuisine])
+               .by_diet(params[:diet])
+               .by_method(params[:method])
+               .by_meal_type(params[:meal_type])
+               .by_time_lte(params[:max_minutes])
+               .by_difficulty(params[:difficulty])
+               .by_price_lte(params[:max_price_cents])
+               .calories_lte(params[:max_kcal])
 
-    @recipes = @recipes.in_season if params[:seasonal].present?
-    @recipes = @recipes.with_tag(params[:mood]) if params[:mood].present?
+  @recipes = @recipes.in_season if params[:seasonal].present?
+  @recipes = @recipes.with_tag(params[:mood]) if params[:mood].present?
 
-    # sorting (optional)
-    @recipes = case params[:sort]
-               when "newest"    then @recipes.order(created_at: :desc)
-               when "oldest"    then @recipes.order(created_at: :asc)
-               when "low_cal"   then @recipes.order(Arel.sql("COALESCE(calories_per_serving, 999999) ASC"))
-               when "low_price" then @recipes.order(Arel.sql("COALESCE(price_per_serving_cents, 999999999) ASC"))
-               when "fastest"   then @recipes.order(Arel.sql("COALESCE(duration, 999999) ASC"))
-               else @recipes.order(created_at: :desc)
-               end
+  # sorting (optional)
+  @recipes = case params[:sort]
+             when "newest"    then @recipes.order(created_at: :desc)
+             when "oldest"    then @recipes.order(created_at: :asc)
+             when "low_cal"   then @recipes.order(Arel.sql("COALESCE(calories_per_serving, 999999) ASC"))
+             when "low_price" then @recipes.order(Arel.sql("COALESCE(price_per_serving_cents, 999999999) ASC"))
+             when "fastest"   then @recipes.order(Arel.sql("COALESCE(duration, 999999) ASC"))
+             else @recipes.order(created_at: :desc)
+             end
 
-    @recipes = @recipes.includes(:tags) if Recipe.reflect_on_association(:tags)
-    @recipes = @recipes.page(params[:page]).per(24) if @recipes.respond_to?(:page)
-  end
+  @recipes = @recipes.includes(:tags) if Recipe.reflect_on_association(:tags)
+  @recipes = @recipes.page(params[:page]).per(24) if @recipes.respond_to?(:page)
+end
+
 
   def toggle_favorite
     @recipe = Recipe.find(params[:id])
