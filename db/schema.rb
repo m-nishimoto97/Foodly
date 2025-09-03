@@ -71,6 +71,15 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_02_033502) do
     t.index ["scope"], name: "index_favorites_on_scope"
   end
 
+  create_table "recipe_tags", force: :cascade do |t|
+    t.bigint "recipe_id", null: false
+    t.bigint "tag_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["recipe_id"], name: "index_recipe_tags_on_recipe_id"
+    t.index ["tag_id"], name: "index_recipe_tags_on_tag_id"
+  end
+
   create_table "recipes", force: :cascade do |t|
     t.string "name"
     t.text "directions"
@@ -81,7 +90,27 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_02_033502) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.jsonb "ingredients", default: {}, null: false
+    t.string "localized_name"
+    t.integer "base_servings", default: 2, null: false
+    t.text "ingredients_html"
+    t.text "directions_html"
+    t.text "summary_html"
+    t.integer "calories_per_serving"
+    t.string "method"
+    t.string "meal_type"
+    t.integer "difficulty", default: 1, null: false
+    t.integer "price_per_serving_cents"
+    t.string "mood"
+    t.date "best_season_start"
+    t.date "best_season_end"
+    t.index ["calories_per_serving"], name: "index_recipes_on_calories_per_serving"
+    t.index ["cuisine"], name: "index_recipes_on_cuisine"
+    t.index ["diet"], name: "index_recipes_on_diet"
+    t.index ["difficulty"], name: "index_recipes_on_difficulty"
     t.index ["ingredients"], name: "index_recipes_on_ingredients", using: :gin
+    t.index ["meal_type"], name: "index_recipes_on_meal_type"
+    t.index ["method"], name: "index_recipes_on_method"
+    t.index ["price_per_serving_cents"], name: "index_recipes_on_price_per_serving_cents"
     t.index ["scan_id"], name: "index_recipes_on_scan_id"
   end
 
@@ -235,6 +264,13 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_02_033502) do
     t.index ["key"], name: "index_solid_queue_semaphores_on_key", unique: true
   end
 
+  create_table "tags", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_tags_on_name", unique: true
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -268,6 +304,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_02_033502) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "recipe_tags", "recipes"
+  add_foreign_key "recipe_tags", "tags"
   add_foreign_key "calendar_entries", "recipes"
   add_foreign_key "calendar_entries", "users"
   add_foreign_key "recipes", "scans"

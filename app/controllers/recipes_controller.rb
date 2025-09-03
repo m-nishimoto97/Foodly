@@ -62,10 +62,16 @@ Return ONE JSON array with TWO objects. Each object MUST have ONLY these keys:
     "source_hint": string,
     "base_servings": integer,
     "ingredients": { "spaghetti": "200 g", "garlic": "2 cloves", ... },
-    "ingredients_html": "<ul>...</ul>",
+    "ingredients_html": "<ul><li>...</li></ul>",
     "directions": "1) ...\n2) ...\n3) ...",
     "directions_html": "<ol><li>...</li><li>...</li><li>...</li></ol>",
-    "summary_html": "<p>...</p>"
+    "summary_html": "<p>...</p>",
+    "calories_per_serving": integer,       // realistic kcal per serving
+    "method": string,                      // one of: "grilled", "baked", "steamed", "fried", "raw", "boiled"
+    "meal_type": string,                   // one of: "breakfast", "lunch", "dinner", "snack"
+    "difficulty": integer,                 // 1 easy, 2 medium, 3 hard
+    "price_per_serving_cents": integer,    // estimated cost in cents per serving
+    "mood": string                         // one of: "comfort food", "party food", "romantic dinner"
   },
   {
     "name": "...",
@@ -79,7 +85,13 @@ Return ONE JSON array with TWO objects. Each object MUST have ONLY these keys:
     "ingredients_html": "<ul>...</ul>",
     "directions": "1) ...\n2) ...\n3) ...",
     "directions_html": "<ol><li>...</li><li>...</li><li>...</li></ol>",
-    "summary_html": "<p>...</p>"
+    "summary_html": "<p>...</p>",
+    "calories_per_serving": ...,
+    "method": "...",
+    "meal_type": "...",
+    "difficulty": ...,
+    "price_per_serving_cents": ...,
+    "mood": "..."
   }
 ]
 
@@ -87,48 +99,113 @@ VALIDATION
 - Use only available_ingredients + the allowed staples.
 - Keep duration ≤ max_minutes.
 - Conform to user_preference and exclude allergies.
+- Calories must be realistic for the dish and per serving.
+- Difficulty must be 1 (easy), 2 (medium), or 3 (hard).
+- Method must be chosen from the specified list.
+- Meal type must be one of: breakfast, lunch, dinner, snack.
+- Mood must be one of: comfort food, party food, romantic dinner.
+- Price per serving must be an integer in cents (USD).
 - Output MUST be valid JSON. Use ":" for JSON key/value separators (never "=>").
 - Return ONLY the JSON array with two recipe objects, nothing before or after.
 
 
-
 PROMPT
 
-    response = RubyLLM.chat.ask(prompt)
-    json_str = response.content.gsub(/```json\n|```/, '')
-    # Raises an error if the AI response is weirdd
-    begin
-      recipes = JSON.parse(json_str)
-    rescue JSON::ParserError => e
-      flash[:alert] = "Failed to parse AI Response"
-      redirect_to scan_path(@scan) and return
-    end
+  response = RubyLLM.chat.ask(prompt)
+  json_str = response.content.gsub(/```json\n|```/, '')
 
-    recipes.each do |recipe_data|
-      @scan.recipes.create!(
-        name: recipe_data["name"],
-        duration: recipe_data["duration"],
-        diet: recipe_data["diet"],
-        cuisine: recipe_data["cuisine"],
-        directions: recipe_data["directions"],
-        ingredients: recipe_data["ingredients"]
-      )
-    end
-
-    redirect_to scan_path(@scan)
+  begin
+    recipes = JSON.parse(json_str)
+  rescue JSON::ParserError
+    flash[:alert] = "Failed to parse AI Response"
+    redirect_to scan_path(@scan) and return
   end
 
+  recipes.each do |rd|
+    calories = rd["calories_per_serving"]
+    if calories.blank? && rd["ingredients"].present?
+      calories = NutritionCalculator.new(
+        rd["ingredients"],
+        servings: rd["base_servings"] || 2
+      ).call
+    end
+
+    attrs = {
+      name:                     rd["name"],
+      duration:                 rd["duration"],
+      diet:                     rd["diet"],
+      cuisine:                  rd["cuisine"],
+      directions:               rd["directions"],
+      ingredients:              rd["ingredients"],
+      base_servings:            rd["base_servings"],
+      calories_per_serving:     calories,
+      method:                   rd["method"],
+      meal_type:                rd["meal_type"],
+      difficulty:               rd["difficulty"],
+      price_per_serving_cents:  rd["price_per_serving_cents"],
+      best_season_start:        rd["best_season_start"],
+      best_season_end:          rd["best_season_end"]
+    }.compact
+
+    @scan.recipes.create!(attrs)
+  end
+
+  redirect_to scan_path(@scan)
+end
+
+  def filters
+  end
   def show
     @recipe = Recipe.find(params[:id])
   end
 
-  def index
-    recipes = current_user.recipes
-    favorites = current_user.all_favorited
-    combined_ids = recipes.pluck(:id) + favorites.pluck(:id)
-    @recipes = Recipe.where(id: combined_ids)
-    @recipes = @recipes.where("name ILIKE ?", "%#{params[:query]}%") if params[:query].present?
-  end
+def index
+  # Base: my recipes + my favorites
+  owned_ids = current_user.recipes.select(:id)
+
+  favorited_ids =
+    if current_user.respond_to?(:favorited)
+      current_user.favorited(Recipe).select(:id)
+    elsif current_user.respond_to?(:favorited_by_type)
+      Recipe.where(id: current_user.favorited_by_type('Recipe').pluck(:id)).select(:id)
+    else
+      Recipe.none.select(:id)
+    end
+
+  @recipes = Recipe.where(id: owned_ids).or(Recipe.where(id: favorited_ids))
+
+  # quick search by name
+  @recipes = @recipes.where("recipes.name ILIKE ?", "%#{params[:query]}%") if params[:query].present?
+
+  # filters
+  @recipes = @recipes
+               .with_ingredient(params[:ingredient])
+               .by_cuisine(params[:cuisine])
+               .by_diet(params[:diet])
+               .by_method(params[:method])
+               .by_meal_type(params[:meal_type])
+               .by_time_lte(params[:max_minutes])
+               .by_difficulty(params[:difficulty])
+               .by_price_lte(params[:max_price_cents])
+               .calories_lte(params[:max_kcal])
+
+  @recipes = @recipes.in_season if params[:seasonal].present?
+  @recipes = @recipes.with_tag(params[:mood]) if params[:mood].present?
+
+  # sorting (optional)
+  @recipes = case params[:sort]
+             when "newest"    then @recipes.order(created_at: :desc)
+             when "oldest"    then @recipes.order(created_at: :asc)
+             when "low_cal"   then @recipes.order(Arel.sql("COALESCE(calories_per_serving, 999999) ASC"))
+             when "low_price" then @recipes.order(Arel.sql("COALESCE(price_per_serving_cents, 999999999) ASC"))
+             when "fastest"   then @recipes.order(Arel.sql("COALESCE(duration, 999999) ASC"))
+             else @recipes.order(created_at: :desc)
+             end
+
+  @recipes = @recipes.includes(:tags) if Recipe.reflect_on_association(:tags)
+  @recipes = @recipes.page(params[:page]).per(24) if @recipes.respond_to?(:page)
+end
+
 
   def toggle_favorite
     @recipe = Recipe.find(params[:id])

@@ -12,6 +12,13 @@ Rails.application.routes.draw do
   resources :scans, only: [ :new, :create, :show ] do
     resources :recipes, only: [ :new, :create, :show ]
   end
+
+  resources :recipes do
+  collection do
+    get :filters
+  end
+end
+
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
   resources :recipes, only: [:index]
