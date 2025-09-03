@@ -52,7 +52,7 @@ QUALITY RULES
 - Sentences must be clear and instructional. No storytelling.
 
 OUTPUT FORMAT
-Return ONE JSON array with FOUR objects. Each object MUST have ONLY these keys:
+Return ONE JSON array with TWO objects. Each object MUST have ONLY these keys:
 
 [
   {
@@ -108,7 +108,7 @@ VALIDATION
 - Mood must be one of: comfort food, party food, romantic dinner.
 - Price per serving must be an integer in cents (USD).
 - Output MUST be valid JSON. Use ":" for JSON key/value separators (never "=>").
-- Return ONLY the JSON array with four recipe objects, nothing before or after.
+- Return ONLY the JSON array with TWO recipe objects, nothing before or after.
 
 PROMPT
 
