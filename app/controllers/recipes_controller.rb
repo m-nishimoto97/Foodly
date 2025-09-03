@@ -22,7 +22,7 @@ CONTEXT
 - allergies: <#{current_user.allergy}>
 
 TASK
-Create EXACTLY FOUR real, sensible recipes that can be prepared within max_minutes using only the available_ingredients
+Create EXACTLY TWO real, sensible recipes that can be prepared within max_minutes using only the available_ingredients
 (plus common pantry staples: water, salt, black pepper, sugar, neutral/olive oil, butter, vinegar, stock/broth, flour, baking powder, soy sauce, lemon juice).
 Respect user_preference and strictly avoid allergies.
 
@@ -52,7 +52,7 @@ QUALITY RULES
 - Sentences must be clear and instructional. No storytelling.
 
 OUTPUT FORMAT
-Return ONE JSON array with FOUR objects. Each object MUST have ONLY these keys:
+Return ONE JSON array with TWO objects. Each object MUST have ONLY these keys:
 
 [
   {
@@ -108,7 +108,7 @@ VALIDATION
 - Mood must be one of: comfort food, party food, romantic dinner.
 - Price per serving must be an integer in cents (USD).
 - Output MUST be valid JSON. Use ":" for JSON key/value separators (never "=>").
-- Return ONLY the JSON array with four recipe objects, nothing before or after.
+- Return ONLY the JSON array with TWO recipe objects, nothing before or after.
 
 PROMPT
 
@@ -131,7 +131,7 @@ PROMPT
           servings: rd["base_servings"] || 2
         ).call
       end
-      
+
     attrs = {
       name:                     rd["name"],
       duration:                 rd["duration"],
@@ -152,7 +152,7 @@ PROMPT
     # Checks what recipes are similar
     recipe = @scan.recipes.new(attrs)
     recipe.set_embedding
-    similar_recipes = Recipe.nearest_neighbors(:embedding, recipe.embedding, distance: "cosine").limit(5)
+    similar_recipes = Recipe.nearest_neighbors(:embedding, recipe.embedding, distance: "cosine").limit(3)
     threshold = 0.85
     is_duplicate = similar_recipes.any? do |r|
       distance = r.neighbor_distance
@@ -164,14 +164,14 @@ PROMPT
     else
       @scan.recipes += Recipe.nearest_neighbors(:embedding, recipe.embedding, distance: "cosine").limit(1)
     end
-    
+
     begin
         ImageGeneratorJob.perform_now(recipe.id)
       rescue => e
         Rails.logger.error("[Recipes#create] Image attach failed for recipe=#{recipe.id} #{e.class}: #{e.message}")
         # We don't raise; UI will just show the placeholder if something went wrong.
       end
-     
+
     end
   redirect_to scan_path(@scan)
   end
