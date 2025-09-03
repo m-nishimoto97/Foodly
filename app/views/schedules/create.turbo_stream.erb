@@ -1,0 +1,19 @@
+<%= turbo_stream.replace "calendar" do %>
+  <div id="calendar">
+    <%= month_calendar events: @schedules, attribute: :date do |date, schedules| %>
+      <div class="day">
+        <strong><%= date.day %></strong>
+        <% schedules.each do |schedule| %>
+          <div class="event">
+            <%= link_to schedule.recipe.name, recipe_path(schedule.recipe) %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+<%= turbo_stream.replace "divForm" do %>
+  <div id="divForm">
+    <%= render "schedules/form", schedule: Schedule.new %>
+  </div>
+<% end %>

@@ -21,7 +21,7 @@ Rails.application.routes.draw do
     post :like, on: :member
   end
   resource :profile, only: [:show, :update]
-  resource :schedule, only: [:show, :create]
+  resources :schedules, only: [:index, :create]
   # Defines the root path route ("/")
   # root "posts#index"
 end

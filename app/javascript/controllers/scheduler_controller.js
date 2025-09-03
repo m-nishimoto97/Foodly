@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="scheduler"
 export default class extends Controller {
-  static targets = ["searchinput", "recipeInput", "divRecipeCards"]
+  static targets = ["searchinput", "recipeInput", "divRecipeCards", "formScheduler"]
   static values = { url: String }
 
   submit() {
@@ -21,6 +21,10 @@ export default class extends Controller {
     });
     event.currentTarget.classList.add("card-highlight");
     this.recipeInputTarget.value = event.currentTarget.dataset.id;
+  }
+
+  reset() {
+    this.formSchedulerTarget.reset()
   }
 
 }

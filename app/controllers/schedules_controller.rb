@@ -1,5 +1,5 @@
 class SchedulesController < ApplicationController
-  def show
+  def index
     @schedule = current_user.schedules.new
     @schedules = current_user.schedules.includes(:recipe)
     @start_date = params[:start_date] ? Date.parse(params[:start_date]) : Date.today
@@ -18,7 +18,11 @@ class SchedulesController < ApplicationController
   def create
     @schedule = current_user.schedules.new(schedule_params)
     if @schedule.save
-      redirect_to schedule_path
+      @schedules = current_user.schedules.includes(:recipe)
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to schedules_path(start_date: @schedule.date.beginning_of_month), status: :see_other }
+      end
     else
       render :new, status: :unprocessable_content
     end

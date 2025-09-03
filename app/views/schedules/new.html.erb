@@ -1,6 +1,6 @@
 <div class="container">
   <div class="text-cWhite mt-4">
-    <%= simple_form_for @schedule, url: schedule_path do |f| %>
+    <%= simple_form_for @schedule do |f| %>
       <%= f.input :date, as: :date, start_year: Date.today.year, end_year: Date.today.year + 1 %>
       <%= f.input :recipe_id, as: :select, collection: Recipe.all %>
       <%= f.submit "Create Schedule", class: "w-100" %>
