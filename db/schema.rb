@@ -80,12 +80,17 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_03_025019) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.jsonb "ingredients", default: {}, null: false
+    t.string "localized_name"
     t.integer "base_servings", default: 2, null: false
+    t.text "ingredients_html"
+    t.text "directions_html"
+    t.text "summary_html"
     t.integer "calories_per_serving"
     t.string "method"
     t.string "meal_type"
     t.integer "difficulty", default: 1, null: false
     t.integer "price_per_serving_cents"
+    t.string "mood"
     t.date "best_season_start"
     t.date "best_season_end"
     t.vector "embedding", limit: 1536

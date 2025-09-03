@@ -152,7 +152,7 @@ PROMPT
     # Checks what recipes are similar
     recipe = @scan.recipes.new(attrs)
     recipe.set_embedding
-    similar_recipes = Recipe.nearest_neighbors(:embedding, recipe.embedding, distance: "cosine").limit(3)
+    similar_recipes = Recipe.nearest_neighbors(:embedding, recipe.embedding, distance: "cosine").limit(2)
     threshold = 0.85
     is_duplicate = similar_recipes.any? do |r|
       distance = r.neighbor_distance
