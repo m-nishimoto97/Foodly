@@ -16,9 +16,12 @@
       <i class="fa-solid fa-book"></i>
     <% end %>
   </div>
-  <div class="fab-options-left" data-floating-button-target="optionsleft">
+  <div class="fab-options-left d-flex" data-floating-button-target="optionsleft">
     <%= link_to profiles_show_path, class: "btn fab-nav rounded-circle shadow fab-size" do  %>
       <i class="fa-solid fa-user"></i>
+    <% end %>
+    <%= link_to schedules_path, class: "btn fab-nav rounded-circle shadow fab-size" do  %>
+      <i class="fa-solid fa-calendar-days"></i>
     <% end %>
   </div>
 </div>
