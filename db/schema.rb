@@ -43,17 +43,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_03_025019) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "calendar_entries", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "recipe_id", null: false
-    t.date "date", null: false
-    t.integer "calories"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["recipe_id"], name: "index_calendar_entries_on_recipe_id"
-    t.index ["user_id"], name: "index_calendar_entries_on_user_id"
-  end
-
   create_table "favorites", force: :cascade do |t|
     t.string "favoritable_type", null: false
     t.bigint "favoritable_id", null: false
@@ -91,17 +80,12 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_03_025019) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.jsonb "ingredients", default: {}, null: false
-    t.string "localized_name"
     t.integer "base_servings", default: 2, null: false
-    t.text "ingredients_html"
-    t.text "directions_html"
-    t.text "summary_html"
     t.integer "calories_per_serving"
     t.string "method"
     t.string "meal_type"
     t.integer "difficulty", default: 1, null: false
     t.integer "price_per_serving_cents"
-    t.string "mood"
     t.date "best_season_start"
     t.date "best_season_end"
     t.vector "embedding", limit: 1536
@@ -308,8 +292,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_03_025019) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "recipe_tags", "recipes"
   add_foreign_key "recipe_tags", "tags"
-  add_foreign_key "calendar_entries", "recipes"
-  add_foreign_key "calendar_entries", "users"
   add_foreign_key "recipes", "scans"
   add_foreign_key "reviews", "recipes"
   add_foreign_key "reviews", "users"

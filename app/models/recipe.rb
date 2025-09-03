@@ -1,10 +1,8 @@
-# app/models/recipe.rb
 class Recipe < ApplicationRecord
   acts_as_favoritable
   acts_as_votable
 
   belongs_to :scan
-
   has_one :user, through: :scan
   has_one_attached :photo
 
@@ -19,11 +17,9 @@ class Recipe < ApplicationRecord
 
   validates :name, :duration, presence: true
 
-  after_commit :async_update, on: [:create]
-
   enum difficulty: { easy: 1, medium: 2, hard: 3 }
 
-  # ---- Scopes (as you had) ----
+  # ---- Scopes (unchanged) ----
   scope :with_ingredient, ->(q) { q.present? ? where("ingredients ILIKE ?", "%#{sanitize_sql_like(q)}%") : all }
   scope :by_cuisine,      ->(c) { c.present? ? where(cuisine: c) : all }
   scope :by_diet,         ->(d) { d.present? ? where(diet: d) : all }
