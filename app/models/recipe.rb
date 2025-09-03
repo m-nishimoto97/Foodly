@@ -1,10 +1,8 @@
-# app/models/recipe.rb
 class Recipe < ApplicationRecord
   acts_as_favoritable
   acts_as_votable
 
   belongs_to :scan
-
   has_one :user, through: :scan
   has_one_attached :photo
 
@@ -15,11 +13,9 @@ class Recipe < ApplicationRecord
 
   validates :name, :duration, presence: true
 
-  after_commit :async_update, on: [:create]
-
   enum difficulty: { easy: 1, medium: 2, hard: 3 }
 
-  # ---- Scopes (as you had) ----
+  # ---- Scopes (unchanged) ----
   scope :with_ingredient, ->(q) { q.present? ? where("ingredients ILIKE ?", "%#{sanitize_sql_like(q)}%") : all }
   scope :by_cuisine,      ->(c) { c.present? ? where(cuisine: c) : all }
   scope :by_diet,         ->(d) { d.present? ? where(diet: d) : all }
@@ -39,15 +35,7 @@ class Recipe < ApplicationRecord
     reviews.average(:rating)
   end
 
-  # Safe accessor if ingredients is stored as a JSON string
-  def ingredients_hash
-    v = self.ingredients
-    return v if v.is_a?(Hash)
-    JSON.parse(v.presence || "{}")
-  rescue JSON::ParserError
-    {}
-  end
-
+  # Keep the method around (unused now). Handy if you want to restore async later.
   private
   def async_update
     ImageGeneratorJob.perform_later(self.id)

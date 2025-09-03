@@ -1,6 +1,9 @@
 class ScansController < ApplicationController
   def show
-    @scan = Scan.find(params[:id])
+    # Eager-load attachments so recipe.photo.attached? is reliable and we avoid N+1
+    @scan = Scan
+              .includes(recipes: { photo_attachment: :blob })
+              .find(params[:id])
   end
 
   def new
