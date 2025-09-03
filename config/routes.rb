@@ -28,7 +28,11 @@ end
     post :like, on: :member
   end
   resource :profile, only: [:show, :update]
-  resources :schedules, only: [:index, :create]
+  resources :schedules, only: [:index, :create] do
+    collection do
+      post :generate_ai
+    end
+  end
   # Defines the root path route ("/")
   # root "posts#index"
 end

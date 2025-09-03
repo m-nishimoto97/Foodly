@@ -1,0 +1,40 @@
+<%= simple_form_for schedule, url: generate_ai_schedules_path,
+  data: { scheduler_target: "aiFormScheduler", controller: "form-ai"  },
+   method: :post do |f| %>
+  <div id="customDateField" class="my-3">
+    <label for="start_date">Start Date</label>
+    <%= date_field_tag :start_date, nil,
+    class: "form-control",
+    data: { controller: "datepicker"},
+    placeholder: "Pick a date" %>
+  </div>
+  <div class="btn-group mb-3 w-100" id="divPeriod" role="group" aria-label="Basic radio toggle button group">
+    <input type="radio"
+      value="7"
+      class="btn-check" name="btnradio"
+      id="btnDays" autocomplete="off"
+      data-action="click->form-ai#periodClick" checked>
+    <label class="btn btn-outline-cSeaGreen" for="btnDays">7 Days</label>
+    <input type="radio" class="btn-check"
+      name="btnradio" id="btnMonth"
+      value="30"
+      autocomplete="off"
+      data-action="click->form-ai#periodClick">
+    <label class="btn btn-outline-cSeaGreen" for="btnMonth">30 Days</label>
+    <input type="radio" class="btn-check"
+      name="btnradio"
+      value="other"
+      id="btnOther"
+      autocomplete="off"
+      data-action="click->form-ai#periodClick">
+    <label class="btn btn-outline-cSeaGreen" for="btnOther">Other</label>
+  </div>
+  <div class="mb-3 d-none" data-form-ai-target="customPeriodInput">
+    <%= number_field_tag :custom_period, nil,
+          class: "form-control",
+          placeholder: "Enter number of days",
+          data: { action: "input->selectable#updateCustom" } %>
+  </div>
+  <%= hidden_field_tag :period, "", data: { form_ai_target: "hiddenPeriod" } %>
+  <%= f.submit "Generate AI Schedule", class: "btn btn-cYellow w-100" %>
+<% end %>
