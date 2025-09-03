@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_09_02_010102) do
+ActiveRecord::Schema[7.1].define(version: 2025_09_02_033502) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -40,6 +40,17 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_02_010102) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "calendar_entries", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "recipe_id", null: false
+    t.date "date", null: false
+    t.integer "calories"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["recipe_id"], name: "index_calendar_entries_on_recipe_id"
+    t.index ["user_id"], name: "index_calendar_entries_on_user_id"
   end
 
   create_table "favorites", force: :cascade do |t|
@@ -120,6 +131,16 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_02_010102) do
     t.datetime "updated_at", null: false
     t.string "ingredients", default: [], null: false, array: true
     t.index ["user_id"], name: "index_scans_on_user_id"
+  end
+
+  create_table "schedules", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "recipe_id", null: false
+    t.date "date", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["recipe_id"], name: "index_schedules_on_recipe_id"
+    t.index ["user_id"], name: "index_schedules_on_user_id"
   end
 
   create_table "solid_queue_blocked_executions", force: :cascade do |t|
@@ -285,10 +306,14 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_02_010102) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "recipe_tags", "recipes"
   add_foreign_key "recipe_tags", "tags"
+  add_foreign_key "calendar_entries", "recipes"
+  add_foreign_key "calendar_entries", "users"
   add_foreign_key "recipes", "scans"
   add_foreign_key "reviews", "recipes"
   add_foreign_key "reviews", "users"
   add_foreign_key "scans", "users"
+  add_foreign_key "schedules", "recipes"
+  add_foreign_key "schedules", "users"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_claimed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_failed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade

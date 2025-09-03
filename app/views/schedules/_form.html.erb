@@ -1,0 +1,15 @@
+<%= simple_form_for schedule, data: { scheduler_target: "formScheduler" } do |f| %>
+  <%= f.input :date, as: :string, input_html: { class: "form-control", data: { controller: "datepicker" } } %>
+  <div data-scheduler-url-value="<%= schedules_path %>">
+    <%= text_field_tag :query,
+          params[:query],
+          class: "fd-search-input fd-pill",
+          placeholder: "Find a recipe...",
+          data: { action: 'input->scheduler#submit', scheduler_target: "searchinput" } %>
+    <div id="schedulerrecipe" class="row p-1">
+      <%= render "schedules/search", recipes: current_user.recipes %>
+    </div>
+  </div>
+  <%= f.input :recipe_id, as: :hidden, input_html: { data: { scheduler_target: "recipeInput" } } %>
+  <%= f.submit "Create Schedule", class: "btn btn-cYellow w-100" %>
+<% end %>

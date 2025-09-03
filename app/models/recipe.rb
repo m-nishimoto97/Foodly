@@ -4,9 +4,11 @@ class Recipe < ApplicationRecord
   acts_as_votable
 
   belongs_to :scan
+
   has_one :user, through: :scan
   has_one_attached :photo
 
+  has_many :schedules, dependent: :destroy
   has_many :reviews, dependent: :destroy
   has_many :recipe_tags, dependent: :destroy
   has_many :tags, through: :recipe_tags
