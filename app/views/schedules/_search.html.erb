@@ -1,9 +1,11 @@
 <div id="schedulerrecipe" class="row">
   <% if recipes.any? %>
-    <div class="d-flex pt-2" style="overflow-y:auto;">
+    <div class="d-flex pt-2" style="overflow-y:auto;" data-scheduler-target="divRecipeCards">
       <% recipes.each do |recipe| %>
         <div class="text-cWhite mb-1 mt-2 p-2">
-          <div class="card-recipe flex-column position-relative px-2">
+          <div class="card-recipe flex-column position-relative px-2 scheduler-recipe"
+            data-action="click->scheduler#selectRecipe"
+            data-id="<%= recipe.id %>">
             <% if recipe.photo.attached? %>
               <%= cl_image_tag recipe.photo.key,
               aspect_ratio: "1.0",

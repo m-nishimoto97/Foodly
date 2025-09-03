@@ -7,17 +7,14 @@
     id="collapseExample"  data-controller="scheduler">
     <%= simple_form_for @schedule, url: schedule_path do |f| %>
       <%= f.input :date, as: :string, input_html: { class: "form-control", data: { controller: "datepicker" } } %>
-      <label class="text-cWhite mb-2">Recipe</label>
-      <div class="p-1">
-        <div data-scheduler-url-value="<%= schedule_path %>">
-          <%= text_field_tag :query,
+      <div data-scheduler-url-value="<%= schedule_path %>">
+        <%= text_field_tag :query,
           params[:query],
           class: "fd-search-input fd-pill",
-          placeholder: "Type a keyword",
+          placeholder: "Find a recipe...",
           data: { action: 'input->scheduler#submit', scheduler_target: "searchinput" } %>
-          <div id="schedulerrecipe" class="row">
-            <%= render "schedules/search", recipes: current_user.recipes %>
-          </div>
+        <div id="schedulerrecipe" class="row p-1">
+          <%= render "schedules/search", recipes: current_user.recipes %>
         </div>
       </div>
       <%= f.input :recipe_id, as: :hidden, input_html: { data: { scheduler_target: "recipeInput" } } %>
