@@ -9,7 +9,7 @@ class SchedulesController < ApplicationController
               else
                 current_user.recipes
               end
-   respond_to do |format|
+    respond_to do |format|
       format.html
       format.turbo_stream
     end

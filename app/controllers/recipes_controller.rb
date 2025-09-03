@@ -150,7 +150,7 @@ PROMPT
     # Checks what recipes are similar
     recipe = @scan.recipes.new(attrs)
     recipe.set_embedding
-    similar_recipes = Recipe.nearest_neighbors(:embedding, recipe.embedding, distance: "cosine").limit(5)
+    similar_recipes = Recipe.nearest_neighbors(:embedding, recipe.embedding, distance: "cosine").limit(2)
     threshold = 0.85
     is_duplicate = similar_recipes.any? do |r|
       distance = r.neighbor_distance
@@ -164,7 +164,7 @@ PROMPT
     end
 
     begin
-        ImageGeneratorJob.perform_now(recipe.id)
+        ImageGeneratorJob.perform_later(recipe.id)
       rescue => e
         Rails.logger.error("[Recipes#create] Image attach failed for recipe=#{recipe.id} #{e.class}: #{e.message}")
         # We don't raise; UI will just show the placeholder if something went wrong.

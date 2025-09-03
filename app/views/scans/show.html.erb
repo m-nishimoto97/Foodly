@@ -1,3 +1,4 @@
+<%= turbo_stream_from @scan %>
 <div class="scan-recipe-container">
   <div class="scan-header m-3 my-4">
     <h1>Here are your recipes!</h1>
@@ -13,17 +14,7 @@
             class: "text-decoration-none" do %>
                 <div>
                   <div>
-                     <% if recipe.photo.attached? %>
-                      <%= image_tag(
-                            url_for(recipe.photo),
-                            class: "show-card-image rounded-circle",
-                            width: 400,
-                            height: 300,
-                            alt: recipe.name
-                          ) %>
-                    <% else %>
-                      <div class="photo-skeleton rounded-circle" aria-hidden="true"></div>
-                    <% end %>
+                    <%= render "recipes/photo", recipe: recipe %>
                   </div>
                   <div class="show-card-recipe flex-column p-1">
                     <div class="show-recipe-text text-center fs-6">
