@@ -1,11 +1,20 @@
 <div class="new-review-form mt-3">
+  <h5>Rate Recipe</h5>
   <%= simple_form_for(review, url: recipe_reviews_path(recipe)) do |f| %>
-    <%= f.collection_radio_buttons :rating, [[1], [2], [3], [4], [5], ], :first, :last, item_wrapper_tag: false, boolean_style: :inline do |b| %>
-      <%= b.radio_button + b.label %>
-    <% end %>
+    <div class="d-flex gap-2 star-rating flex-row-reverse justify-content-start">
+      <% (1..5).to_a.reverse.each do |star| %>
+        <%= radio_button_tag "review[rating]", star, false, class: "d-none rate-btn", id: "star-#{star}" %>
+        <%= label_tag "star-#{star}", "★", class: "star text-light fs-1" %>
+      <% end %>
+    </div>
     <%= f.input :comment %>
     <%= f.input :photo, as: :file, label: "Upload a photo (optional)" %>
     <%= f.hidden_field :user_id, value: current_user.id %>
     <%= f.submit "Add Review", class: "btn btn-cYellow w-100" %>
   <% end %>
 </div>
+<%# collection_radio_buttons(attribute, collection, value_method, text_method, options = {}, html_options = {}, &block) %>
+<%#= f.collection_radio_buttons :rating, [[1], [2], [3], [4], [5], ], :first, :last, item_wrapper_tag: false, boolean_style: :inline do |b| %>
+  <%#= b.radio_button %>
+  <%#=  b.label { "⭐" * b.value.to_i} %>
+  <%# end %>

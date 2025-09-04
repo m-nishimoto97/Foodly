@@ -3,3 +3,22 @@
   position: absolute;
   right: 15px;
 }
+
+.star-rating{
+  width:fit-content;
+}
+
+.star{
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.star:hover,
+.star:hover ~ .star {
+  color: $cYellow !important;
+}
+
+.rate-btn:checked + .star,
+.rate-btn:checked + .star ~ .star {
+  color: $cYellow !important;
+}
