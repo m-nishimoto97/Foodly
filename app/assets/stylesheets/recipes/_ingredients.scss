@@ -86,3 +86,7 @@
   overflow-wrap: break-word;
   color: #bababa;
 }
+
+.modal .btn-close {
+  filter: invert(1) brightness(2);
+}
