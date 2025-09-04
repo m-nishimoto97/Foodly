@@ -5,9 +5,9 @@ class SchedulesController < ApplicationController
     @start_date = params[:start_date] ? Date.parse(params[:start_date]) : Date.today
 
     @recipes = if params[:query].present?
-                current_user.recipes.where("name ILIKE ?", "%#{params[:query]}%")
+                current_user.favorites.where("name ILIKE ?", "%#{params[:query]}%")
               else
-                current_user.recipes
+                current_user.favorites
               end
     respond_to do |format|
       format.html

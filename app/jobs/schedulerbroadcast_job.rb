@@ -2,10 +2,7 @@ class SchedulerbroadcastJob < ApplicationJob
   queue_as :default
 
   def perform(user_id, params)
-    puts "---------------PERFORM-----------------"
-
     user = User.find(user_id)
-    puts "---------------USER #{user}-----------------"
 
     days = if params[:btnradio] == "other"
       params[:custom_period]
@@ -65,10 +62,9 @@ class SchedulerbroadcastJob < ApplicationJob
           date: rd["date"],
           recipe_id: scan.recipes.last.id
         }
-    puts "---------------DATE #{ rd["date"]}-----------------"
 
         user.schedules.create!(attrsSchedule)
-        Turbo::StreamsChannel.broadcast_replace_to "schedules",
+        Turbo::StreamsChannel.broadcast_update_to "schedules",
           target: "calendar",
           partial: "schedules/calendar",
           locals: { schedules: user.schedules.includes(:recipe), start_date: params[:start_date] ? Date.parse(params[:start_date]) : Date.today }

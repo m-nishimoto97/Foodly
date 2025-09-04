@@ -1,5 +1,5 @@
-<div id="calendar" style="overflow-x:auto;max-width:400px">
-  <%= month_calendar events: schedules, attribute: :date do |date, schedules_day| %>
+<div>
+  <%= month_calendar events: schedules, attribute: :date, url: schedules_path do |date, schedules_day| %>
     <div class="day calendar-day position-relative">
       <%= date.day %>
       <% if schedules_day.count > 0 %>
@@ -16,4 +16,5 @@
       </div>
     </div>
   <% end %>
+  <%= render "recipes/spinner" %>
 </div>
