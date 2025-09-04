@@ -10,8 +10,9 @@ class RecipesController < ApplicationController
     @scan = Scan.find(params[:scan_id])
 
     prompt = <<-PROMPT
-
-You are a precise recipe formatter. Output valid JSON only. Do not wrap in code fences or add prose.
+You are a precise recipe formatter.
+Output valid JSON only — no code fences, no prose, no Markdown.
+Your first character MUST be “[” and your last character MUST be “]”.
 
 CONTEXT
 - available_ingredients: <#{params['recipe']['name'].join(', ')}>
@@ -19,94 +20,98 @@ CONTEXT
 - user_preference: <#{current_user.preference}>
 - allergies: <#{current_user.allergy}>
 
+DEFINITIONS
+- ALLOWED_STAPLES (usable implicitly, NEVER listed in "ingredients"): water, salt, black pepper, sugar, neutral oil, olive oil, butter, vinegar, stock/broth, flour, baking powder, soy sauce, lemon juice
+- PANTRY_SET = case-insensitive set of ALLOWED_STAPLES keywords (e.g., "water", "salt", "pepper", "sugar", "oil", "butter", "vinegar", "stock", "broth", "flour", "baking powder", "soy sauce", "lemon juice")
+
 TASK
-Create EXACTLY TWO real, sensible recipes that can be prepared within max_minutes using only the available_ingredients
-(plus common pantry staples: water, salt, black pepper, sugar, neutral/olive oil, butter, vinegar, stock/broth, flour, baking powder, soy sauce, lemon juice).
-Respect user_preference and strictly avoid allergies.
+Generate EXACTLY TWO realistic, distinct recipes that:
+- Have duration ≤ max_minutes
+- Use ONLY: available_ingredients + ALLOWED_STAPLES
+- Strictly respect user_preference and exclude allergies
 
-INGREDIENT RULES (CRITICAL for UI scaling)
-- Provide both:
-  1) "ingredients": an OBJECT mapping ingredient names to amount strings
-  2) "base_servings": an INTEGER (number of people the recipe serves, e.g., 2 or 4)
-- Ingredient NAMES must be simple food items only (no adjectives at the start). Examples: "spaghetti", "garlic", "red onion", "banana".
-- Amount strings must use ONE of these formats only (never mix notations):
-  • Integer/decimal + unit: "2 cups", "2.5 cups", "250 g"
-  • Mixed number: "1 1/2 cups"
-  • Unicode fraction: "½ cup", "¼ cup", "¾ cup"
-  • Range: "2-3 cups", "1-2 cloves"
-  • Taste/approx: "to taste", "pinch"
-- Never produce invalid strings like "1/2 /2 cup" or duplicated slashes.
-- Optional short notes may go at the END in parentheses, e.g., "1 onion (finely chopped)".
+INGREDIENT RULES (IMPORTANT)
+- Provide BOTH fields:
+  • "ingredients": OBJECT mapping { simple_name → amount_string }
+  • "base_servings": INTEGER (e.g., 2 or 4)
+- Ingredient NAMES must be simple food items only (no leading adjectives/brands). Examples: "spaghetti", "garlic", "tomato".
+- DO NOT include any PANTRY_SET item in "ingredients" even if it appears in available_ingredients (use implicitly).
+- Deduplicate keys case-insensitively (normalize singular/plural; e.g., keep "tomatoes").
+- Amount string formats allowed ONLY:
+  "200 g", "2 cups", "1 1/2 cups", "1/2 cup", "2-3 cups", "1-2 cloves", "to taste", "pinch"
+  Optional short note at END in parentheses, e.g., "1 onion (chopped)".
+  Never mix notations or include slashes like "200g/1 cup".
+- Keep "ingredients" ≤ 20 items. Omit pantry staples entirely.
 
-HTML RULES (STRICT)
-- "ingredients_html" MUST be exactly: "<ul>...<li>...</li>...</ul>" with ONLY <ul> and <li> tags. No attributes, classes, styles, or Markdown.
-- "directions_html" MUST be exactly: "<ol>...<li>...</li>...</ol>" with ONLY <ol> and <li> tags. No attributes, classes, styles, or Markdown.
-- "summary_html" MUST be exactly one "<p>…</p>".
-- Keep ingredients_html ≤ 800 characters and directions_html ≤ 1200 characters. Be concise.
+HTML RULES
+- "ingredients_html" = one `<ul class="list-unstyled"> ... </ul>` with items like:
+  `<li class="d-flex align-items-center"><span class="me-2 badge bg-secondary">AMOUNT</span><span>INGREDIENT_NAME</span></li>`
+  (Do NOT include pantry staples.)
+- "directions_html" = one ordered list using Bootstrap:
+  `<ol class="list-group list-group-numbered">`
+    Each step:
+    `<li class="list-group-item d-flex justify-content-between align-items-start">
+       <div class="ms-2 me-auto">
+         <div class="fw-bold">STEP_TITLE</div>
+         STEP_BODY (optional)
+       </div>
+       <span class="badge bg-primary rounded-pill">~N min</span>
+     </li>`
+  STEP_TITLE = 2–5 words, imperative (e.g., "Prep aromatics", "Sear & simmer").
+  STEP_BODY = 1–2 concise sentences that ADD details not in the title.
+  If STEP_BODY would duplicate the title (case-insensitive, ignoring punctuation/spacing), OMIT the body and keep only the title.
+- "summary_html" = single `<p class="text-muted mb-0">…</p>`.
+- Hard caps: ingredients_html ≤ 800 chars; directions_html ≤ 1200 chars; summary_html ≤ 300 chars.
 
 QUALITY RULES
-- Avoid trivial dishes unless ingredients strictly force it.
-- Prefer straightforward mains or substantial sides that fit the time limit.
-- Sentences must be clear and instructional. No storytelling.
+- Prefer mains or substantial sides unless ingredients force otherwise.
+- Vary techniques/flavors between the two recipes.
+- Use clear, instructional language (no storytelling).
+- Do not invent unavailable ingredients; everything outside PANTRY_SET must come from available_ingredients.
 
 OUTPUT FORMAT
-Return ONE JSON array with TWO objects. Each object MUST have ONLY these keys:
+Return ONE JSON array with TWO objects. Each object MUST contain ONLY:
 
-[
-  {
-    "name": string,
-    "localized_name": string,
-    "cuisine": string,
-    "diet": string,
-    "duration": integer,
-    "source_hint": string,
-    "base_servings": integer,
-    "ingredients": { "spaghetti": "200 g", "garlic": "2 cloves", ... },
-    "ingredients_html": "<ul><li>...</li></ul>",
-    "directions": "1) ...\n2) ...\n3) ...",
-    "directions_html": "<ol><li>...</li><li>...</li><li>...</li></ol>",
-    "summary_html": "<p>...</p>",
-    "calories_per_serving": integer,       // realistic kcal per serving
-    "method": string,                      // one of: "grilled", "baked", "steamed", "fried", "raw", "boiled"
-    "meal_type": string,                   // one of: "breakfast", "lunch", "dinner", "snack"
-    "difficulty": integer,                 // 1 easy, 2 medium, 3 hard
-    "price_per_serving_cents": integer,    // estimated cost in cents per serving
-    "mood": string                         // one of: "comfort food", "party food", "romantic dinner"
-  },
-  {
-    "name": "...",
-    "localized_name": "...",
-    "cuisine": "...",
-    "diet": "...",
-    "duration": ...,
-    "source_hint": "...",
-    "base_servings": ...,
-    "ingredients": { "...": "..." },
-    "ingredients_html": "<ul>...</ul>",
-    "directions": "1) ...\n2) ...\n3) ...",
-    "directions_html": "<ol><li>...</li><li>...</li><li>...</li></ol>",
-    "summary_html": "<p>...</p>",
-    "calories_per_serving": ...,
-    "method": "...",
-    "meal_type": "...",
-    "difficulty": ...,
-    "price_per_serving_cents": ...,
-    "mood": "..."
-  }
-]
+{
+  "name": string,
+  "localized_name": string,
+  "cuisine": string,
+  "diet": string,
+  "duration": integer,
+  "source_hint": string,
+  "base_servings": integer,
+  "ingredients": { "spaghetti": "200 g", "garlic": "2 cloves (minced)", ... },
+  "ingredients_html": "<ul class=\"list-unstyled\"><li class=\"d-flex align-items-center\"><span class=\"me-2 badge bg-secondary\">200 g</span><span>spaghetti</span></li>...</ul>",
+  "directions": "1) ...\n2) ...\n3) ...",
+  "directions_html": "<ol class=\"list-group list-group-numbered\"><li class=\"list-group-item d-flex justify-content-between align-items-start\"><div class=\"ms-2 me-auto\"><div class=\"fw-bold\">STEP_TITLE</div>STEP_BODY</div><span class=\"badge bg-primary rounded-pill\">~N min</span></li>...</ol>",
+  "summary_html": "<p class=\"text-muted mb-0\">...</p>",
+  "calories_per_serving": integer,
+  "method": "grilled|baked|steamed|fried|raw|boiled",
+  "meal_type": "breakfast|lunch|dinner|snack",
+  "difficulty": 1|2|3,
+  "price_per_serving_cents": integer,
+  "mood": "comfort food|party food|romantic dinner"
+}
 
-VALIDATION
-- Use only available_ingredients + the allowed staples.
-- Keep duration ≤ max_minutes.
-- Conform to user_preference and exclude allergies.
-- Calories must be realistic for the dish and per serving.
-- Difficulty must be 1 (easy), 2 (medium), or 3 (hard).
-- Method must be chosen from the specified list.
-- Meal type must be one of: breakfast, lunch, dinner, snack.
-- Mood must be one of: comfort food, party food, romantic dinner.
-- Price per serving must be an integer in cents (USD).
-- Output MUST be valid JSON. Use ":" for JSON key/value separators (never "=>").
-- Return ONLY the JSON array with TWO recipe objects, nothing before or after.
+ENUM RULES & VALIDATION
+- "method" ∈ {grilled, baked, steamed, fried, raw, boiled}
+- "meal_type" ∈ {breakfast, lunch, dinner, snack}
+- "difficulty" ∈ {1,2,3}
+- "duration" ≤ max_minutes
+- "price_per_serving_cents" = non-negative integer
+- "calories_per_serving" realistic (150–900)
+- NO pantry staples in "ingredients"/"ingredients_html"
+- NO duplicate ingredient keys (case-insensitive)
+- All fields present; no extra keys
+
+SELF-CHECK (MANDATORY)
+1) Exactly TWO recipe objects in a single JSON array.
+2) Valid JSON (no trailing commas; all keys/strings quoted).
+3) Every non-pantry ingredient appears in available_ingredients (case-insensitive; simple singular/plural normalization).
+4) "ingredients" and "ingredients_html" list the SAME non-pantry items/amounts.
+5) "directions_html" follows the exact structure and length caps.
+6) No step has a body that duplicates its title (case-insensitive; punctuation/spacing ignored).
+7) Output starts with “[” and ends with “]”. Output nothing else.
 
 PROMPT
 

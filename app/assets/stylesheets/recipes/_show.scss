@@ -1,0 +1,69 @@
+/* Recipe steps look – overrides for Bootstrap list-group */
+.fd-recipe-steps ol.list-group.list-group-numbered {
+  counter-reset: step;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+}
+
+.fd-recipe-steps ol.list-group.list-group-numbered > li.list-group-item {
+  position: relative;
+  background: #2a2b32 !important;     /* tu card oscuro */
+  color: #e9eef5 !important;
+  border: 1px solid rgba(255,255,255,.08) !important;
+  border-radius: 16px !important;
+  padding: 1rem 1rem 1rem 4.25rem !important; /* espacio para el número */
+  box-shadow: 0 6px 18px rgba(0,0,0,.18);
+}
+
+/* Oculta cualquier marcador/numeración que meta Bootstrap o el UA */
+.fd-recipe-steps ol.list-group.list-group-numbered > li.list-group-item::marker {
+  content: "" !important;
+}
+
+/* Tu número grande a la izquierda */
+.fd-recipe-steps ol.list-group.list-group-numbered > li.list-group-item::before {
+  counter-increment: step;
+  content: counter(step);
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: #FBB72C;
+  color: #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.1rem;
+  box-shadow: inset 0 -2px 0 rgba(0,0,0,.15);
+}
+
+/* Título del paso más marcado */
+.fd-recipe-steps .fw-bold {
+  font-weight: 800 !important;
+  font-size: 1.05rem;
+  margin-bottom: .15rem;
+}
+
+/* Badge de tiempo con tu acento */
+.fd-recipe-steps .badge.rounded-pill {
+  background: #FBB72C !important;
+  color: #111;
+  font-weight: 800;
+}
+
+@media (max-width: 480px) {
+  .fd-recipe-steps ol.list-group.list-group-numbered > li.list-group-item {
+    padding: .85rem .85rem .85rem 3.6rem !important;
+    border-radius: 14px !important;
+  }
+  .fd-recipe-steps ol.list-group.list-group-numbered > li.list-group-item::before {
+    width: 40px; height: 40px; font-size: 1rem; left: .75rem;
+  }
+}
