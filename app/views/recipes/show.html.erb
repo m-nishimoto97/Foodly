@@ -57,10 +57,36 @@
         <p class="text-cWhite text-end"><%= @recipe.diet %></p>
       </div>
       <div class="col-12">
-        <div class="text-cWhite" style="white-space: pre-line;">
-          <%= @recipe.directions&.html_safe %>
-        </div>
+  <section class="fd-recipe-steps" aria-label="Directions">
+    <% if @recipe.directions_html.present? %>
+      <div class="fd-steps-html">
+        <%= raw @recipe.directions_html %>   <!-- 👈 usa el HTML generado por el prompt -->
       </div>
+    <% else %>
+  <%# Fallback si no hay directions_html: genera título+cuerpo sin duplicados %>
+  <ol class="list-group list-group-numbered">
+    <% @recipe.directions.to_s.split(/\n+/).each do |raw| %>
+      <% step = raw.sub(/^\s*\d+\)?[.)]?\s*/,'').strip %>
+      <% next if step.blank? %>
+
+      <% parts = step.split(/\s*[:–—-]\s*/, 2) %>
+      <% title = parts[0].presence || step %>
+      <% body  = parts[1].presence || nil %>
+      <% show_body = body.present? && body.strip.casecmp(title.strip) != 0 %>
+
+      <li class="list-group-item d-flex justify-content-between align-items-start">
+        <div class="ms-2 me-auto">
+          <div class="fw-bold"><%= title.truncate(150) %></div>
+          <% if show_body %><div><%= body %></div><% end %>
+        </div>
+      </li>
+    <% end %>
+  </ol>
+<% end %>
+
+  </section>
+</div>
+
     </div>
     <br>
     <section
