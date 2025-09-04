@@ -6,6 +6,7 @@
   border-radius: 999px;
   outline: none;
 }
+
 .fd-range::-webkit-slider-thumb {
   appearance: none;
   width: 18px; height: 18px;
@@ -15,6 +16,7 @@
   cursor: pointer;
   box-shadow: 0 0 0 3px rgba(251,183,44,.25);
 }
+
 .fd-range::-moz-range-thumb {
   width: 18px; height: 18px;
   border-radius: 50%;
@@ -30,13 +32,29 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
+  width: 100%;
+}
+
+.scan-show-line {
+  border: none;
+  background-color: white;
+  margin: 0 auto;
+  margin-top: 2rem;
+  height: 2px;
+  width: 90%;
+}
+
+.scan-cards-grid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .scan-cards {
  overflow-y: auto;
  flex: 1 1 auto;
  margin-bottom: 3rem;
- margin-top: 2rem;
+ margin-top: 1rem;
 }
 
 .scan-header {
@@ -84,6 +102,10 @@
 
 .show-recipe-text {
   transform: translateY(10%);
+  min-width: 180px;
+  p {
+    min-height: 2rem;
+  }
 }
 
 .scan-recipe-duration {

@@ -49,7 +49,7 @@
 }
 
 .custom-padding-recipe {
-  margin-bottom: 40px;
+  margin-bottom: 60px;
 }
 
 .modal-input:focus {
@@ -85,5 +85,9 @@
   text-align: center;
   overflow-wrap: break-word;
   color: #bababa;
+}
+
+.modal .btn-close {
+  filter: invert(1) brightness(2);
 }
 
