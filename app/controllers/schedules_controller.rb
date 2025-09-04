@@ -96,13 +96,13 @@ class SchedulesController < ApplicationController
 
       last_schedule = current_user.schedules.create!(attrsSchedule)
     end
+    @schedules = current_user.schedules.includes(:recipe)
 
     respond_to do |format|
       format.turbo_stream
       format.html { redirect_to schedules_path(start_date: last_schedule.date.beginning_of_month), status: :see_other }
     end
   end
-
 
   private
 
