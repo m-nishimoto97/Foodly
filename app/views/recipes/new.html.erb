@@ -1,4 +1,4 @@
-<div class="container text-light" >
+<div class="container text-light mt-4" >
   <h1 class="text-center">Ingredients</h1>
   <div class="mt-4">
     <div class="p-0 mx-1 gap-4">
@@ -35,16 +35,16 @@
             <!------------ Modal--------------->
             <div class="modal fade" data-add-ingredient-target="modal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                  <div class="modal-header">
+                <div class="modal-content bg-cBlack">
+                  <div class="modal-header text-light border-0">
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">Add your Ingredient</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close " data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
-                    <input class="modal-input w-100 p-2 border-0 rounded-pill" data-add-ingredient-target="input" type="text" placeholder="Type your ingredient">
+                    <input class="modal-input w-100 ps-4 py-2 border-0 rounded-pill" data-add-ingredient-target="input" type="text" placeholder="Type your ingredient">
                     <span data-add-ingredient-target="error" class="text-danger ps-2"></span>
                   </div>
-                  <div class="modal-footer">
+                  <div class="modal-footer border-0">
                     <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-cYellow" data-action="click->add-ingredient#add">Add Ingredient</button>
                   </div>
