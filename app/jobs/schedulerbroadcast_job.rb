@@ -58,6 +58,12 @@ class SchedulerbroadcastJob < ApplicationJob
           scan.recipes += Recipe.nearest_neighbors(:embedding, recipe.embedding, distance: "cosine").limit(1)
         end
 
+        begin
+          ImageGeneratorJob.perform_later(recipe.id)
+        rescue => e
+          Rails.logger.error("[Recipes#create] Image attach failed for recipe=#{recipe.id} #{e.class}: #{e.message}")
+        end
+
         attrsSchedule = {
           date: rd["date"],
           recipe_id: scan.recipes.last.id
