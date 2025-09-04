@@ -1,10 +1,11 @@
 <div class="scan-recipe-container">
-  <div class="scan-header m-3 my-4">
+  <div class="scan-header mx-3 mt-4 mb-1">
     <h1>Here are your recipes!</h1>
   </div>
   <h5 class="scan-header mx-3">Favorite the ones you like for later</h5>
+  <hr class="scan-show-line">
   <div class="scan-cards container">
-    <section class="fd-grid" aria-label="Recipes">
+    <section class="scan-cards-grid" aria-label="Recipes">
       <div class="row g-2 mt-4 row-cols-2">
         <% @scan.recipes.each_with_index do |recipe, index| %>
           <div class="col mb-1 <%= index.even? ? "pe-2" : "ps-2" %>">
