@@ -48,7 +48,6 @@ def dashboard
     .limit(10)
 end
 
-
   def home
   end
 end
