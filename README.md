@@ -4,6 +4,8 @@ Foodly is the one-stop app to end cooking indecision. Generate recipes based on 
 
 Curious? Check out our live demo link!
 
+<a href="https://lit-shore-42743-6b70c8e67df5.herokuapp.com/">Foodly</a>
+
 ## 🪄 Features
 
 - Ingredient photo scanner
