@@ -30,7 +30,7 @@
               <article class="fd-slide" data-title="<%= title %>">
                 <%= link_to href, class: "fd-slide-link", "aria-label": "Open #{title}" do %>
                   <% if recipe.photo.attached? %>
-                    <%= cl_image_tag recipe.photo.key, width: 600,
+                    <%= image_tag url_for(recipe.photo), width: 600,
                         crop: :fill,  class: "fd-slide-img" %>
                   <% else %>
                     <img data-commons-image data-name="<%= j title %>" data-width="600" alt="<%= h title %>"
@@ -86,8 +86,13 @@
                         class: "text-decoration-none fd-card-link" do %>
                   <div class="position-relative">
                     <% if recipe.photo.attached? %>
-                      <%= cl_image_tag recipe.photo.key, height: 300, width: 400,
-                        crop: :fill,  class: "show-card-image rounded-circle" %>
+                      <%= image_tag(
+                            url_for(recipe.photo),
+                            class: "show-card-image rounded-circle",
+                            width: 400,
+                            height: 300,
+                            alt: recipe.name
+                          ) %>
                     <% else %>
                       <img data-commons-image data-name="<%= j recipe.name %>" alt="<%= h recipe.name %>" loading="lazy"
                         class="fd-card-image rounded-circle">

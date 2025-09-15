@@ -1,8 +1,6 @@
 <div class="banner banner-overlay position-relative">
   <% if @recipe.photo.attached? %>
-    <%= cl_image_tag @recipe.photo.key,
-      crop: "fill", class: "banner-img"
-      %>
+   <%= image_tag url_for(@recipe.photo), class: "banner-img" %>
   <% else %>
     <img
     data-commons-image

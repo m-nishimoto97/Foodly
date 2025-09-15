@@ -1,0 +1,11 @@
+core.repositoryformatversion=0
+core.filemode=true
+core.bare=false
+core.logallrefupdates=true
+remote.origin.url=git@github.com:m-nishimoto97/Foodly.git
+remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*
+branch.master.remote=origin
+branch.master.merge=refs/heads/master
+branch.master.vscode-merge-base=origin/master
+remote.heroku.url=https://git.heroku.com/lit-shore-42743.git
+remote.heroku.fetch=+refs/heads/*:refs/remotes/heroku/*
