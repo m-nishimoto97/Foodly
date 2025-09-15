@@ -15,7 +15,7 @@ Curious? Check out our live demo link!
 ## 💻 Tech Stack
 
 Languages:
-
+<img src="https://img.shields.io/badge/Ruby-CC342D?style=for-the-badge&logo=ruby&logoColor=white">
 Frameworks:
 
 Server:
@@ -57,4 +57,4 @@ Start the server
 
 
 
-Rails app generated with [lewagon/rails-templates](https://github.com/lewagon/rails-templates), created by the [Le Wagon coding bootcamp](https://www.lewagon.com) team.
+Created by the Foodly [Le Wagon coding bootcamp](https://www.lewagon.com) team.
