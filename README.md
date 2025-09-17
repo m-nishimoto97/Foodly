@@ -2,9 +2,9 @@
 
 Foodly is the one-stop app to end cooking indecision. Generate recipes based on the ingredients you have - just by taking one photo. View other user's recipes, leave reviews, and plan your meals for the week with Foodly's responsive interface.
 
-Curious? Check out our live demo link!
+Curious? Check out our live demo link! (Has been formatted for mobile devices)
 
-<a href="https://lit-shore-42743-6b70c8e67df5.herokuapp.com/">Foodly</a>
+<a href="https://lit-shore-42743-6b70c8e67df5.herokuapp.com/" target="_blank">Foodly</a>
 
 ## 🪄 Features
 
